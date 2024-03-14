@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import GoogleMapReact from 'google-map-react'
+import { InfoWindow } from '@react-google-maps/api'
 import {
 	Paper,
 	Typography,
@@ -12,6 +13,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 // import mapStyles from '../../mapStyles.js'
 import styles from './styles'
 import { useEffect, useState } from 'react'
+import { Star } from '@mui/icons-material'
 
 const Map = ({
 	coords,
@@ -35,6 +37,16 @@ const Map = ({
 			setInitialCoords(coords)
 		}
 	}, [coords, initialCoords])
+
+	// get user's location and set the coords state equal to the user's location
+	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(
+			// destructure latitude and longitude from the position.coords
+			({ coords: { latitude, longitude } }) => {
+				setCoords({ lat: latitude, lng: longitude })
+			}
+		)
+	}, [setCoords])
 
 	return (
 		<Box sx={styles.mapContainer}>
@@ -60,7 +72,7 @@ const Map = ({
 				{/* Put Places On The Map */}
 				{places.length &&
 					places.map((place, i) => (
-						<div
+						<Box
 							style={styles.markerContainer}
 							lat={Number(place.latitude)}
 							lng={Number(place.longitude)}
@@ -72,32 +84,37 @@ const Map = ({
 									fontSize="large"
 								/>
 							) : (
-								<Paper elevation={3} sx={styles.paper}>
-									<Typography
-										sx={styles.typography}
-										variant="subtitle2"
-										gutterBottom
-									>
-										{' '}
-										{place.name}
-									</Typography>
-									<img
-										style={styles.pointer}
-										src={
-											place.photo
-												? place.photo.images.large.url
-												: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
-										}
-									/>
-									<Rating
-										name="read-only"
-										size="small"
-										value={Number(place.rating)}
-										readOnly
-									/>
-								</Paper>
+								<LocationOnOutlinedIcon
+									color="primary"
+									fontSize="large"
+								/>
+
+								// <Paper elevation={3} sx={styles.paper}>
+								// 	<Typography
+								// 		sx={styles.typography}
+								// 		variant="subtitle2"
+								// 		gutterBottom
+								// 	>
+								// 		{' '}
+								// 		{place.name}
+								// 	</Typography>
+								// 	<img
+								// 		style={styles.pointer}
+								// 		src={
+								// 			place.photo
+								// 				? place.photo.images.large.url
+								// 				: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
+								// 		}
+								// 	/>
+								// 	<Rating
+								// 		name="read-only"
+								// 		size="small"
+								// 		value={Number(place.rating)}
+								// 		readOnly
+								// 	/>
+								// </Paper>
 							)}
-						</div>
+						</Box>
 					))}
 
 				{/* Put Weather Data On The Map */}

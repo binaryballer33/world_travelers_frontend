@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Autocomplete, LoadScript } from '@react-google-maps/api'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import styles from './styles.js'
+import getCityBounds from '../../hooks/getCityBounds.js'
 
 const libraries = ['places']
 

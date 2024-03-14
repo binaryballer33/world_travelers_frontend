@@ -10,10 +10,10 @@ import {
 	Box,
 } from '@mui/material'
 
-import PlaceDetails from '../PlaceDetails/PlaceDetails'
+import PlaceDetails from './PlaceDetails/PlaceDetails'
 import styles from './styles'
 
-const List = ({
+const Places = ({
 	places,
 	type,
 	setType,
@@ -91,4 +91,4 @@ const List = ({
 	)
 }
 
-export default List
+export default Places
