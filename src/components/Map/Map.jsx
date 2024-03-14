@@ -11,6 +11,7 @@ import {
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 // import mapStyles from '../../mapStyles.js'
 import styles from './styles'
+import { useEffect, useState } from 'react'
 
 const Map = ({
 	coords,
@@ -20,11 +21,20 @@ const Map = ({
 	setChildClicked,
 	weatherData,
 }) => {
+	/* State */
+	// get the default coords from the coords and don't change on rerender
+	const [initialCoords, setInitialCoords] = useState(null)
+
 	/* Hooks  */
 	const theme = useTheme()
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-	/* State */
+	// don't change my default coords again
+	useEffect(() => {
+		if (!initialCoords) {
+			setInitialCoords(coords)
+		}
+	}, [coords, initialCoords])
 
 	return (
 		<Box sx={styles.mapContainer}>
@@ -34,22 +44,21 @@ const Map = ({
 					key: import.meta.env.VITE_GOOGLE_MAPS_API,
 					libraries: ['places'],
 				}}
-				defaultCenter={coords}
+				defaultCenter={initialCoords}
 				center={coords}
 				defaultZoom={14}
-				// options={{
-				// 	disableDefaultUI: true,
-				// 	zoomControl: true,
-				// 	// styles: mapStyles,
-				// }}
-				// onChange={(e) => {
-				// 	setCoords({ lat: e.center.lat, lng: e.center.lng })
-				// 	setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw })
-				// }}
-				// onChildClick={(child) => setChildClicked(child)}
+				options={{
+					disableDefaultUI: true,
+					zoomControl: true,
+				}}
+				onChange={(e) => {
+					setCoords({ lat: e.center.lat, lng: e.center.lng })
+					setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw })
+				}}
+				onChildClick={(child) => setChildClicked(child)}
 			>
 				{/* Put Places On The Map */}
-				{/* {places.length &&
+				{places.length &&
 					places.map((place, i) => (
 						<div
 							style={styles.markerContainer}
@@ -89,7 +98,7 @@ const Map = ({
 								</Paper>
 							)}
 						</div>
-					))} */}
+					))}
 
 				{/* Put Weather Data On The Map */}
 				{/* {weatherData?.list?.length &&

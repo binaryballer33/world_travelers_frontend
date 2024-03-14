@@ -19,9 +19,13 @@ const PlaceDetails = ({ place, selected, refProp }) => {
 		refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
 	return (
-		<Card elevation={6}>
+		<Card elevation={6} sx={{ width: { xs: 320, sm: 400 }, height: 800 }}>
 			<CardMedia
-				style={{ height: 350 }}
+				sx={{
+					height: 350,
+					width: { xs: 320, sm: 400 },
+					objectFit: 'fill',
+				}}
 				image={
 					place.photo
 						? place.photo.images.large.url

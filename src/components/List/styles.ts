@@ -22,6 +22,7 @@ const styles = {
 	list: {
 		height: '75vh',
 		overflow: 'auto',
+		justifyContent: 'center',
 	},
 }
 

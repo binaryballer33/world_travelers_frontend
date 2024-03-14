@@ -34,13 +34,17 @@ const List = ({
 
 	return (
 		<Box sx={styles.container}>
-			<Typography variant="h4">Food & Dining around you</Typography>
+			<Typography variant="h4">Search For What You Need</Typography>
+
+			{/* If component is loading, display loading indicator */}
 			{isLoading ? (
 				<Box sx={styles.loading}>
 					<CircularProgress size="5rem" />
 				</Box>
 			) : (
+				// If component is not loading, display the form and the list of places
 				<>
+					{/* Type Of Places To Return  */}
 					<FormControl sx={styles.formControl}>
 						<InputLabel id="type">Type</InputLabel>
 						<Select
@@ -53,6 +57,8 @@ const List = ({
 							<MenuItem value="attractions">Attractions</MenuItem>
 						</Select>
 					</FormControl>
+
+					{/* Rating Of The Places */}
 					<FormControl sx={styles.formControl}>
 						<InputLabel id="rating">Rating</InputLabel>
 						<Select
@@ -66,9 +72,11 @@ const List = ({
 							<MenuItem value="4.5">Above 4.5</MenuItem>
 						</Select>
 					</FormControl>
+
+					{/* List Of Places */}
 					<Grid container spacing={3} sx={styles.list}>
 						{places?.map((place, i) => (
-							<Grid ref={elRefs[i]} key={i} item xs={12}>
+							<Grid item ref={elRefs[i]} key={i}>
 								<PlaceDetails
 									selected={Number(childClicked) === i}
 									refProp={elRefs[i]}
