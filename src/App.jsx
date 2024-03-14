@@ -3,8 +3,8 @@ import { CssBaseline, Grid } from '@mui/material'
 
 import { getPlacesData, getWeatherData } from './api/travelAdvisorAPI'
 import NavBar from './components/NavBar/NavBar'
-// import List from './components/List/List'
 import Map from './components/Map/Map'
+import List from './components/List/List'
 
 const App = () => {
 	const [type, setType] = useState('restaurants')
@@ -74,6 +74,15 @@ const App = () => {
 				coords={coords}
 				places={filteredPlaces.length ? filteredPlaces : places}
 				weatherData={weatherData}
+			/>
+			<List
+				isLoading={isLoading}
+				childClicked={childClicked}
+				places={filteredPlaces.length ? filteredPlaces : places}
+				type={type}
+				setType={setType}
+				rating={rating}
+				setRating={setRating}
 			/>
 		</>
 	)

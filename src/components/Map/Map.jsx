@@ -11,7 +11,6 @@ import {
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 // import mapStyles from '../../mapStyles.js'
 import styles from './styles'
-import { useCallback, useState } from 'react'
 
 const Map = ({
 	coords,
@@ -38,17 +37,16 @@ const Map = ({
 				defaultCenter={coords}
 				center={coords}
 				defaultZoom={14}
-				margin={[50, 50, 50, 50]}
-				options={{
-					disableDefaultUI: true,
-					zoomControl: true,
-					// styles: mapStyles,
-				}}
-				onChange={(e) => {
-					setCoords({ lat: e.center.lat, lng: e.center.lng })
-					setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw })
-				}}
-				onChildClick={(child) => setChildClicked(child)}
+				// options={{
+				// 	disableDefaultUI: true,
+				// 	zoomControl: true,
+				// 	// styles: mapStyles,
+				// }}
+				// onChange={(e) => {
+				// 	setCoords({ lat: e.center.lat, lng: e.center.lng })
+				// 	setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw })
+				// }}
+				// onChildClick={(child) => setChildClicked(child)}
 			>
 				{/* Put Places On The Map */}
 				{/* {places.length &&

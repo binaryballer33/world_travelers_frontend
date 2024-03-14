@@ -1,13 +1,24 @@
-// import { makeStyles } from '@material-ui/core/styles';
+const styles = {
+	chip: {
+		ml: 0,
+		mr: '5px',
+		my: '5px',
+	},
+	subtitle: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		marginTop: '10px',
+	},
+	spacing: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+	},
+	cardContent: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+}
 
-// export default makeStyles(() => ({
-//   chip: {
-//     margin: '5px 5px 5px 0',
-//   },
-//   subtitle: {
-//     display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px',
-//   },
-//   spacing: {
-//     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-//   },
-// }));
+export default styles
