@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { Autocomplete, LoadScript } from '@react-google-maps/api'
-import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets.ts'
-import getCityCoordinates from '../../hooks/getCityCoordinates.ts'
-import { libraries } from '../../utils/constants.ts'
-import styles from './styles.js'
+import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets'
+import getCityCoordinates from '../../utils/helperFunctions/getCityCoordinates'
+import { libraries } from '../../utils/constants'
+import styles from './styles'
 
 interface INavBarProps {
 	setCoords: (coords: { lat: number; lng: number } | {}) => void
