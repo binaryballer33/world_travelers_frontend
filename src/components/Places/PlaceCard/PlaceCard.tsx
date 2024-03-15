@@ -25,7 +25,7 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 	if (selected)
 		refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-	const imageUrl = place.photo.images.large.url ? place.photo.images.large.url
+	const imageUrl = place.photo?.images?.large?.url ? place.photo.images.large.url
 		: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
 
 	return (

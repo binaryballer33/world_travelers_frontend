@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
+import React, { useEffect, useState } from 'react'
 import GoogleMapReact from 'google-map-react'
-import { InfoWindow } from '@react-google-maps/api'
+import { InfoWindow, Marker } from '@react-google-maps/api'
 import {
 	Paper,
 	Typography,
@@ -10,11 +10,10 @@ import {
 	Box,
 } from '@mui/material'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
-// import mapStyles from '../../mapStyles.js'
 import styles from './styles'
-import { useEffect, useState } from 'react'
 import { Star } from '@mui/icons-material'
 import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets'
+import { Place } from '../../types/Place'
 
 const Map = ({
 	coords,
@@ -26,18 +25,34 @@ const Map = ({
 }) => {
 	/* State */
 	// get the default coords from the coords and don't change on rerender
-	const [initialCoords, setInitialCoords] = useState(null)
 
 	/* Hooks  */
 	// const theme = useTheme()
 	// const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
+	const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates | null>(null);
+	const [initialCoords, setInitialCoords] = useState<GeolocationCoordinates | null>(currentLocation)
+
+	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				setCurrentLocation(position.coords);
+			},
+			(error) => {
+				console.error("Error Code = " + error.code + " - " + error.message);
+			}
+		);
+	}, [setCurrentLocation]);
+
 	// don't change my default coords again once they are set the first time
 	useEffect(() => {
-		if (!initialCoords) {
-			setInitialCoords(coords)
+		if (currentLocation && !initialCoords) {
+			setInitialCoords(currentLocation);
 		}
-	}, [coords, initialCoords])
+	}, [currentLocation]);
+
+	console.log({ currentLocation, initialCoords });
+
 
 	// get user's location and set the coords state equal to the user's location
 	useEffect(() => {
@@ -72,14 +87,16 @@ const Map = ({
 			>
 				{/* Put Places On The Map */}
 				{places.length &&
-					places.map((place, index) => (
+					places.map((place: Place, index: number) => (
 						// put a marker on the map for each place
 						<Box
-							style={styles.markerContainer}
-							lat={Number(place.latitude)}
-							lng={Number(place.longitude)}
+							sx={styles.markerContainer}
 							key={index}
 						>
+							{/* <Marker
+								key={index}
+								position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}
+							/> */}
 							<LocationOnOutlinedIcon
 								color="primary"
 								fontSize="large"

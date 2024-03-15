@@ -43,7 +43,7 @@ const NavBar = ({ setCoords }: NavBarProps) => {
 					<Typography variant="h6" sx={styles.title}>
 						Where To Next
 					</Typography>
-					<LoadScript
+					{/* <LoadScript
 						googleMapsApiKey={GOOGLE_MAPS_API_KEY}
 						libraries={libraries}
 					>
@@ -68,7 +68,7 @@ const NavBar = ({ setCoords }: NavBarProps) => {
 								/>
 							</Box>
 						</Autocomplete>
-					</LoadScript>
+					</LoadScript> */}
 				</Box>
 			</Toolbar>
 		</AppBar>

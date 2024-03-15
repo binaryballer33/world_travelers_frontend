@@ -6,6 +6,7 @@ import { Stack } from '@mui/material'
 import styles from './styles'
 import { Place } from '../../types/Place'
 import { Bounds, LatLng } from '../../types/LatLng'
+import ReactGoogleMap from '../Map/ReactGoogleMap'
 
 type HomeProps = {
 	coords: LatLng | {}
@@ -53,13 +54,21 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 	return (
 		<Stack sx={styles.homeContainer}>
 			{/* Render The Map */}
-			<Map
-				setChildClicked={setChildClicked}
-				setBounds={setBounds}
-				setCoords={setCoords}
+			{/* <Map
 				coords={coords}
 				places={filteredPlaces.length ? filteredPlaces : places}
 				weatherData={weatherData}
+				setChildClicked={setChildClicked}
+				setCoords={setCoords}
+				setBounds={setBounds}
+			/> */}
+			<ReactGoogleMap
+				coords={coords}
+				places={filteredPlaces.length ? filteredPlaces : places}
+				weatherData={weatherData}
+				setChildClicked={setChildClicked}
+				setCoords={setCoords}
+				setBounds={setBounds}
 			/>
 
 			{/* Render The Places As Cards Below The Map */}

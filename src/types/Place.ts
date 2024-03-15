@@ -10,6 +10,8 @@ export type Place = {
 	phone: string
 	web_url: string
 	awards: { images: { small: string }; display_name: string }[]
+	longitude: string
+	latitude: string
 	cuisine?: { name: string }[]
 	isClosed?: boolean
 	hours?: string
