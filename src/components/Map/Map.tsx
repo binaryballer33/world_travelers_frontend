@@ -33,14 +33,15 @@ const Map = ({
     const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
     const dispatch = useDispatch(); // update the redux store for the map bounds
 
-    // When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
+    /* When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
+    *  create event listener when someone changes the maps center, fetch new places from the api
+    */
     const onLoad = useCallback(function callback(map: google.maps.Map) {
         mapRef.current = map;
 
 
         /* Use debounce to make sure that the api is not called a million times when trying to drag the map */
         const handleCenterChanged = debounce(() => {
-            console.log("Center Change With Debounce");
             if (mapRef?.current) {
                 const bounds = mapRef?.current.getBounds();
                 if (bounds) {
@@ -60,7 +61,6 @@ const Map = ({
         */
         google.maps.event.addListener(map, "center_changed", handleCenterChanged);
     }, [])
-
 
     // remove the mapRef when the component is unmounted
     const onUnmount = useCallback(function callback() {
