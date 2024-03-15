@@ -1,6 +1,6 @@
 export type Place = {
 	name: string
-	photo: string
+	photo: { images: { large: { url: string } } }
 	address: string
 	rating: number
 	ranking: number
@@ -9,6 +9,8 @@ export type Place = {
 	website: string
 	phone: string
 	web_url: string
+	awards: { images: { small: string }; display_name: string }[]
+	cuisine?: { name: string }[]
 	isClosed?: boolean
 	hours?: string
 	distance_string?: string

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import React from 'react'
 import {
 	Box,
 	Typography,
@@ -13,41 +13,26 @@ import {
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PhoneIcon from '@mui/icons-material/Phone'
 import styles from './styles'
+import { Place } from '../../../types/Place'
 
-// type IPlaceDetailsProps = {
-// 	place: {
-// 		name: string,
-// 		photo: string,
-// 		address: string,
-// 		rating: number,
-// 		ranking: number,
-// 		num_reviews: number,
-// 		price_level: string,
-// 		website: string,
-// 		phone: string,
-// 		web_url: string,
-// 	};
-// 	selected: boolean;
-// 	refProp: React.RefObject<HTMLDivElement>;
-// }
+type PlaceCardProps = {
+	place: Place
+	selected: boolean;
+	refProp: React.RefObject<HTMLDivElement>;
+}
 
-const PlaceDetails = ({ place, selected, refProp }) => {
+const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 	if (selected)
 		refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
+	const imageUrl = place.photo.images.large.url ? place.photo.images.large.url
+		: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
+
 	return (
-		<Card elevation={6} sx={{ width: { xs: 320, sm: 400 }, height: 800 }}>
+		<Card elevation={6} sx={styles.cardContainer}>
 			<CardMedia
-				sx={{
-					height: 350,
-					width: { xs: 320, sm: 400 },
-					objectFit: 'fill',
-				}}
-				image={
-					place.photo
-						? place.photo.images.large.url
-						: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
-				}
+				sx={styles.cardMedia}
+				image={imageUrl}
 				title={place.name}
 			/>
 			<CardContent>
@@ -119,6 +104,8 @@ const PlaceDetails = ({ place, selected, refProp }) => {
 					</Typography>
 				)}
 			</CardContent>
+
+			{/* Links To Trip Advisor And Place Website */}
 			<CardActions>
 				<Button
 					size="small"
@@ -139,4 +126,4 @@ const PlaceDetails = ({ place, selected, refProp }) => {
 	)
 }
 
-export default PlaceDetails
+export default PlaceCard

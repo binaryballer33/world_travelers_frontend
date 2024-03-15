@@ -10,7 +10,7 @@ import {
 	Box,
 	Stack,
 } from '@mui/material'
-import PlaceDetails from './PlaceDetails/PlaceDetails'
+import PlaceCard from './PlaceCard/PlaceCard'
 import { Place } from '../../types/Place'
 import styles from './styles'
 
@@ -49,7 +49,6 @@ const Places = ({
 					<Stack sx={styles.formControlContainer}>
 						{/* Type Of Places To Return  */}
 						<FormControl sx={styles.formControl}>
-							<InputLabel id="type">Type</InputLabel>
 							<Select
 								id="type"
 								value={type}
@@ -82,7 +81,7 @@ const Places = ({
 					<Grid container spacing={3} sx={styles.list}>
 						{places?.map((place: Place, index: number) => (
 							<Grid item ref={elRefs[index]} key={index}>
-								<PlaceDetails
+								<PlaceCard
 									selected={Number(childClicked) === index}
 									refProp={elRefs[index]}
 									place={place}

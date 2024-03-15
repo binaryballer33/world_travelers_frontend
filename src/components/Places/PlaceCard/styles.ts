@@ -1,4 +1,13 @@
 const styles = {
+	cardContainer: {
+		width: { xs: 320, sm: 400 },
+		height: 800,
+	},
+	cardMedia: {
+		height: 350,
+		width: { xs: 320, sm: 400 },
+		objectFit: 'fill',
+	},
 	chip: {
 		ml: 0,
 		mr: '5px',
