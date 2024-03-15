@@ -7,6 +7,11 @@ import styles from './styles'
 import { Place } from '../../types/Place'
 import { Bounds, LatLng } from '../../types/LatLng'
 import ReactGoogleMap from '../Map/ReactGoogleMap'
+import { useDispatch } from 'react-redux'
+import { useJsApiLoader } from '@react-google-maps/api'
+import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
+import { libraries } from '../../utils/constants'
+import { setError, setLoaded } from '../../redux/googleMapsSlice'
 
 type HomeProps = {
 	coords: LatLng | {}
@@ -50,6 +55,23 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 				})
 		}
 	}, [bounds, type])
+
+	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook so that the Map and NavBar components can use them
+	const dispatch = useDispatch();
+
+	// get the isLoaded and loadError values from the useJsApiLoader hook, both Navbar and Map components use these values
+	const { isLoaded, loadError } = useJsApiLoader({
+		id: 'google-map-script',
+		googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+		libraries: libraries,
+		mapIds: [GOOGLE_MAP_ID],
+	});
+
+	// update the mapsSlice state with the isLoaded and loadError values
+	useEffect(() => {
+		dispatch(setLoaded(isLoaded));
+		dispatch(setError(loadError ? loadError.message : null));
+	}, [dispatch, isLoaded, loadError]);
 
 	return (
 		<Stack sx={styles.homeContainer}>
