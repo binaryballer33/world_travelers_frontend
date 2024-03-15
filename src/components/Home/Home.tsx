@@ -38,19 +38,21 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 			// 	setWeatherData(data)
 			// )
 
-			getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
-				setPlaces(
-					data.filter((place: Place) => place.name && place.num_reviews > 0)
-				)
-				setFilteredPlaces([])
-				setRating('')
-				setIsLoading(false)
-			})
+			getPlacesData(type, bounds.sw, bounds.ne)
+				.then((data) => {
+					setPlaces(
+						data.filter((place: Place) => place.name && place.num_reviews > 0)
+					)
+					setFilteredPlaces([])
+					setRating('')
+					setIsLoading(false)
+				})
 		}
 	}, [bounds, type])
 
 	return (
 		<Stack sx={styles.homeContainer}>
+			{/* Render The Map */}
 			<Map
 				setChildClicked={setChildClicked}
 				setBounds={setBounds}
@@ -59,6 +61,8 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 				places={filteredPlaces.length ? filteredPlaces : places}
 				weatherData={weatherData}
 			/>
+
+			{/* Render The Places As Cards Below The Map */}
 			<Places
 				isLoading={isLoading}
 				childClicked={childClicked}

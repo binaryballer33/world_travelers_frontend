@@ -15,6 +15,13 @@ const styles = {
 	},
 	container: {
 		p: 3,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	formControlContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	marginBottom: {
 		mb: 4,
@@ -23,6 +30,9 @@ const styles = {
 		height: '75vh',
 		overflow: 'auto',
 		justifyContent: 'center',
+	},
+	textCenter: {
+		textAlign: 'center',
 	},
 }
 
