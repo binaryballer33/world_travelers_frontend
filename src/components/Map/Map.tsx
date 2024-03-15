@@ -1,11 +1,12 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
-import { GoogleMap, OverlayView } from '@react-google-maps/api';
+import { GoogleMap, OverlayView, InfoWindow } from '@react-google-maps/api';
 import { Place } from '../../types/Place';
 import { Box, CircularProgress } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import styles from './styles'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { debounce } from 'lodash';
 import { setMapBounds } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
 import { Bounds } from '../../types/LatLng';
@@ -36,11 +37,10 @@ const Map = ({
     const onLoad = useCallback(function callback(map: google.maps.Map) {
         mapRef.current = map;
 
-        /*
-        * when the map instance is created, add a event listener to the map
-        * to get the bounds of the map when the user changes the center of the map
-         */
-        google.maps.event.addListener(map, "center_changed", () => {
+
+        /* Use debounce to make sure that the api is not called a million times when trying to drag the map */
+        const handleCenterChanged = debounce(() => {
+            console.log("Center Change With Debounce");
             if (mapRef?.current) {
                 const bounds = mapRef?.current.getBounds();
                 if (bounds) {
@@ -48,12 +48,17 @@ const Map = ({
                         ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
                         sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
                     }
-
                     dispatch(setMapBounds(boundsFormat))
                     setBounds(boundsFormat)
                 }
             }
-        });
+        }, 2000);
+
+        /*
+        * when the map instance is created, add a event listener to the map
+        * to get the bounds of the map when the user changes the center of the map
+        */
+        google.maps.event.addListener(map, "center_changed", handleCenterChanged);
     }, [])
 
 
