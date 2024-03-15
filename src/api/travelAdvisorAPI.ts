@@ -1,19 +1,25 @@
 import axios from 'axios'
 import { RAPID_API_KEY } from '../utils/secrets'
-import { LatLng } from '../types/LatLng'
+import { Bounds, LatLng } from '../types/LatLng'
 
-export const getPlacesData = async (type: string, sw: LatLng, ne: LatLng) => {
+export const getPlacesByMapBounds = async (
+	typeOfPlace: string,
+	bounds: Bounds
+) => {
 	try {
 		const {
 			data: { data },
 		} = await axios.get(
-			`https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`,
+			`https://travel-advisor.p.rapidapi.com/${typeOfPlace}/list-in-boundary`,
 			{
 				params: {
-					bl_latitude: sw.lat,
-					bl_longitude: sw.lng,
-					tr_longitude: ne.lng,
-					tr_latitude: ne.lat,
+					bl_latitude: bounds.sw.lat,
+					bl_longitude: bounds.sw.lng,
+					tr_longitude: bounds.ne.lng,
+					tr_latitude: bounds.ne.lat,
+					limit: '30', // max per the api docs
+					currency: 'USD',
+					lunit: 'mi',
 				},
 				headers: {
 					'x-rapidapi-key': RAPID_API_KEY,

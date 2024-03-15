@@ -1,9 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { GoogleMapsAPIState } from '../types/State'
+import { Bounds } from '../types/LatLng'
 
 const initialState: GoogleMapsAPIState = {
 	isLoaded: false,
 	loadError: null,
+	mapBounds: undefined,
 }
 
 const googleMapsSlice = createSlice({
@@ -16,8 +18,11 @@ const googleMapsSlice = createSlice({
 		setError: (state, action: PayloadAction<string | null>) => {
 			state.loadError = action.payload
 		},
+		setMapBounds: (state, action: PayloadAction<Bounds | undefined>) => {
+			state.mapBounds = action.payload
+		},
 	},
 })
 
-export const { setLoaded, setError } = googleMapsSlice.actions
+export const { setLoaded, setError, setMapBounds } = googleMapsSlice.actions
 export default googleMapsSlice.reducer

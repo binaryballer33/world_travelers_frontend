@@ -1,7 +1,15 @@
-const getCityCoordinates = async (cityName: string) => {
+import { LatLng } from '../../types/LatLng'
+
+const getCityCoordinates = async (
+	cityName: string
+): Promise<LatLng | undefined> => {
 	const geocoder = new google.maps.Geocoder()
 
-	return new Promise((resolve, reject) => {
+	// don't make the request if the cityName is empty
+	if (!cityName) return
+
+	// return a promise that resolves to the lat and lng of the city
+	return await new Promise((resolve, reject) => {
 		geocoder.geocode({ address: cityName }, (results, status) => {
 			if (status === 'OK') {
 				const location = results![0].geometry.location

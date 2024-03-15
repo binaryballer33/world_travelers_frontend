@@ -1,154 +1,135 @@
-import React, { useEffect, useState } from 'react'
-import GoogleMapReact from 'google-map-react'
-import { InfoWindow, Marker } from '@react-google-maps/api'
-import {
-	Paper,
-	Typography,
-	useMediaQuery,
-	Rating,
-	useTheme,
-	Box,
-} from '@mui/material'
+import React, { memo, useCallback, useEffect, useRef } from 'react';
+import { GoogleMap, OverlayView } from '@react-google-maps/api';
+import { Place } from '../../types/Place';
+import { Box, CircularProgress } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import styles from './styles'
-import { Star } from '@mui/icons-material'
-import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets'
-import { Place } from '../../types/Place'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setMapBounds } from "../../redux/googleMapsSlice"
+import { RootState } from '../../types/State';
+import { Bounds } from '../../types/LatLng';
+
+type MapProps = {
+    places: Place[];
+    weatherData: any;
+    coords: google.maps.LatLngLiteral
+    setCoords: (coords: google.maps.LatLngLiteral) => void;
+    setBounds: (bounds: Bounds) => void;
+    setChildClicked: any;
+};
 
 const Map = ({
-	coords,
-	places,
-	setCoords,
-	setBounds,
-	setChildClicked,
-	weatherData,
-}) => {
-	/* State */
-	// get the default coords from the coords and don't change on rerender
+    places,
+    weatherData,
+    coords,
+    setCoords,
+    setBounds,
+    setChildClicked
+}: MapProps) => {
+    // get the isLoaded and loadError state from the redux store for the google maps api
+    const { isLoaded, loadError } = useSelector((state: RootState) => state.maps)
+    const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
+    const dispatch = useDispatch(); // update the redux store for the map bounds
 
-	/* Hooks  */
-	// const theme = useTheme()
-	// const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    // When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
+    const onLoad = useCallback(function callback(map: google.maps.Map) {
+        mapRef.current = map;
 
-	const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates | null>(null);
-	const [initialCoords, setInitialCoords] = useState<GeolocationCoordinates | null>(currentLocation)
+        /*
+        * when the map instance is created, add a event listener to the map
+        * to get the bounds of the map when the user changes the center of the map
+         */
+        google.maps.event.addListener(map, "center_changed", () => {
+            if (mapRef?.current) {
+                const bounds = mapRef?.current.getBounds();
+                if (bounds) {
+                    const boundsFormat = {
+                        ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
+                        sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
+                    }
 
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				setCurrentLocation(position.coords);
-			},
-			(error) => {
-				console.error("Error Code = " + error.code + " - " + error.message);
-			}
-		);
-	}, [setCurrentLocation]);
-
-	// don't change my default coords again once they are set the first time
-	useEffect(() => {
-		if (currentLocation && !initialCoords) {
-			setInitialCoords(currentLocation);
-		}
-	}, [currentLocation]);
-
-	console.log({ currentLocation, initialCoords });
+                    dispatch(setMapBounds(boundsFormat))
+                    setBounds(boundsFormat)
+                }
+            }
+        });
+    }, [])
 
 
-	// get user's location and set the coords state equal to the user's location
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			// destructure latitude and longitude from the position.coords
-			({ coords: { latitude, longitude } }) => {
-				setCoords({ lat: latitude, lng: longitude })
-			}
-		)
-	}, [setCoords])
+    // remove the mapRef when the component is unmounted
+    const onUnmount = useCallback(function callback() {
+        mapRef.current = null;
+    }, [])
 
-	return (
-		<Box sx={styles.mapContainer}>
-			{/* Load The Google Maps */}
-			<GoogleMapReact
-				bootstrapURLKeys={{
-					key: GOOGLE_MAPS_API_KEY,
-					libraries: ['places'],
-				}}
-				defaultCenter={initialCoords}
-				center={coords}
-				defaultZoom={14}
-				options={{
-					disableDefaultUI: true,
-					zoomControl: true,
-				}}
-				onChange={(e) => {
-					setCoords({ lat: e.center.lat, lng: e.center.lng })
-					setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw })
-				}}
-				onChildClick={(child) => setChildClicked(child)}
-			>
-				{/* Put Places On The Map */}
-				{places.length &&
-					places.map((place: Place, index: number) => (
-						// put a marker on the map for each place
-						<Box
-							sx={styles.markerContainer}
-							key={index}
-						>
-							{/* <Marker
-								key={index}
-								position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}
-							/> */}
-							<LocationOnOutlinedIcon
-								color="primary"
-								fontSize="large"
-							/>
+    // change the coords of the map center when the user finishes dragging the map
+    const onDragEnd = () => {
+        if (mapRef?.current) {
+            const lat = mapRef?.current?.getCenter()?.lat();
+            const lng = mapRef?.current?.getCenter()?.lng();
 
-							{/* {isMobile ? (
-								<LocationOnOutlinedIcon
-									color="primary"
-									fontSize="large"
-								/>
-							) : (
-								<Paper elevation={3} sx={styles.paper}>
-									<Typography
-										sx={styles.typography}
-										variant="subtitle2"
-										gutterBottom
-									>
-										{' '}
-										{place.name}
-									</Typography>
-									<img
-										style={styles.pointer}
-										src={
-											place.photo
-												? place.photo.images.large.url
-												: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
-										}
-									/>
-									<Rating
-										name="read-only"
-										size="small"
-										value={Number(place.rating)}
-										readOnly
-									/>
-								</Paper>
-							)} */}
-						</Box>
-					))}
+            if (typeof lat === 'number' && typeof lng === 'number') {
+                setCoords({ lat, lng });
+            }
 
-				{/* Put Weather Data On The Map */}
-				{/* {weatherData?.list?.length &&
-					weatherData.list.map((data, i) => (
-						<div key={i} lat={data.coord.lat} lng={data.coord.lon}>
-							<img
-								src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
-								height="70px"
-							/>
-						</div>
-					))} */}
-			</GoogleMapReact>
-		</Box>
-	)
-}
+            const bounds = mapRef?.current.getBounds();
+            if (bounds) {
+                setBounds({
+                    ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
+                    sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
+                });
+            }
+        }
+    }
 
-export default Map
+    // get user's location and set the coords state equal to the user's location
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            // destructure latitude and longitude from the position.coords
+            ({ coords: { latitude, longitude } }) => {
+                setCoords({ lat: latitude, lng: longitude })
+            }
+        )
+    }, [setCoords])
+
+    // show error message if the map cannot be loaded
+    if (loadError) {
+        return <div>Map cannot be loaded right now.</div>
+    }
+
+    return isLoaded ? (
+        <GoogleMap
+            mapContainerStyle={{
+                width: '100%',
+                height: '1000px'
+            }}
+            center={coords}
+            zoom={13}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+            onDragEnd={onDragEnd}
+        >
+            {/* Put Places On The Map */}
+            {places.length &&
+                places.map((place: Place, index: number) => (
+                    // put a marker on the map for each place
+                    <Box
+                        sx={styles.markerContainer}
+                        key={index}
+                    >
+                        <OverlayView
+                            position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}
+                            mapPaneName={OverlayView.MAP_PANE}
+                        >
+                            <LocationOnOutlinedIcon
+                                color="primary"
+                                fontSize="large"
+                            />
+                        </OverlayView>
+                    </Box>
+                ))}
+        </GoogleMap>
+    ) : <CircularProgress />
+};
+
+export default memo(Map);

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { getPlacesData, getWeatherData } from '../../api/travelAdvisorAPI'
-import Map from '../Map/Map'
+import { getPlacesByMapBounds, getWeatherData } from '../../api/travelAdvisorAPI'
 import Places from '../Places/Places'
 import { Stack } from '@mui/material'
 import styles from './styles'
 import { Place } from '../../types/Place'
-import { Bounds, LatLng } from '../../types/LatLng'
-import ReactGoogleMap from '../Map/ReactGoogleMap'
+import { Bounds } from '../../types/LatLng'
+import Map from '../Map/Map'
 import { useDispatch } from 'react-redux'
 import { useJsApiLoader } from '@react-google-maps/api'
 import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
@@ -14,15 +13,17 @@ import { libraries } from '../../utils/constants'
 import { setError, setLoaded } from '../../redux/googleMapsSlice'
 
 type HomeProps = {
-	coords: LatLng | {}
-	setCoords: (coords: LatLng) => void
+	coords: google.maps.LatLngLiteral
+	setCoords: (coords: google.maps.LatLngLiteral) => void;
+	bounds: Bounds;
+	setBounds: (bounds: Bounds) => void;
 }
 
-const Home = ({ coords, setCoords }: HomeProps) => {
+const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 	/* State Values  */
 	const [type, setType] = useState('restaurants') // used to filter by type of place
 	const [rating, setRating] = useState('') // use to filter places by rating
-	const [bounds, setBounds] = useState<Bounds | null>(null) // used to filter places by location
+	// used to filter places by location, returns more data than just using lat & lon from the travel advisor api
 	const [places, setPlaces] = useState<Place[]>([]) // used to store the places
 	const [filteredPlaces, setFilteredPlaces] = useState<Place[]>([]) // used to store the filtered places
 	const [childClicked, setChildClicked] = useState(null) // used to show details of a place
@@ -44,7 +45,7 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 			// 	setWeatherData(data)
 			// )
 
-			getPlacesData(type, bounds.sw, bounds.ne)
+			getPlacesByMapBounds(type, bounds)
 				.then((data) => {
 					setPlaces(
 						data.filter((place: Place) => place.name && place.num_reviews > 0)
@@ -56,7 +57,7 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 		}
 	}, [bounds, type])
 
-	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook so that the Map and NavBar components can use them
+	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook
 	const dispatch = useDispatch();
 
 	// get the isLoaded and loadError values from the useJsApiLoader hook, both Navbar and Map components use these values
@@ -76,15 +77,7 @@ const Home = ({ coords, setCoords }: HomeProps) => {
 	return (
 		<Stack sx={styles.homeContainer}>
 			{/* Render The Map */}
-			{/* <Map
-				coords={coords}
-				places={filteredPlaces.length ? filteredPlaces : places}
-				weatherData={weatherData}
-				setChildClicked={setChildClicked}
-				setCoords={setCoords}
-				setBounds={setBounds}
-			/> */}
-			<ReactGoogleMap
+			<Map
 				coords={coords}
 				places={filteredPlaces.length ? filteredPlaces : places}
 				weatherData={weatherData}

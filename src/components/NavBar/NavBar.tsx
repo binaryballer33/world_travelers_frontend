@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { Autocomplete } from '@react-google-maps/api'
 import getCityCoordinates from '../../utils/helperFunctions/getCityCoordinates'
 import styles from './styles'
-import { LatLng } from '../../types/LatLng'
+import { Bounds, LatLng } from '../../types/LatLng'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
 
 type NavBarProps = {
-	setCoords: (coords: LatLng | {}) => void
+	setCoords: (coords: LatLng) => void
+	setBounds: (bounds: Bounds) => void
 }
 
-const NavBar = ({ setCoords }: NavBarProps) => {
-	const { isLoaded } = useSelector((state: RootState) => state.maps)
+const NavBar = ({ setCoords, setBounds }: NavBarProps) => {
+	const { isLoaded, mapBounds } = useSelector((state: RootState) => state.maps)
 
 	// state to hold the Autocomplete object
 	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
@@ -28,11 +29,11 @@ const NavBar = ({ setCoords }: NavBarProps) => {
 		if (lat && lng) setCoords({ lat, lng });
 	};
 
+	// get the autocomplete place or if it's empty, use the value
 	const getCityCoords = async () => {
-		// get the autocomplete place or if it's empty, use the value
-		const city = autocomplete?.getPlace()?.formatted_address!
-		const cityCoords = await getCityCoordinates(city)
-		if (cityCoords) setCoords(cityCoords)
+		const city_name = autocomplete?.getPlace()?.formatted_address!
+		const cityCoords = await getCityCoordinates(city_name)
+		setCoords(cityCoords!);
 	}
 
 	return (
@@ -52,19 +53,11 @@ const NavBar = ({ setCoords }: NavBarProps) => {
 						onPlaceChanged={onPlaceChanged}
 					>
 						<Box sx={styles.search}>
-							<Box sx={styles.searchIcon}>
-								<SearchIcon />
-							</Box>
+							<Box sx={styles.searchIcon}><SearchIcon /></Box>
 							<InputBase
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') getCityCoords()
-								}}
-								onBlur={getCityCoords}
+								onKeyDown={(e) => { if (e.key === 'Enter') getCityCoords() }}
 								placeholder="Enter Your Destination"
-								sx={{
-									root: styles.inputRoot,
-									input: styles.inputInput,
-								}}
+								sx={{ root: styles.inputRoot, input: styles.inputInput }}
 							/>
 						</Box>
 					</Autocomplete>)}

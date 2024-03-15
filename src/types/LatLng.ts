@@ -4,6 +4,6 @@ export type LatLng = {
 }
 
 export type Bounds = {
-	sw: LatLng
-	ne: LatLng
+	ne: google.maps.LatLngLiteral
+	sw: google.maps.LatLngLiteral
 }
