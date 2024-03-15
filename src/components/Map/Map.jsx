@@ -14,6 +14,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import styles from './styles'
 import { useEffect, useState } from 'react'
 import { Star } from '@mui/icons-material'
+import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets'
 
 const Map = ({
 	coords,
@@ -28,10 +29,10 @@ const Map = ({
 	const [initialCoords, setInitialCoords] = useState(null)
 
 	/* Hooks  */
-	const theme = useTheme()
-	const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+	// const theme = useTheme()
+	// const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-	// don't change my default coords again
+	// don't change my default coords again once they are set the first time
 	useEffect(() => {
 		if (!initialCoords) {
 			setInitialCoords(coords)
@@ -53,7 +54,7 @@ const Map = ({
 			{/* Load The Google Maps */}
 			<GoogleMapReact
 				bootstrapURLKeys={{
-					key: import.meta.env.VITE_GOOGLE_MAPS_API,
+					key: GOOGLE_MAPS_API_KEY,
 					libraries: ['places'],
 				}}
 				defaultCenter={initialCoords}
@@ -71,49 +72,50 @@ const Map = ({
 			>
 				{/* Put Places On The Map */}
 				{places.length &&
-					places.map((place, i) => (
+					places.map((place, index) => (
+						// put a marker on the map for each place
 						<Box
 							style={styles.markerContainer}
 							lat={Number(place.latitude)}
 							lng={Number(place.longitude)}
-							key={i}
+							key={index}
 						>
-							{isMobile ? (
+							<LocationOnOutlinedIcon
+								color="primary"
+								fontSize="large"
+							/>
+
+							{/* {isMobile ? (
 								<LocationOnOutlinedIcon
 									color="primary"
 									fontSize="large"
 								/>
 							) : (
-								<LocationOnOutlinedIcon
-									color="primary"
-									fontSize="large"
-								/>
-
-								// <Paper elevation={3} sx={styles.paper}>
-								// 	<Typography
-								// 		sx={styles.typography}
-								// 		variant="subtitle2"
-								// 		gutterBottom
-								// 	>
-								// 		{' '}
-								// 		{place.name}
-								// 	</Typography>
-								// 	<img
-								// 		style={styles.pointer}
-								// 		src={
-								// 			place.photo
-								// 				? place.photo.images.large.url
-								// 				: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
-								// 		}
-								// 	/>
-								// 	<Rating
-								// 		name="read-only"
-								// 		size="small"
-								// 		value={Number(place.rating)}
-								// 		readOnly
-								// 	/>
-								// </Paper>
-							)}
+								<Paper elevation={3} sx={styles.paper}>
+									<Typography
+										sx={styles.typography}
+										variant="subtitle2"
+										gutterBottom
+									>
+										{' '}
+										{place.name}
+									</Typography>
+									<img
+										style={styles.pointer}
+										src={
+											place.photo
+												? place.photo.images.large.url
+												: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
+										}
+									/>
+									<Rating
+										name="read-only"
+										size="small"
+										value={Number(place.rating)}
+										readOnly
+									/>
+								</Paper>
+							)} */}
 						</Box>
 					))}
 

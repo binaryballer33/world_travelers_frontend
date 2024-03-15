@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { CssBaseline } from '@mui/material'
 import NavBar from './components/NavBar/NavBar'
-import CreateMapAndPlaces from './components/CreateMapAndPlaces/CreateMapAndPlaces'
+import Home from './components/Home/Home'
 import { useState } from 'react'
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
 				<Route
 					index
 					element={
-						<CreateMapAndPlaces
+						<Home
 							coords={coords}
 							setCoords={setCoords}
 						/>

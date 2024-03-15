@@ -6,12 +6,13 @@ import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets'
 import getCityCoordinates from '../../utils/helperFunctions/getCityCoordinates'
 import { libraries } from '../../utils/constants'
 import styles from './styles'
+import { LatLng } from '../../types/LatLng'
 
-interface INavBarProps {
-	setCoords: (coords: { lat: number; lng: number } | {}) => void
+type NavBarProps = {
+	setCoords: (coords: LatLng | {}) => void
 }
 
-const NavBar = ({ setCoords }: INavBarProps) => {
+const NavBar = ({ setCoords }: NavBarProps) => {
 	// state to hold the Autocomplete object
 	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
 

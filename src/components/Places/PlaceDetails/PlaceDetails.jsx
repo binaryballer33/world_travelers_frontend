@@ -14,6 +14,23 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PhoneIcon from '@mui/icons-material/Phone'
 import styles from './styles'
 
+// type IPlaceDetailsProps = {
+// 	place: {
+// 		name: string,
+// 		photo: string,
+// 		address: string,
+// 		rating: number,
+// 		ranking: number,
+// 		num_reviews: number,
+// 		price_level: string,
+// 		website: string,
+// 		phone: string,
+// 		web_url: string,
+// 	};
+// 	selected: boolean;
+// 	refProp: React.RefObject<HTMLDivElement>;
+// }
+
 const PlaceDetails = ({ place, selected, refProp }) => {
 	if (selected)
 		refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })

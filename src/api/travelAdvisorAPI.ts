@@ -1,10 +1,6 @@
 import axios from 'axios'
 import { RAPID_API_KEY } from '../utils/secrets'
-
-interface LatLng {
-	lat: number
-	lng: number
-}
+import { LatLng } from '../types/LatLng'
 
 export const getPlacesData = async (type: string, sw: LatLng, ne: LatLng) => {
 	try {
