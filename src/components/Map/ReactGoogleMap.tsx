@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { GoogleMap, OverlayView, useJsApiLoader } from '@react-google-maps/api';
-// import Marker from '../Marker';
-import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from '../../utils/secrets';
+import { GoogleMap, OverlayView } from '@react-google-maps/api';
 import { Place } from '../../types/Place';
 import { Box, CircularProgress } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import styles from './styles'
-import { libraries } from '../../utils/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../types/State';
 
 type ReactGoogleMapProps = {
     coords: google.maps.LatLng
@@ -25,15 +24,9 @@ const ReactGoogleMap = ({
     setChildClicked,
     weatherData
 }) => {
-    const { isLoaded, loadError } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-        libraries: libraries,
-        mapIds: [GOOGLE_MAP_ID]
-    })
-
+    // get the isLoaded and loadError state from the redux store for the google maps api
+    const { isLoaded, loadError } = useSelector((state: RootState) => state.maps)
     const [center, setCenter] = useState<google.maps.LatLngLiteral>(); // Set your default coordinates here
-
     const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
 
     // When the map is loaded, set the mapRef to the map
@@ -112,8 +105,6 @@ const ReactGoogleMap = ({
                 ))}
         </GoogleMap>
     ) : <CircularProgress />
-
-
 };
 
 export default React.memo(ReactGoogleMap);

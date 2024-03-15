@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { Autocomplete, LoadScript } from '@react-google-maps/api'
-import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets'
+import { Autocomplete } from '@react-google-maps/api'
 import getCityCoordinates from '../../utils/helperFunctions/getCityCoordinates'
-import { libraries } from '../../utils/constants'
 import styles from './styles'
 import { LatLng } from '../../types/LatLng'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../types/State'
 
 type NavBarProps = {
 	setCoords: (coords: LatLng | {}) => void
 }
 
 const NavBar = ({ setCoords }: NavBarProps) => {
+	const { isLoaded } = useSelector((state: RootState) => state.maps)
+
 	// state to hold the Autocomplete object
 	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
 
@@ -43,32 +45,29 @@ const NavBar = ({ setCoords }: NavBarProps) => {
 					<Typography variant="h6" sx={styles.title}>
 						Where To Next
 					</Typography>
-					{/* <LoadScript
-						googleMapsApiKey={GOOGLE_MAPS_API_KEY}
-						libraries={libraries}
+
+					{/* Render the Autocomplete component For Google Maps Searches */}
+					{isLoaded && (<Autocomplete
+						onLoad={onLoad}
+						onPlaceChanged={onPlaceChanged}
 					>
-						<Autocomplete
-							onLoad={onLoad}
-							onPlaceChanged={onPlaceChanged}
-						>
-							<Box sx={styles.search}>
-								<Box sx={styles.searchIcon}>
-									<SearchIcon />
-								</Box>
-								<InputBase
-									onKeyDown={(e) => {
-										if (e.key === 'Enter') getCityCoords()
-									}}
-									onBlur={getCityCoords}
-									placeholder="Enter Your Destination"
-									sx={{
-										root: styles.inputRoot,
-										input: styles.inputInput,
-									}}
-								/>
+						<Box sx={styles.search}>
+							<Box sx={styles.searchIcon}>
+								<SearchIcon />
 							</Box>
-						</Autocomplete>
-					</LoadScript> */}
+							<InputBase
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') getCityCoords()
+								}}
+								onBlur={getCityCoords}
+								placeholder="Enter Your Destination"
+								sx={{
+									root: styles.inputRoot,
+									input: styles.inputInput,
+								}}
+							/>
+						</Box>
+					</Autocomplete>)}
 				</Box>
 			</Toolbar>
 		</AppBar>
