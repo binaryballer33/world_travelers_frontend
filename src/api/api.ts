@@ -15,6 +15,7 @@ const api = createApi({
 			return headers
 		},
 	}),
+	tagTypes: ['Trips'],
 	endpoints: () => ({}), // define endpoints in their own separate files
 })
 

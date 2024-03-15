@@ -1,8 +1,8 @@
 import {
 	getPurchaseConfirmationEmailRoute,
 	getUserRegistrationConfirmationEmailRoute,
-} from "../utils/constants";
-import api from "./api";
+} from '../utils/constants'
+import api from './api'
 
 // email api endpoints
 const emailApi = api.injectEndpoints({
@@ -11,23 +11,23 @@ const emailApi = api.injectEndpoints({
 		registrationConfirmationEmail: builder.mutation({
 			query: (email) => ({
 				url: getUserRegistrationConfirmationEmailRoute(),
-				method: "POST",
+				method: 'POST',
 				body: email,
 			}),
 		}),
 		purchaseConfirmationEmail: builder.mutation({
 			query: (email) => ({
 				url: getPurchaseConfirmationEmailRoute(),
-				method: "POST",
+				method: 'POST',
 				body: email,
 			}),
 		}),
 	}),
-});
+})
 
-export default emailApi;
+export default emailApi
 
 export const {
 	useRegistrationConfirmationEmailMutation,
 	usePurchaseConfirmationEmailMutation,
-} = emailApi;
+} = emailApi
