@@ -1,18 +1,37 @@
 import React, { useState } from 'react'
-import { Autocomplete, LoadScript } from '@react-google-maps/api'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
+import { Autocomplete, LoadScript } from '@react-google-maps/api'
+import { GOOGLE_MAPS_API_KEY } from '../../utils/secrets.ts'
+import getCityCoordinates from '../../hooks/getCityCoordinates.ts'
+import { libraries } from '../../utils/constants.ts'
 import styles from './styles.js'
-import getCityBounds from '../../hooks/getCityBounds.js'
-
-const libraries = ['places']
 
 interface INavBarProps {
-	onPlaceChanged: () => {},
-	onLoad: () => {},
+	setCoords: (coords: { lat: number; lng: number } | {}) => void
 }
 
-const NavBar = ({ onPlaceChanged, onLoad }: INavBarProps) => {
+const NavBar = ({ setCoords }: INavBarProps) => {
+	// state to hold the Autocomplete object
+	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
+
+	// When the Autocomplete component is loaded, set the autocomplete object
+	const onLoad = (autoC: google.maps.places.Autocomplete) => setAutocomplete(autoC)
+
+	/* When the user selects a place in the search box, set the coords to that place */
+	const onPlaceChanged = () => {
+		const lat = autocomplete?.getPlace()?.geometry?.location?.lat();
+		const lng = autocomplete?.getPlace()?.geometry?.location?.lng();
+		if (lat && lng) setCoords({ lat, lng });
+	};
+
+	const getCityCoords = async () => {
+		// get the autocomplete place or if it's empty, use the value
+		const city = autocomplete?.getPlace()?.formatted_address!
+		const cityCoords = await getCityCoordinates(city)
+		if (cityCoords) setCoords(cityCoords)
+	}
+
 	return (
 		<AppBar position="static">
 			<Toolbar sx={styles.toolbar}>
@@ -24,7 +43,7 @@ const NavBar = ({ onPlaceChanged, onLoad }: INavBarProps) => {
 						Where To Next
 					</Typography>
 					<LoadScript
-						googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}
+						googleMapsApiKey={GOOGLE_MAPS_API_KEY}
 						libraries={libraries}
 					>
 						<Autocomplete
@@ -36,6 +55,10 @@ const NavBar = ({ onPlaceChanged, onLoad }: INavBarProps) => {
 									<SearchIcon />
 								</Box>
 								<InputBase
+									onKeyDown={(e) => {
+										if (e.key === 'Enter') getCityCoords()
+									}}
+									onBlur={getCityCoords}
 									placeholder="Enter Your Destination"
 									sx={{
 										root: styles.inputRoot,
