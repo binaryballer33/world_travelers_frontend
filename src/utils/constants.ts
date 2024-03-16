@@ -2,6 +2,7 @@ import { Libraries } from '@react-google-maps/api'
 import getPlacesByMapBounds from '../api/thirdPartyApis/travelAdvisorApi'
 
 export const libraries: Libraries = ['places'] // have to keep this outside of component to avoid re-renders
+export const defaultBounds = { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } }
 
 export const BACKEND_BASE_URL = 'http://localhost:3000'
 export const TRIP_ADVISOR_BASE_URL = 'https://travel-advisor.p.rapidapi.com'

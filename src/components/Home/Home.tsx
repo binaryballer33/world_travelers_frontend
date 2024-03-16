@@ -9,11 +9,12 @@ import Map from '../Map/Map'
 import { useDispatch, useSelector } from 'react-redux'
 import { useJsApiLoader } from '@react-google-maps/api'
 import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
-import { libraries } from '../../utils/constants'
+import { defaultBounds, libraries } from '../../utils/constants'
 import { setError, setLoaded } from '../../redux/googleMapsSlice'
 import { RootState } from '../../types/State'
 import Loading from '../../state_indicators/Loading'
 import { setPlaces, setRating, setFilteredPlaces } from '../../redux/travelAdvisorSlice'
+import _ from 'lodash'
 
 type HomeProps = {
 	bounds: Bounds;
@@ -37,7 +38,8 @@ const Home = ({ bounds, setBounds }: HomeProps) => {
 	useEffect(() => {
 		if (isLoading) <><Loading /></>
 
-		if (bounds) {
+		// condition used to avoid calling api on default bounds "which is in the middle of the atlantic ocean"
+		if (!_.isEqual(bounds, defaultBounds)) {
 			async function getPlaces() {
 				const response = await getPlacesByMapBounds({ typeOfPlace, bounds })
 				const places = response.data.data.filter((place: Place) => place.name && place.num_reviews > 0)

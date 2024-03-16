@@ -6,7 +6,6 @@ import Home from './components/Home/Home'
 import { Bounds } from './types/LatLng'
 
 const App = () => {
-	const [coords, setCoords] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 })
 	const [bounds, setBounds] = useState<Bounds>({ ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } });
 
 	return (
