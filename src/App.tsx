@@ -4,16 +4,17 @@ import { CssBaseline } from '@mui/material'
 import NavBar from './components/NavBar/NavBar'
 import Home from './components/Home/Home'
 import { Bounds } from './types/LatLng'
+import { defaultBounds } from './utils/constants'
 
 const App = () => {
-	const [bounds, setBounds] = useState<Bounds>({ ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } });
+	const [bounds, setBounds] = useState<Bounds>(defaultBounds);
 
 	return (
 		<Router>
 			<CssBaseline />
 			<NavBar setBounds={setBounds} />
 			<Routes>
-				<Route index element={<Home bounds={bounds} setBounds={setBounds} />} />
+				<Route index element={<Home />} />
 			</Routes>
 		</Router>
 	)

@@ -7,18 +7,15 @@ import styles from './styles'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
-import { setCoords, setMapBounds } from "../../redux/googleMapsSlice"
+import { setBounds, setCoords, setMapBounds } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
-import { Bounds } from '../../types/LatLng';
 import Loading from '../../state_indicators/Loading';
 
 type MapProps = {
-    setBounds: (bounds: Bounds) => void;
     setChildClicked: any;
 };
 
 const Map = ({
-    setBounds,
     setChildClicked
 }: MapProps) => {
     const { isLoaded, loadError, coords } = useSelector((state: RootState) => state.maps) // isLoaded and loadError from redux store for google maps api
@@ -43,7 +40,7 @@ const Map = ({
                         sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
                     }
                     dispatch(setMapBounds(boundsFormat))
-                    setBounds(boundsFormat)
+                    dispatch(setBounds(boundsFormat))
                 }
             }
         }, 2000);
@@ -72,10 +69,10 @@ const Map = ({
 
             const bounds = mapRef?.current.getBounds();
             if (bounds) {
-                setBounds({
+                dispatch(setBounds({
                     ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
                     sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
-                });
+                }));
             }
         }
     }

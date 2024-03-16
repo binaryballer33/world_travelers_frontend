@@ -4,7 +4,6 @@ import Places from '../Places/Places'
 import { Stack } from '@mui/material'
 import styles from './styles'
 import { Place } from '../../types/Place'
-import { Bounds } from '../../types/LatLng'
 import Map from '../Map/Map'
 import { useDispatch, useSelector } from 'react-redux'
 import { useJsApiLoader } from '@react-google-maps/api'
@@ -16,17 +15,13 @@ import Loading from '../../state_indicators/Loading'
 import { setPlaces, setRating, setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 import _ from 'lodash'
 
-type HomeProps = {
-	bounds: Bounds;
-	setBounds: (bounds: Bounds) => void;
-}
-
-const Home = ({ bounds, setBounds }: HomeProps) => {
+const Home = () => {
 	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook and trip advisor state
 	const dispatch = useDispatch();
-	const { places, rating, filteredPlaces, typeOfPlace } = useSelector((state: RootState) => state.travelAdvisor)
+	const { places, rating, typeOfPlace } = useSelector((state: RootState) => state.travelAdvisor)
+	const { bounds } = useSelector((state: RootState) => state.maps)
 	const [childClicked, setChildClicked] = useState(null) // used to show details of a place
-	const [getPlacesByMapBounds, { isLoading }] = useLazyGetPlacesByMapBoundsQuery()
+	const [getPlacesByMapBounds, { isLoading }] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
 
 	// filter places by rating
 	useEffect(() => {
@@ -69,16 +64,10 @@ const Home = ({ bounds, setBounds }: HomeProps) => {
 	return (
 		<Stack sx={styles.homeContainer}>
 			{/* Render The Map */}
-			<Map
-				setChildClicked={setChildClicked}
-				setBounds={setBounds} // if i remove this, the places will not be fetched from the api
-			/>
+			<Map setChildClicked={setChildClicked} />
 
 			{/* Render The Places As Cards Below The Map */}
-			<Places
-				isLoading={isLoading}
-				childClicked={childClicked}
-			/>
+			<Places isLoading={isLoading} childClicked={childClicked} />
 		</Stack>
 	)
 }
