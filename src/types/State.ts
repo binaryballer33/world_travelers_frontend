@@ -8,8 +8,10 @@ export type RootState = {
 }
 
 export type TravelAdvisorApiState = {
-	rating: number
+	rating: string
 	places: Place[]
+	filteredPlaces: Place[]
+	typeOfPlace: string
 }
 
 export type GoogleMapsApiState = {

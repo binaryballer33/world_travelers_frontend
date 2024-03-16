@@ -1,11 +1,11 @@
-import React, { Stack, Typography, CircularProgress } from '@mui/material'
+import React, { Stack, Typography, CircularProgress, BoxProps } from '@mui/material'
 
-const Loading = () => (
+const Loading = ({ }: BoxProps) => (
 	<Stack alignItems="center" justifyContent="center" sx={{ height: '80vh' }}>
-		<Typography variant="h3" color="primary">
+		<Typography variant="h4" color="primary">
 			Loading
 		</Typography>
-		<CircularProgress color="primary" />
+		<CircularProgress color="primary" size="5em" />
 	</Stack>
 )
 

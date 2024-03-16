@@ -27,7 +27,6 @@ export function getCreateTripRoute() {
 }
 
 export function getUpdateTripRoute(id: string) {
-	console.log('id of trip', id)
 	return `/trips/update/trip/${id}`
 }
 

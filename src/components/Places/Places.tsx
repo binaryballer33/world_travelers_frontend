@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createRef } from 'react'
 import {
-	CircularProgress,
 	Grid,
 	Typography,
 	InputLabel,
@@ -13,26 +12,24 @@ import {
 import PlaceCard from './PlaceCard/PlaceCard'
 import { Place } from '../../types/Place'
 import styles from './styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../types/State'
+import { setTypeOfPlace, setRating } from '../../redux/travelAdvisorSlice'
+import Loading from '../../state_indicators/Loading'
 
 type PlacesProps = {
 	places: Place[]
-	typeOfPlace: string
-	setTypeOfPlace: (typeOfPlace: string) => void
-	rating: string
-	setRating: (rating: string) => void
 	childClicked: string | null
 	isLoading: boolean
 }
 
 const Places = ({
 	places,
-	typeOfPlace,
-	setTypeOfPlace,
-	rating,
-	setRating,
 	childClicked,
 	isLoading,
 }: PlacesProps) => {
+	const { typeOfPlace, rating } = useSelector((state: RootState) => state.travelAdvisor)
+	const dispatch = useDispatch()
 	const [elRefs, setElRefs] = useState([]) // used to create a ref for each place
 
 	// When the places change, create a ref for each place
@@ -51,7 +48,7 @@ const Places = ({
 			{/* If component is loading, display loading indicator */}
 			{isLoading ? (
 				<Box sx={styles.loading}>
-					<CircularProgress size="5rem" />
+					<Loading />
 				</Box>
 			) : (
 				// If component is not loading, display the form and the list of places
@@ -62,7 +59,7 @@ const Places = ({
 							<Select
 								id="type"
 								value={typeOfPlace}
-								onChange={(e) => setTypeOfPlace(e.target.value)}
+								onChange={(e) => dispatch(setTypeOfPlace(e.target.value))}
 							>
 								<MenuItem value="restaurants">Restaurants</MenuItem>
 								<MenuItem value="hotels">Hotels</MenuItem>
@@ -76,7 +73,7 @@ const Places = ({
 							<Select
 								id="rating"
 								value={rating}
-								onChange={(e) => setRating(e.target.value)}
+								onChange={(e) => dispatch(setRating(e.target.value))}
 							>
 								<MenuItem value="">All</MenuItem>
 								<MenuItem value="2">Above 2.0</MenuItem>
