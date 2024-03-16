@@ -1,32 +1,28 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { GoogleMap, OverlayView, InfoWindow } from '@react-google-maps/api';
 import { Place } from '../../types/Place';
-import { Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import styles from './styles'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
-import { setMapBounds } from "../../redux/googleMapsSlice"
+import { setCoords, setMapBounds } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
 import { Bounds } from '../../types/LatLng';
+import Loading from '../../state_indicators/Loading';
 
 type MapProps = {
-    coords: google.maps.LatLngLiteral
-    setCoords: (coords: google.maps.LatLngLiteral) => void;
     setBounds: (bounds: Bounds) => void;
     setChildClicked: any;
 };
 
 const Map = ({
-    coords,
-    setCoords,
     setBounds,
     setChildClicked
 }: MapProps) => {
-    // get the isLoaded and loadError state from the redux store for the google maps api
-    const { isLoaded, loadError } = useSelector((state: RootState) => state.maps)
-    const { places } = useSelector((state: RootState) => state.travelAdvisor)
+    const { isLoaded, loadError, coords } = useSelector((state: RootState) => state.maps) // isLoaded and loadError from redux store for google maps api
+    const { places } = useSelector((state: RootState) => state.travelAdvisor) // get the places from the redux store, put them on the map
     const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
     const dispatch = useDispatch(); // update the redux store for the map bounds
 
@@ -71,7 +67,7 @@ const Map = ({
             const lng = mapRef?.current?.getCenter()?.lng();
 
             if (typeof lat === 'number' && typeof lng === 'number') {
-                setCoords({ lat, lng });
+                dispatch(setCoords({ lat, lng }))
             }
 
             const bounds = mapRef?.current.getBounds();
@@ -89,7 +85,7 @@ const Map = ({
         navigator.geolocation.getCurrentPosition(
             // destructure latitude and longitude from the position.coords
             ({ coords: { latitude, longitude } }) => {
-                setCoords({ lat: latitude, lng: longitude })
+                dispatch(setCoords({ lat: latitude, lng: longitude }))
             }
         )
     }, [setCoords])
@@ -131,7 +127,7 @@ const Map = ({
                     </Box>
                 ))}
         </GoogleMap>
-    ) : <CircularProgress />
+    ) : <Loading />
 };
 
 export default memo(Map);

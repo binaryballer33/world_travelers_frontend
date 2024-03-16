@@ -6,6 +6,8 @@ const initialState: GoogleMapsApiState = {
 	isLoaded: false,
 	loadError: null,
 	mapBounds: undefined,
+	coords: { lat: 0, lng: 0 },
+	bounds: { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } },
 }
 
 const googleMapsSlice = createSlice({
@@ -21,8 +23,18 @@ const googleMapsSlice = createSlice({
 		setMapBounds: (state, action: PayloadAction<Bounds | undefined>) => {
 			state.mapBounds = action.payload
 		},
+		setCoords: (
+			state,
+			action: PayloadAction<google.maps.LatLngLiteral>
+		) => {
+			state.coords = action.payload
+		},
+		setBounds: (state, action: PayloadAction<Bounds>) => {
+			state.bounds = action.payload
+		},
 	},
 })
 
-export const { setLoaded, setError, setMapBounds } = googleMapsSlice.actions
+export const { setLoaded, setError, setMapBounds, setCoords, setBounds } =
+	googleMapsSlice.actions
 export default googleMapsSlice.reducer

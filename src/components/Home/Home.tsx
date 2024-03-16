@@ -16,13 +16,11 @@ import Loading from '../../state_indicators/Loading'
 import { setPlaces, setRating, setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 
 type HomeProps = {
-	coords: google.maps.LatLngLiteral
-	setCoords: (coords: google.maps.LatLngLiteral) => void;
 	bounds: Bounds;
 	setBounds: (bounds: Bounds) => void;
 }
 
-const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
+const Home = ({ bounds, setBounds }: HomeProps) => {
 	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook and trip advisor state
 	const dispatch = useDispatch();
 	const { places, rating, filteredPlaces, typeOfPlace } = useSelector((state: RootState) => state.travelAdvisor)
@@ -70,10 +68,8 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 		<Stack sx={styles.homeContainer}>
 			{/* Render The Map */}
 			<Map
-				coords={coords}
 				setChildClicked={setChildClicked}
-				setCoords={setCoords}
-				setBounds={setBounds}
+				setBounds={setBounds} // if i remove this, the places will not be fetched from the api
 			/>
 
 			{/* Render The Places As Cards Below The Map */}

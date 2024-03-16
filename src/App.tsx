@@ -12,19 +12,9 @@ const App = () => {
 	return (
 		<Router>
 			<CssBaseline />
-			<NavBar setCoords={setCoords} setBounds={setBounds} />
+			<NavBar setBounds={setBounds} />
 			<Routes>
-				<Route
-					index
-					element={
-						<Home
-							coords={coords}
-							setCoords={setCoords}
-							bounds={bounds}
-							setBounds={setBounds}
-						/>
-					}
-				/>
+				<Route index element={<Home bounds={bounds} setBounds={setBounds} />} />
 			</Routes>
 		</Router>
 	)

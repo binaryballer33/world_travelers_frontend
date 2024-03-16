@@ -5,15 +5,16 @@ import { Autocomplete } from '@react-google-maps/api'
 import getCityCoordinates from '../../utils/helperFunctions/getCityCoordinates'
 import styles from './styles'
 import { Bounds, LatLng } from '../../types/LatLng'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
+import { setCoords } from '../../redux/googleMapsSlice'
 
 type NavBarProps = {
-	setCoords: (coords: LatLng) => void
 	setBounds: (bounds: Bounds) => void
 }
 
-const NavBar = ({ setCoords, setBounds }: NavBarProps) => {
+const NavBar = ({ setBounds }: NavBarProps) => {
+	const dispatch = useDispatch()
 	const { isLoaded, mapBounds } = useSelector((state: RootState) => state.maps)
 
 	// state to hold the Autocomplete object
@@ -26,7 +27,7 @@ const NavBar = ({ setCoords, setBounds }: NavBarProps) => {
 	const onPlaceChanged = () => {
 		const lat = autocomplete?.getPlace()?.geometry?.location?.lat();
 		const lng = autocomplete?.getPlace()?.geometry?.location?.lng();
-		if (lat && lng) setCoords({ lat, lng });
+		if (lat && lng) dispatch(setCoords({ lat, lng }));
 	};
 
 	// get the autocomplete place or if it's empty, use the value
