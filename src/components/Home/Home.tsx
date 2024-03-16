@@ -54,7 +54,7 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 				setRating('')
 			}
 
-			// getPlaces() // commented out to avoid calling the api too many times, api calls whenever you save file
+			getPlaces() // commented out to avoid calling the api too many times, api calls whenever you save file
 		}
 	}, [bounds, typeOfPlace])
 

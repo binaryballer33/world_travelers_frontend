@@ -16,7 +16,7 @@ const travelAdvisorSlice = createSlice({
 		builder.addMatcher(
 			travelAdvisorApi.endpoints.getPlacesByMapBounds.matchFulfilled,
 			(state, action) => {
-				state.places = action.payload
+				state.places = action.payload.data
 			}
 		)
 	},
