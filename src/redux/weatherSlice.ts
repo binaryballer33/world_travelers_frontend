@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { WeatherApiState } from '../types/State'
+import weatherApi from '../api/thirdPartyApis/weatherApi'
 
 const initialState: WeatherApiState = {
 	weather: null,
@@ -9,15 +10,21 @@ const initialState: WeatherApiState = {
 const weatherApiSlice = createSlice({
 	name: 'weather',
 	initialState: initialState,
-	reducers: {
-		setWeather: (state, action) => {
-			state.weather = action.payload
-		},
-		setThreeDayForecast: (state, action) => {
-			state.threeDayWeatherForecast = action.payload
-		},
+	reducers: {},
+	extraReducers(builder) {
+		builder.addMatcher(
+			weatherApi.endpoints.getCurrentWeather.matchFulfilled,
+			(state, action) => {
+				state.weather = action.payload
+			}
+		)
+		builder.addMatcher(
+			weatherApi.endpoints.threeDayWeatherForecast.matchFulfilled,
+			(state, action) => {
+				state.threeDayWeatherForecast = action.payload
+			}
+		)
 	},
 })
 
-export const { setWeather, setThreeDayForecast } = weatherApiSlice.actions
 export default weatherApiSlice.reducer

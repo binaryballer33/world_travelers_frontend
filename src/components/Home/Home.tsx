@@ -28,7 +28,7 @@ const Home = () => {
 		dispatch(setFilteredPlaces(filtered))
 	}, [rating])
 
-	// call the getPlacesData function when the bounds or type of place state changes
+	// call the getPlacesByMapBounds function when the bounds or type of place state changes
 	useEffect(() => {
 		// condition used to avoid calling api on default bounds "which is in the middle of the atlantic ocean"
 		if (!_.isEqual(bounds, defaultBounds)) {

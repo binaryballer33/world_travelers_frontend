@@ -7,10 +7,13 @@ import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
 import { setCoords } from '../../redux/googleMapsSlice'
+import { useGetCurrentWeatherQuery } from '../../api/thirdPartyApis/weatherApi'
+import { Weather } from '../../types/Weather'
 
 const NavBar = () => {
 	const dispatch = useDispatch()
-	const { isLoaded } = useSelector((state: RootState) => state.maps)
+	const { isLoaded, coords } = useSelector((state: RootState) => state.maps)
+	const { data: weather, isLoading } = useGetCurrentWeatherQuery(coords) as { data: Weather, isLoading: boolean } // get the current weather
 
 	// state to hold the Autocomplete object
 	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
@@ -35,8 +38,9 @@ const NavBar = () => {
 	return (
 		<AppBar position="static">
 			<Toolbar sx={styles.toolbar}>
+				{/* Render the current weather */}
 				<Typography variant="h5" sx={styles.title}>
-					World Travelers
+					World Travelers {isLoading ? '' : `${weather?.current?.temp_f}°F / ${weather?.current?.temp_c}°C`}
 				</Typography>
 				<Box display="flex">
 					<Typography variant="h6" sx={styles.title}>

@@ -19,7 +19,7 @@ export function getPlacesByMapBoundsRoute(typeOfPlace: string) {
 }
 
 /* OPEN WEATHER API ROUTES */
-export function getWeatherThreeDayForecastRoute() {
+export function threeDayWeatherForecastRoute() {
 	return '/forecast.json'
 }
 

@@ -4,7 +4,7 @@ import {
 	WEATHER_API_HOST_DOMAIN,
 	WEATHER_BASE_URL,
 	getCurrentWeatherRoute,
-	getWeatherThreeDayForecastRoute,
+	threeDayWeatherForecastRoute,
 } from '../../utils/constants'
 
 const weatherApi = createApi({
@@ -26,12 +26,9 @@ const weatherApi = createApi({
 				},
 			}),
 		}),
-		getWeatherThreeDayForecast: builder.query<
-			any,
-			google.maps.LatLngLiteral
-		>({
+		threeDayWeatherForecast: builder.query<any, google.maps.LatLngLiteral>({
 			query: (latlng) => ({
-				url: getWeatherThreeDayForecastRoute(),
+				url: threeDayWeatherForecastRoute(),
 				params: {
 					q: `${latlng.lat},${latlng.lng}`,
 					days: '3', // 3 days is the max for the free version
@@ -42,8 +39,8 @@ const weatherApi = createApi({
 })
 
 export const {
-	useGetWeatherThreeDayForecastQuery,
-	useLazyGetWeatherThreeDayForecastQuery,
+	useThreeDayWeatherForecastQuery,
+	useLazyThreeDayWeatherForecastQuery,
 	useGetCurrentWeatherQuery,
 	useLazyGetCurrentWeatherQuery,
 } = weatherApi
