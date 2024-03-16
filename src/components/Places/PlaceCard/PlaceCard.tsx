@@ -22,8 +22,11 @@ type PlaceCardProps = {
 }
 
 const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
-	if (selected)
-		refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+	// TODO: implement later: when user clicks on location, map will have a InfoWindow with the place details
+
+	// TODO: stop this for now to avoid scrolling and later make the scrolling work when you click on the icon on the map
+	// if (selected)
+	// 	refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
 	const imageUrl = place.photo?.images?.large?.url ? place.photo.images.large.url
 		: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
@@ -36,9 +39,12 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 				title={place.name}
 			/>
 			<CardContent>
+				{/* place name */}
 				<Typography gutterBottom variant="h5">
 					{place.name}
 				</Typography>
+
+				{/* place rating */}
 				<Box sx={styles.cardContent} my={2}>
 					<Rating
 						name="read-only"
@@ -49,18 +55,24 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 						{place.num_reviews} review{place.num_reviews > 1 && 's'}
 					</Typography>
 				</Box>
+
+				{/* place price */}
 				<Box sx={styles.cardContent}>
 					<Typography component="legend">Price</Typography>
 					<Typography gutterBottom variant="subtitle1">
 						{place.price_level}
 					</Typography>
 				</Box>
+
+				{/* place ranking */}
 				<Box sx={styles.cardContent}>
 					<Typography component="legend">Ranking</Typography>
 					<Typography gutterBottom variant="subtitle1">
 						{place.ranking}
 					</Typography>
 				</Box>
+
+				{/* place awards */}
 				{place?.awards?.map((award, index) => (
 					<Box
 						display="flex"
@@ -75,6 +87,8 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 						</Typography>
 					</Box>
 				))}
+
+				{/* place cuisine */}
 				{place?.cuisine?.map(({ name }) => (
 					<Chip
 						key={name}
@@ -83,6 +97,8 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 						sx={styles.chip}
 					/>
 				))}
+
+				{/* place address */}
 				{place.address && (
 					<Typography
 						gutterBottom
@@ -94,6 +110,8 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 						{place.address}
 					</Typography>
 				)}
+
+				{/* place phone */}
 				{place.phone && (
 					<Typography
 						variant="body2"

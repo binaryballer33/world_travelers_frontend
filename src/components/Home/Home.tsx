@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useLazyGetPlacesByMapBoundsQuery } from '../../api/thirdPartyApis/travelAdvisorApi'
-import getWeatherData from '../../api/thirdPartyApis/openWeatherApi'
 import Places from '../Places/Places'
 import { Stack } from '@mui/material'
 import styles from './styles'
@@ -28,7 +27,6 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 	const dispatch = useDispatch();
 	const { places, rating, filteredPlaces, typeOfPlace } = useSelector((state: RootState) => state.travelAdvisor)
 	const [childClicked, setChildClicked] = useState(null) // used to show details of a place
-	const [weatherData, setWeatherData] = useState([]) // used to store the weather data
 	const [getPlacesByMapBounds, { isLoading }] = useLazyGetPlacesByMapBoundsQuery()
 
 	// filter places by rating
@@ -37,7 +35,7 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 		dispatch(setFilteredPlaces(filtered))
 	}, [rating])
 
-	// call the getPlacesData and getWeatherData functions when the bounds or type of place state changes
+	// call the getPlacesData function when the bounds or type of place state changes
 	useEffect(() => {
 		if (isLoading) <><Loading /></>
 
@@ -50,7 +48,7 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 				dispatch(setFilteredPlaces([])) // reset the filtered places
 				dispatch(setRating('')) // get all the new places, so reset the rating
 			}
-			// getPlaces() // commented out to avoid calling the api too many times, api calls whenever you save file
+			getPlaces() // commented out to avoid calling the api too many times, api calls whenever you save file
 		}
 	}, [bounds, typeOfPlace])
 
@@ -73,8 +71,6 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 			{/* Render The Map */}
 			<Map
 				coords={coords}
-				places={filteredPlaces.length ? filteredPlaces : places}
-				weatherData={weatherData}
 				setChildClicked={setChildClicked}
 				setCoords={setCoords}
 				setBounds={setBounds}
@@ -84,7 +80,6 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 			<Places
 				isLoading={isLoading}
 				childClicked={childClicked}
-				places={filteredPlaces.length ? filteredPlaces : places}
 			/>
 		</Stack>
 	)

@@ -12,6 +12,7 @@ export type TravelAdvisorApiState = {
 	places: Place[]
 	filteredPlaces: Place[]
 	typeOfPlace: string
+	placeClicked: number | null
 }
 
 export type GoogleMapsApiState = {

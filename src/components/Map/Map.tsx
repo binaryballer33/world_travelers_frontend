@@ -12,8 +12,6 @@ import { RootState } from '../../types/State';
 import { Bounds } from '../../types/LatLng';
 
 type MapProps = {
-    places: Place[];
-    weatherData: any;
     coords: google.maps.LatLngLiteral
     setCoords: (coords: google.maps.LatLngLiteral) => void;
     setBounds: (bounds: Bounds) => void;
@@ -21,8 +19,6 @@ type MapProps = {
 };
 
 const Map = ({
-    places,
-    weatherData,
     coords,
     setCoords,
     setBounds,
@@ -30,6 +26,7 @@ const Map = ({
 }: MapProps) => {
     // get the isLoaded and loadError state from the redux store for the google maps api
     const { isLoaded, loadError } = useSelector((state: RootState) => state.maps)
+    const { places } = useSelector((state: RootState) => state.travelAdvisor)
     const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
     const dispatch = useDispatch(); // update the redux store for the map bounds
 

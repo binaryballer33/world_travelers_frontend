@@ -18,31 +18,31 @@ import { setTypeOfPlace, setRating } from '../../redux/travelAdvisorSlice'
 import Loading from '../../state_indicators/Loading'
 
 type PlacesProps = {
-	places: Place[]
 	childClicked: string | null
 	isLoading: boolean
 }
 
 const Places = ({
-	places,
 	childClicked,
 	isLoading,
 }: PlacesProps) => {
-	const { typeOfPlace, rating } = useSelector((state: RootState) => state.travelAdvisor)
+	const { typeOfPlace, rating, places, filteredPlaces } = useSelector((state: RootState) => state.travelAdvisor)
 	const dispatch = useDispatch()
 	const [elRefs, setElRefs] = useState([]) // used to create a ref for each place
+	const placesToRender = filteredPlaces.length ? filteredPlaces : places
 
 	// When the places change, create a ref for each place
 	useEffect(() => {
 		setElRefs((refs) =>
-			Array(places.length)
+			Array(placesToRender.length)
 				.fill(0)
 				.map((_, index: number) => refs[index] || createRef())
 		)
-	}, [places])
+	}, [placesToRender])
 
 	return (
 		<Stack sx={styles.container}>
+			{/* Section Header */}
 			<Typography variant="h4" sx={styles.textCenter}>What Are You Looking For</Typography>
 
 			{/* If component is loading, display loading indicator */}
@@ -86,7 +86,7 @@ const Places = ({
 
 					{/* List Of Places */}
 					<Grid container spacing={3} sx={styles.list}>
-						{places?.map((place: Place, index: number) => (
+						{placesToRender?.map((place: Place, index: number) => (
 							<Grid item ref={elRefs[index]} key={index}>
 								<PlaceCard
 									selected={Number(childClicked) === index}

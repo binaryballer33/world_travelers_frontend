@@ -8,6 +8,7 @@ const initialState: TravelAdvisorApiState = {
 	places: [], // used to store the places returned from the travel advisor api
 	filteredPlaces: [], // store the filtered places, based on the rating and coords/bounds of the map
 	typeOfPlace: 'restaurants', // used to filter places by type of place, restaurants is the default
+	placeClicked: null, // used to see which place was clicked
 }
 
 const travelAdvisorSlice = createSlice({
@@ -26,14 +27,6 @@ const travelAdvisorSlice = createSlice({
 		setTypeOfPlace: (state, action: PayloadAction<string>) => {
 			state.typeOfPlace = action.payload
 		},
-	},
-	extraReducers: (builder) => {
-		builder.addMatcher(
-			travelAdvisorApi.endpoints.getPlacesByMapBounds.matchFulfilled,
-			(state, action) => {
-				state.places = action.payload.data
-			}
-		)
 	},
 })
 
