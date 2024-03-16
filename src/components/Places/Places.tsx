@@ -76,10 +76,10 @@ const Places = ({
 								onChange={(e) => dispatch(setRating(e.target.value))}
 							>
 								<MenuItem value="">All</MenuItem>
-								<MenuItem value="2">Above 2.0</MenuItem>
-								<MenuItem value="3">Above 3.0</MenuItem>
-								<MenuItem value="4">Above 4.0</MenuItem>
-								<MenuItem value="4.5">Above 4.5</MenuItem>
+								<MenuItem value="2">2.0 Or Higher</MenuItem>
+								<MenuItem value="3">3.0 Or Higher</MenuItem>
+								<MenuItem value="4">4.0 Or Higher</MenuItem>
+								<MenuItem value="4.5">4.5 Or Higher</MenuItem>
 							</Select>
 						</FormControl>
 					</Stack>
