@@ -3,8 +3,8 @@ import {
 	getCreateTripRoute,
 	getUpdateTripRoute,
 	getDeleteTripRoute,
-} from '../utils/constants'
-import api from './api'
+} from '../../utils/constants'
+import api from '../api'
 
 // product api endpoints
 const tripApi = api.injectEndpoints({

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { getPlacesByMapBounds, getWeatherData } from '../../api/travelAdvisorAPI'
+import getPlacesByMapBounds from '../../api/thirdPartyApis/travelAdvisorAPI'
+import getWeatherData from '../../api/thirdPartyApis/openWeatherApi'
 import Places from '../Places/Places'
 import { Stack } from '@mui/material'
 import styles from './styles'

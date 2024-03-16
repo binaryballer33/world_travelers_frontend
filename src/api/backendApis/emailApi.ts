@@ -1,8 +1,8 @@
 import {
 	getPurchaseConfirmationEmailRoute,
 	getUserRegistrationConfirmationEmailRoute,
-} from '../utils/constants'
-import api from './api'
+} from '../../utils/constants'
+import api from '../api'
 
 // email api endpoints
 const emailApi = api.injectEndpoints({

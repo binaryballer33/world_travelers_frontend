@@ -4,8 +4,8 @@ import {
 	getUserProfileRoute,
 	getUpdateUserRoute,
 	getDeleteUserRoute,
-} from '../utils/constants'
-import api from './api'
+} from '../../utils/constants'
+import api from '../api'
 
 // product api endpoints
 const userApi = api.injectEndpoints({
