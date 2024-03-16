@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useLazyGetPlacesByMapBoundsQuery } from '../../api/thirdPartyApis/travelAdvisorApi'
 import Places from '../Places/Places'
 import { Stack } from '@mui/material'

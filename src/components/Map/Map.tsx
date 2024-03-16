@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { GoogleMap, OverlayView, InfoWindow } from '@react-google-maps/api';
 import { Place } from '../../types/Place';
 import { Box } from '@mui/material';
@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
 import { setBounds, setCoords } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
-import Loading from '../../state_indicators/Loading';
+import Loading from '../StateIndicators/Loading';
 
 type MapProps = {
     setChildClicked: any;

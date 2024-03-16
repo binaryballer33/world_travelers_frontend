@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import { useState, useEffect, createRef } from 'react'
 import {
 	Grid,
 	Typography,
@@ -15,7 +15,7 @@ import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
 import { setTypeOfPlace, setRating } from '../../redux/travelAdvisorSlice'
-import Loading from '../../state_indicators/Loading'
+import Loading from '../StateIndicators/Loading'
 
 type PlacesProps = {
 	childClicked: string | null

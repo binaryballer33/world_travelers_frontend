@@ -1,5 +1,5 @@
-import React, { Stack, Typography } from '@mui/material'
-import { Exception } from '../types/Error'
+import { Stack, Typography } from '@mui/material'
+import { Exception } from '../../types/Error'
 
 type ErrorProps = {
 	error: Exception

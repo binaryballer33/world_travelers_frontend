@@ -1,5 +1,5 @@
 import { Snackbar, Alert } from '@mui/material'
-import React, { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 
 type PopupIndicatorProp = {
 	message: string,
@@ -16,7 +16,6 @@ const PopupIndicator = ({ message, timeout }: PopupIndicatorProp) => {
 		if (reason === 'clickaway') {
 			return;
 		}
-
 		setOpen(false);
 	};
 
