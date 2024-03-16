@@ -7,7 +7,7 @@ import styles from './styles'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
-import { setBounds, setCoords, setMapBounds } from "../../redux/googleMapsSlice"
+import { setBounds, setCoords } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
 import Loading from '../../state_indicators/Loading';
 
@@ -39,7 +39,6 @@ const Map = ({
                         ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
                         sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
                     }
-                    dispatch(setMapBounds(boundsFormat))
                     dispatch(setBounds(boundsFormat))
                 }
             }

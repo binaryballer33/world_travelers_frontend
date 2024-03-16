@@ -18,7 +18,6 @@ export type TravelAdvisorApiState = {
 export type GoogleMapsApiState = {
 	isLoaded: boolean
 	loadError: string | null
-	mapBounds: Bounds | undefined
 	coords: google.maps.LatLngLiteral
 	bounds: Bounds
 }

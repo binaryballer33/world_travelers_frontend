@@ -1,5 +1,4 @@
 import { Libraries } from '@react-google-maps/api'
-import getPlacesByMapBounds from '../api/thirdPartyApis/travelAdvisorApi'
 
 export const libraries: Libraries = ['places'] // have to keep this outside of component to avoid re-renders
 export const defaultBounds = { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } }

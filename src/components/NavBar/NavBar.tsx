@@ -1,21 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { Autocomplete } from '@react-google-maps/api'
 import getCityCoordinates from '../../utils/helperFunctions/getCityCoordinates'
 import styles from './styles'
-import { Bounds, LatLng } from '../../types/LatLng'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
 import { setCoords } from '../../redux/googleMapsSlice'
 
-type NavBarProps = {
-	setBounds: (bounds: Bounds) => void
-}
-
-const NavBar = ({ setBounds }: NavBarProps) => {
+const NavBar = () => {
 	const dispatch = useDispatch()
-	const { isLoaded, mapBounds } = useSelector((state: RootState) => state.maps)
+	const { isLoaded } = useSelector((state: RootState) => state.maps)
 
 	// state to hold the Autocomplete object
 	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
@@ -34,7 +29,7 @@ const NavBar = ({ setBounds }: NavBarProps) => {
 	const getCityCoords = async () => {
 		const city_name = autocomplete?.getPlace()?.formatted_address!
 		const cityCoords = await getCityCoordinates(city_name)
-		setCoords(cityCoords!);
+		dispatch(setCoords(cityCoords!));
 	}
 
 	return (
