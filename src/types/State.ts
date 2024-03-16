@@ -1,10 +1,17 @@
 import { Bounds } from './LatLng'
 import { Place } from './Place'
+import { ForecastDay, Weather, WeatherForecast } from './Weather'
 
 export type RootState = {
 	maps: GoogleMapsApiState
-	user: User
 	travelAdvisor: TravelAdvisorApiState
+	weather: WeatherApiState
+	user: User
+}
+
+export type WeatherApiState = {
+	weather: Weather | null
+	threeDayWeatherForecast: WeatherForecast | null
 }
 
 export type TravelAdvisorApiState = {

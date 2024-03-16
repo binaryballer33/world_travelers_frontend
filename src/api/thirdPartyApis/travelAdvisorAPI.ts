@@ -3,6 +3,7 @@ import { RAPID_API_KEY } from '../../utils/secrets'
 import { Bounds } from '../../types/LatLng'
 import {
 	TRIP_ADVISOR_BASE_URL,
+	TRIP_ADVISOR_HOST_DOMAIN,
 	getPlacesByMapBoundsRoute,
 } from '../../utils/constants'
 
@@ -31,7 +32,7 @@ const travelAdvisorApi = createApi({
 				},
 				headers: {
 					'x-rapidapi-key': RAPID_API_KEY,
-					'x-rapidapi-host': 'travel-advisor.p.rapidapi.com',
+					'x-rapidapi-host': TRIP_ADVISOR_HOST_DOMAIN,
 				},
 			}),
 		}),

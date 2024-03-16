@@ -4,7 +4,10 @@ export const libraries: Libraries = ['places'] // have to keep this outside of c
 export const defaultBounds = { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } }
 
 export const BACKEND_BASE_URL = 'http://localhost:3000'
-export const TRIP_ADVISOR_BASE_URL = 'https://travel-advisor.p.rapidapi.com'
+export const TRIP_ADVISOR_BASE_URL = 'https://travel-advisor.p.rapidapi.com' // https://rapidapi.com/apidojo/api/travel-advisor
+export const TRIP_ADVISOR_HOST_DOMAIN = 'travel-advisor.p.rapidapi.com'
+export const WEATHER_BASE_URL = 'https://weatherapi-com.p.rapidapi.com' // https://rapidapi.com/weatherapi/api/weatherapi-com
+export const WEATHER_API_HOST_DOMAIN = 'weatherapi-com.p.rapidapi.com'
 
 /* ROUTES */
 
@@ -16,6 +19,13 @@ export function getPlacesByMapBoundsRoute(typeOfPlace: string) {
 }
 
 /* OPEN WEATHER API ROUTES */
+export function getWeatherThreeDayForecastRoute() {
+	return '/forecast.json'
+}
+
+export function getCurrentWeatherRoute() {
+	return '/current.json'
+}
 
 /* TRIPS ROUTES */
 export function getTripsByUserIdRoute() {
