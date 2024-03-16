@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useGetPlacesByMapBoundsQuery, useLazyGetPlacesByMapBoundsQuery } from '../../api/thirdPartyApis/travelAdvisorApi'
+import { useLazyGetPlacesByMapBoundsQuery } from '../../api/thirdPartyApis/travelAdvisorApi'
 import getWeatherData from '../../api/thirdPartyApis/openWeatherApi'
 import Places from '../Places/Places'
-import { CircularProgress, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import styles from './styles'
 import { Place } from '../../types/Place'
 import { Bounds } from '../../types/LatLng'
@@ -12,7 +12,7 @@ import { useJsApiLoader } from '@react-google-maps/api'
 import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
 import { libraries } from '../../utils/constants'
 import { setError, setLoaded } from '../../redux/googleMapsSlice'
-import { RootState, TravelAdvisorApiState } from '../../types/State'
+import { RootState } from '../../types/State'
 import Loading from '../../state_indicators/Loading'
 
 type HomeProps = {
@@ -43,13 +43,14 @@ const Home = ({ coords, setCoords, bounds, setBounds }: HomeProps) => {
 
 	// call the getPlacesData and getWeatherData functions when the bounds or type of place state changes
 	useEffect(() => {
+		if (isLoading) <><Loading /></>
+
 		if (bounds) {
-			if (isLoading) <><Loading /></>
 			async function getPlaces() {
 				const response = await getPlacesByMapBounds({ typeOfPlace, bounds })
-				const places = response.data.data
+				const places = response.data.data.filter((place: Place) => place.name && place.num_reviews > 0)
 
-				setPlaces(places.filter((place: Place) => place.name && place.num_reviews > 0))
+				setPlaces(places)
 				setFilteredPlaces([])
 				setRating('')
 			}
