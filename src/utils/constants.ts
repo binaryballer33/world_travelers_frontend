@@ -1,10 +1,21 @@
 import { Libraries } from '@react-google-maps/api'
+import getPlacesByMapBounds from '../api/thirdPartyApis/travelAdvisorApi'
 
 export const libraries: Libraries = ['places'] // have to keep this outside of component to avoid re-renders
 
 export const BACKEND_BASE_URL = 'http://localhost:3000'
+export const TRIP_ADVISOR_BASE_URL = 'https://travel-advisor.p.rapidapi.com'
 
 /* ROUTES */
+
+/* THIRD PARTY API ROUTES */
+
+/* TRIP ADVISOR API ROUTES */
+export function getPlacesByMapBoundsRoute(typeOfPlace: string) {
+	return `/${typeOfPlace}/list-in-boundary`
+}
+
+/* OPEN WEATHER API ROUTES */
 
 /* TRIPS ROUTES */
 export function getTripsByUserIdRoute() {

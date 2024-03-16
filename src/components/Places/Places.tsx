@@ -14,15 +14,25 @@ import PlaceCard from './PlaceCard/PlaceCard'
 import { Place } from '../../types/Place'
 import styles from './styles'
 
+type PlacesProps = {
+	places: Place[]
+	typeOfPlace: string
+	setTypeOfPlace: (typeOfPlace: string) => void
+	rating: string
+	setRating: (rating: string) => void
+	childClicked: string | null
+	isLoading: boolean
+}
+
 const Places = ({
 	places,
-	type,
-	setType,
+	typeOfPlace,
+	setTypeOfPlace,
 	rating,
 	setRating,
 	childClicked,
 	isLoading,
-}) => {
+}: PlacesProps) => {
 	const [elRefs, setElRefs] = useState([]) // used to create a ref for each place
 
 	// When the places change, create a ref for each place
@@ -51,8 +61,8 @@ const Places = ({
 						<FormControl sx={styles.formControl}>
 							<Select
 								id="type"
-								value={type}
-								onChange={(e) => setType(e.target.value)}
+								value={typeOfPlace}
+								onChange={(e) => setTypeOfPlace(e.target.value)}
 							>
 								<MenuItem value="restaurants">Restaurants</MenuItem>
 								<MenuItem value="hotels">Hotels</MenuItem>

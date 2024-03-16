@@ -1,21 +1,31 @@
-import axios from 'axios'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RAPID_API_KEY } from '../../utils/secrets'
 import { Bounds } from '../../types/LatLng'
+import {
+	TRIP_ADVISOR_BASE_URL,
+	getPlacesByMapBoundsRoute,
+} from '../../utils/constants'
 
-const getPlacesByMapBounds = async (typeOfPlace: string, bounds: Bounds) => {
-	try {
-		// this api endpoint gets me more data than the lat lng endpoint
-		const {
-			data: { data },
-		} = await axios.get(
-			`https://travel-advisor.p.rapidapi.com/${typeOfPlace}/list-in-boundary`,
-			{
+interface GetPlacesByMapBoundsArgs {
+	typeOfPlace: string
+	bounds: Bounds
+}
+
+const travelAdvisorApi = createApi({
+	reducerPath: 'travelAdvisorApi',
+	baseQuery: fetchBaseQuery({
+		baseUrl: TRIP_ADVISOR_BASE_URL,
+	}),
+	endpoints: (builder) => ({
+		getPlacesByMapBounds: builder.query<any, GetPlacesByMapBoundsArgs>({
+			query: ({ typeOfPlace, bounds }) => ({
+				url: getPlacesByMapBoundsRoute(typeOfPlace),
 				params: {
 					bl_latitude: bounds.sw.lat,
 					bl_longitude: bounds.sw.lng,
 					tr_longitude: bounds.ne.lng,
 					tr_latitude: bounds.ne.lat,
-					limit: '30', // max per the api docs
+					limit: '30',
 					currency: 'USD',
 					lunit: 'mi',
 				},
@@ -23,12 +33,14 @@ const getPlacesByMapBounds = async (typeOfPlace: string, bounds: Bounds) => {
 					'x-rapidapi-key': RAPID_API_KEY,
 					'x-rapidapi-host': 'travel-advisor.p.rapidapi.com',
 				},
-			}
-		)
-		return data
-	} catch (error) {
-		console.log(error)
-	}
-}
+			}),
+		}),
+	}),
+})
 
-export default getPlacesByMapBounds
+export const {
+	useGetPlacesByMapBoundsQuery,
+	useLazyGetPlacesByMapBoundsQuery,
+} = travelAdvisorApi
+
+export default travelAdvisorApi

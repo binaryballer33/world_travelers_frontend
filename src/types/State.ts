@@ -1,11 +1,18 @@
 import { Bounds } from './LatLng'
+import { Place } from './Place'
 
 export type RootState = {
-	maps: GoogleMapsAPIState
+	maps: GoogleMapsApiState
 	user: User
+	travelAdvisor: TravelAdvisorApiState
 }
 
-export type GoogleMapsAPIState = {
+export type TravelAdvisorApiState = {
+	rating: number
+	places: Place[]
+}
+
+export type GoogleMapsApiState = {
 	isLoaded: boolean
 	loadError: string | null
 	mapBounds: Bounds | undefined

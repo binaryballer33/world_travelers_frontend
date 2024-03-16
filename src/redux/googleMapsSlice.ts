@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { GoogleMapsAPIState } from '../types/State'
+import { GoogleMapsApiState } from '../types/State'
 import { Bounds } from '../types/LatLng'
 
-const initialState: GoogleMapsAPIState = {
+const initialState: GoogleMapsApiState = {
 	isLoaded: false,
 	loadError: null,
 	mapBounds: undefined,
