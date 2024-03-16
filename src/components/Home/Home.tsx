@@ -9,9 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useJsApiLoader } from '@react-google-maps/api'
 import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
 import { defaultBounds, libraries } from '../../utils/constants'
-import { setError, setLoaded } from '../../redux/googleMapsSlice'
+import { setLoadError, setIsLoaded } from '../../redux/googleMapsSlice'
 import { RootState } from '../../types/State'
-import Loading from '../../state_indicators/Loading'
 import { setPlaces, setRating, setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 import _ from 'lodash'
 
@@ -21,7 +20,7 @@ const Home = () => {
 	const { places, rating, typeOfPlace } = useSelector((state: RootState) => state.travelAdvisor)
 	const { bounds } = useSelector((state: RootState) => state.maps)
 	const [childClicked, setChildClicked] = useState(null) // used to show details of a place
-	const [getPlacesByMapBounds, { isLoading }] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
+	const [getPlacesByMapBounds, { isFetching }] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
 
 	// filter places by rating
 	useEffect(() => {
@@ -31,8 +30,6 @@ const Home = () => {
 
 	// call the getPlacesData function when the bounds or type of place state changes
 	useEffect(() => {
-		if (isLoading) <><Loading /></>
-
 		// condition used to avoid calling api on default bounds "which is in the middle of the atlantic ocean"
 		if (!_.isEqual(bounds, defaultBounds)) {
 			async function getPlaces() {
@@ -57,8 +54,8 @@ const Home = () => {
 
 	// update the mapsSlice state with the isLoaded and loadError values
 	useEffect(() => {
-		dispatch(setLoaded(isLoaded));
-		dispatch(setError(loadError ? loadError.message : null));
+		dispatch(setIsLoaded(isLoaded));
+		dispatch(setLoadError(loadError ? loadError.message : null));
 	}, [dispatch, isLoaded, loadError]);
 
 	return (
@@ -67,7 +64,7 @@ const Home = () => {
 			<Map setChildClicked={setChildClicked} />
 
 			{/* Render The Places As Cards Below The Map */}
-			<Places isLoading={isLoading} childClicked={childClicked} />
+			<Places isFetching={isFetching} childClicked={childClicked} />
 		</Stack>
 	)
 }

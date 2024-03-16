@@ -13,10 +13,10 @@ const googleMapsSlice = createSlice({
 	name: 'maps',
 	initialState: initialState,
 	reducers: {
-		setLoaded: (state, action: PayloadAction<boolean>) => {
+		setIsLoaded: (state, action: PayloadAction<boolean>) => {
 			state.isLoaded = action.payload
 		},
-		setError: (state, action: PayloadAction<string | null>) => {
+		setLoadError: (state, action: PayloadAction<string | null>) => {
 			state.loadError = action.payload
 		},
 		setCoords: (
@@ -31,6 +31,6 @@ const googleMapsSlice = createSlice({
 	},
 })
 
-export const { setLoaded, setError, setCoords, setBounds } =
+export const { setLoadError, setIsLoaded, setCoords, setBounds } =
 	googleMapsSlice.actions
 export default googleMapsSlice.reducer

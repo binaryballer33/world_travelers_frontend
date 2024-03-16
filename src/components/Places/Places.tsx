@@ -19,12 +19,12 @@ import Loading from '../../state_indicators/Loading'
 
 type PlacesProps = {
 	childClicked: string | null
-	isLoading: boolean
+	isFetching: boolean
 }
 
 const Places = ({
 	childClicked,
-	isLoading,
+	isFetching,
 }: PlacesProps) => {
 	const { typeOfPlace, rating, places, filteredPlaces } = useSelector((state: RootState) => state.travelAdvisor)
 	const dispatch = useDispatch()
@@ -46,7 +46,7 @@ const Places = ({
 			<Typography variant="h4" sx={styles.textCenter}>What Are You Looking For</Typography>
 
 			{/* If component is loading, display loading indicator */}
-			{isLoading ? (
+			{isFetching ? (
 				<Box sx={styles.loading}>
 					<Loading />
 				</Box>
