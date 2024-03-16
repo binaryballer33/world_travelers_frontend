@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TravelAdvisorApiState } from '../types/State'
-import travelAdvisorApi from '../api/thirdPartyApis/travelAdvisorApi'
 import { Place } from '../types/Place'
 
 const initialState: TravelAdvisorApiState = {
