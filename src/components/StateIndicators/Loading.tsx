@@ -1,11 +1,16 @@
 import React, { Stack, Typography, CircularProgress, BoxProps } from '@mui/material'
 
-const Loading = ({ }: BoxProps) => (
-	<Stack alignItems="center" justifyContent="center" sx={{ height: '100vh' }}>
+interface ILoadingProps extends BoxProps {
+	message?: string
+	loadingIndicatorSize?: string
+}
+
+const Loading = ({ message, loadingIndicatorSize }: ILoadingProps) => (
+	<Stack alignItems="center" justifyContent="center" sx={{ height: '100%' }}>
 		<Typography variant="h4" color="primary">
-			Loading
+			Loading Your {message || 'Data'}
 		</Typography>
-		<CircularProgress color="primary" size="5em" />
+		<CircularProgress color="primary" size={loadingIndicatorSize || "5rem"} />
 	</Stack>
 )
 
