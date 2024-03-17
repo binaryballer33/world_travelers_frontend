@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { GoogleMap, OverlayView, InfoWindow } from '@react-google-maps/api';
 import { Place } from '../../types/Place';
 import { Box } from '@mui/material';

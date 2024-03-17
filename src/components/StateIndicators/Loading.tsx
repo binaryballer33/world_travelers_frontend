@@ -1,4 +1,4 @@
-import { Stack, Typography, CircularProgress, BoxProps } from '@mui/material'
+import React, { Stack, Typography, CircularProgress, BoxProps } from '@mui/material'
 
 const Loading = ({ }: BoxProps) => (
 	<Stack alignItems="center" justifyContent="center" sx={{ height: '100vh' }}>

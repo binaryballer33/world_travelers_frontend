@@ -1,4 +1,4 @@
-import { Snackbar, Alert } from '@mui/material'
+import React, { Snackbar, Alert } from '@mui/material'
 import { SyntheticEvent, useState } from 'react'
 
 type PopupIndicatorProp = {
