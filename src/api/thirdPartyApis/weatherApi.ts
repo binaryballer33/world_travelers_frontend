@@ -6,6 +6,7 @@ import {
 	getCurrentWeatherRoute,
 	threeDayWeatherForecastRoute,
 } from '../../utils/constants'
+import { Weather, WeatherForecast } from '../../types/Weather'
 
 const weatherApi = createApi({
 	reducerPath: 'weatherApi',
@@ -18,7 +19,7 @@ const weatherApi = createApi({
 		},
 	}),
 	endpoints: (builder) => ({
-		getCurrentWeather: builder.query<any, google.maps.LatLngLiteral>({
+		getCurrentWeather: builder.query<Weather, google.maps.LatLngLiteral>({
 			query: (latlng) => ({
 				url: getCurrentWeatherRoute(),
 				params: {
@@ -26,7 +27,10 @@ const weatherApi = createApi({
 				},
 			}),
 		}),
-		threeDayWeatherForecast: builder.query<any, google.maps.LatLngLiteral>({
+		threeDayWeatherForecast: builder.query<
+			WeatherForecast,
+			google.maps.LatLngLiteral
+		>({
 			query: (latlng) => ({
 				url: threeDayWeatherForecastRoute(),
 				params: {

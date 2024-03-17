@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, Box } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { Autocomplete } from '@react-google-maps/api'
@@ -7,13 +7,19 @@ import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
 import { setCoords } from '../../redux/googleMapsSlice'
-import { useGetCurrentWeatherQuery } from '../../api/thirdPartyApis/weatherApi'
-import { Weather } from '../../types/Weather'
+import { useLazyGetCurrentWeatherQuery } from '../../api/thirdPartyApis/weatherApi'
+import { defaultBounds } from '../../utils/constants'
+import _ from 'lodash'
 
 const NavBar = () => {
 	const dispatch = useDispatch()
-	const { isLoaded, coords } = useSelector((state: RootState) => state.maps)
-	const { data: weather, isLoading } = useGetCurrentWeatherQuery(coords) as { data: Weather, isLoading: boolean } // get the current weather
+	const { isLoaded, coords, bounds } = useSelector((state: RootState) => state.maps)
+	const [getCurrentWeather] = useLazyGetCurrentWeatherQuery()  // get the current weather
+	const { weather } = useSelector((state: RootState) => state.weather)
+
+	useEffect(() => {
+		if (!_.isEqual(bounds, defaultBounds)) getCurrentWeather(coords)
+	}, [bounds, getCurrentWeather]);
 
 	// state to hold the Autocomplete object
 	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
@@ -40,7 +46,7 @@ const NavBar = () => {
 			<Toolbar sx={styles.toolbar}>
 				{/* Render the current weather */}
 				<Typography variant="h5" sx={styles.title}>
-					World Travelers {isLoading ? '' : `${weather?.current?.temp_f}°F / ${weather?.current?.temp_c}°C`}
+					World Travelers {weather ? `${weather?.current?.temp_f}°F / ${weather?.current?.temp_c}°C` : ""}
 				</Typography>
 				<Box display="flex">
 					<Typography variant="h6" sx={styles.title}>

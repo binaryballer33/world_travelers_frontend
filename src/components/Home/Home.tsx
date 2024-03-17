@@ -11,7 +11,7 @@ import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
 import { defaultBounds, libraries } from '../../utils/constants'
 import { setLoadError, setIsLoaded } from '../../redux/googleMapsSlice'
 import { RootState } from '../../types/State'
-import { setPlaces, setRating, setFilteredPlaces } from '../../redux/travelAdvisorSlice'
+import { setRating, setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 import _ from 'lodash'
 
 const Home = () => {
@@ -24,8 +24,8 @@ const Home = () => {
 
 	// filter places by rating
 	useEffect(() => {
-		const filtered = places.filter((place: Place) => Number(place.rating) >= Number(rating))
-		dispatch(setFilteredPlaces(filtered))
+		const filteredPlaces = places!.filter((place: Place) => Number(place.rating) >= Number(rating))
+		dispatch(setFilteredPlaces(filteredPlaces))
 	}, [rating])
 
 	// call the getPlacesByMapBounds function when the bounds or type of place state changes
@@ -33,10 +33,7 @@ const Home = () => {
 		// condition used to avoid calling api on default bounds "which is in the middle of the atlantic ocean"
 		if (!_.isEqual(bounds, defaultBounds)) {
 			async function getPlaces() {
-				const response = await getPlacesByMapBounds({ typeOfPlace, bounds })
-				const places = response.data.data.filter((place: Place) => place.name && place.num_reviews > 0)
-
-				dispatch(setPlaces(places)) // set the places in the state
+				await getPlacesByMapBounds({ typeOfPlace, bounds }) // extra reducer in travelAdvisorSlice will update the places state
 				dispatch(setFilteredPlaces([])) // reset the filtered places
 				dispatch(setRating('')) // get all the new places, so reset the rating
 			}

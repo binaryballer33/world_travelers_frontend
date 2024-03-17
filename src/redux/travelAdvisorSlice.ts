@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TravelAdvisorApiState } from '../types/State'
 import { Place } from '../types/Place'
+import travelAdvisorApi from '../api/thirdPartyApis/travelAdvisorApi'
 
 const initialState: TravelAdvisorApiState = {
 	rating: '', // use to filter places by rating
@@ -17,9 +18,6 @@ const travelAdvisorSlice = createSlice({
 		setRating: (state, action: PayloadAction<string>) => {
 			state.rating = action.payload
 		},
-		setPlaces: (state, action: PayloadAction<Place[]>) => {
-			state.places = action.payload
-		},
 		setFilteredPlaces: (state, action: PayloadAction<Place[]>) => {
 			state.filteredPlaces = action.payload
 		},
@@ -27,8 +25,19 @@ const travelAdvisorSlice = createSlice({
 			state.typeOfPlace = action.payload
 		},
 	},
+	extraReducers(builder) {
+		builder.addMatcher(
+			travelAdvisorApi.endpoints.getPlacesByMapBounds.matchFulfilled,
+			(state, action) => {
+				state.places = action.payload.filter(
+					// only set the places that have a name and number of reviews > 0, to get rid of garbage data
+					(place) => place.name && place.num_reviews > 0
+				)
+			}
+		)
+	},
 })
 
-export const { setRating, setPlaces, setFilteredPlaces, setTypeOfPlace } =
+export const { setRating, setFilteredPlaces, setTypeOfPlace } =
 	travelAdvisorSlice.actions
 export default travelAdvisorSlice.reducer

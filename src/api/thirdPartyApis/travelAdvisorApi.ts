@@ -6,6 +6,7 @@ import {
 	TRIP_ADVISOR_HOST_DOMAIN,
 	getPlacesByMapBoundsRoute,
 } from '../../utils/constants'
+import { Place } from '../../types/Place'
 
 interface GetPlacesByMapBoundsArgs {
 	typeOfPlace: string
@@ -18,7 +19,7 @@ const travelAdvisorApi = createApi({
 		baseUrl: TRIP_ADVISOR_BASE_URL,
 	}),
 	endpoints: (builder) => ({
-		getPlacesByMapBounds: builder.query<any, GetPlacesByMapBoundsArgs>({
+		getPlacesByMapBounds: builder.query<Place[], GetPlacesByMapBoundsArgs>({
 			query: ({ typeOfPlace, bounds }) => ({
 				url: getPlacesByMapBoundsRoute(typeOfPlace),
 				params: {
@@ -35,6 +36,8 @@ const travelAdvisorApi = createApi({
 					'x-rapidapi-host': TRIP_ADVISOR_HOST_DOMAIN,
 				},
 			}),
+			// response has one too many data keys, strip one and type the response to be an array of Place
+			transformResponse: (response: { data: Place[] }) => response.data,
 		}),
 	}),
 })
