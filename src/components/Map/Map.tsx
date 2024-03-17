@@ -24,14 +24,14 @@ const Map = ({
     const dispatch = useDispatch(); // update the redux store for the map bounds
 
     /* When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
-    *  create event listener when someone changes the maps center, fetch new places from the api
+     * create event listener when someone changes the maps center either by dragging
+     * or with the autocomplete search box, fetch new places from the api
     */
     const onLoad = useCallback(function callback(map: google.maps.Map) {
         mapRef.current = map;
 
-
         /* Use debounce to make sure that the api is not called a million times when trying to drag the map */
-        const handleCenterChanged = debounce(() => {
+        const handleIdle = debounce(() => {
             if (mapRef?.current) {
                 const bounds = mapRef?.current.getBounds();
                 if (bounds) {
@@ -42,7 +42,15 @@ const Map = ({
                     dispatch(setBounds(boundsFormat))
                 }
             }
-        }, 2000);
+        }, 1000);
+
+        /*
+        * when the map instance is created, add a event listener to the map
+        * to get the bounds of the map when the user finishes dragging/changing the center of the map
+        */
+        const handleCenterChanged = () => {
+            google.maps.event.addListener(map, "idle", handleIdle);
+        };
 
         /*
         * when the map instance is created, add a event listener to the map
@@ -55,26 +63,6 @@ const Map = ({
     const onUnmount = useCallback(function callback() {
         mapRef.current = null;
     }, [])
-
-    // change the coords of the map center when the user finishes dragging the map
-    const onDragEnd = () => {
-        if (mapRef?.current) {
-            const lat = mapRef?.current?.getCenter()?.lat();
-            const lng = mapRef?.current?.getCenter()?.lng();
-
-            if (typeof lat === 'number' && typeof lng === 'number') {
-                dispatch(setCoords({ lat, lng }))
-            }
-
-            const bounds = mapRef?.current.getBounds();
-            if (bounds) {
-                dispatch(setBounds({
-                    ne: { lat: bounds.getNorthEast().lat(), lng: bounds.getNorthEast().lng() },
-                    sw: { lat: bounds.getSouthWest().lat(), lng: bounds.getSouthWest().lng() },
-                }));
-            }
-        }
-    }
 
     // get user's location and set the coords state equal to the user's location
     useEffect(() => {
@@ -101,7 +89,6 @@ const Map = ({
             zoom={13}
             onLoad={onLoad}
             onUnmount={onUnmount}
-            onDragEnd={onDragEnd}
         >
             {/* Put Places On The Map */}
             {places.length &&

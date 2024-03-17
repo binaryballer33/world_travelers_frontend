@@ -32,7 +32,7 @@ const NavBar = () => {
 	const getCityCoords = async () => {
 		const city_name = autocomplete?.getPlace()?.formatted_address!
 		const cityCoords = await getCityCoordinates(city_name)
-		dispatch(setCoords(cityCoords!));
+		if (cityCoords) dispatch(setCoords(cityCoords!));
 	}
 
 	return (
