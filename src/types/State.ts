@@ -27,6 +27,8 @@ export type GoogleMapsApiState = {
 	loadError: string | null
 	coords: google.maps.LatLngLiteral
 	bounds: Bounds
+	placeClicked: Place | null
+	mapRef: google.maps.Map | null
 }
 
 export type User = {

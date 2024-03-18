@@ -1,27 +1,31 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
-import { GoogleMap, OverlayView, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow, Marker } from '@react-google-maps/api';
 import { Place } from '../../types/Place';
-import { Box } from '@mui/material';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import styles from './styles'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
-import { setBounds, setCoords } from "../../redux/googleMapsSlice"
+import { setBounds, setCoords, setPlaceClicked } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
 import Loading from '../StateIndicators/Loading';
+import PlaceCard from '../Places/PlaceCard/PlaceCard';
 
-type MapProps = {
-    setChildClicked: any;
-};
+type MapProps = {};
 
-const Map = ({
-    setChildClicked
-}: MapProps) => {
-    const { isLoaded, loadError, coords } = useSelector((state: RootState) => state.maps) // isLoaded and loadError from redux store for google maps api
-    const { places } = useSelector((state: RootState) => state.travelAdvisor) // get the places from the redux store, put them on the map
-    const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
+const Map = ({ }: MapProps) => {
     const dispatch = useDispatch(); // update the redux store for the map bounds
+    // isLoaded and loadError from redux store for google maps api, maps needs to load before we can use it
+    const { isLoaded, loadError, coords, placeClicked } = useSelector((state: RootState) => state.maps)
+    // get the places from the redux store, put them on the map
+    const { places } = useSelector((state: RootState) => state.travelAdvisor)
+    const mapRef = useRef<google.maps.Map | null>(null); // A reference to the map
+
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const isTablet = useMediaQuery(theme.breakpoints.down('md'))
+    const isDesktop = useMediaQuery(theme.breakpoints.down('lg'))
+    let mapHeight = isMobile ? '400px' : isTablet ? '500px' : isDesktop ? '600px' : '700px'
 
     /* When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
      * create event listener when someone changes the maps center either by dragging
@@ -30,7 +34,7 @@ const Map = ({
     const onLoad = useCallback(function callback(map: google.maps.Map) {
         mapRef.current = map;
 
-        /* Use debounce to make sure that the api is not called a million times when trying to drag the map */
+        // /* Use debounce to make sure that the api is not called a million times when trying to drag the map */
         const handleIdle = debounce(() => {
             if (mapRef?.current) {
                 const bounds = mapRef?.current.getBounds();
@@ -81,10 +85,7 @@ const Map = ({
 
     return isLoaded ? (
         <GoogleMap
-            mapContainerStyle={{
-                width: '100%',
-                height: '1000px'
-            }}
+            mapContainerStyle={{ width: '100%', height: mapHeight }}
             center={coords}
             zoom={13}
             onLoad={onLoad}
@@ -94,22 +95,20 @@ const Map = ({
             {places.length &&
                 places.map((place: Place, index: number) => (
                     // put a marker on the map for each place
-                    <Box
-                        sx={styles.markerContainer}
-                        key={index}
-                    >
-                        <OverlayView
+                    <Box key={index} >
+                        <Marker
                             position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}
-                            mapPaneName={OverlayView.MAP_PANE}
-                        >
-                            <LocationOnOutlinedIcon
-                                color="primary"
-                                fontSize="large"
-                            />
-                        </OverlayView>
+                            onClick={() => dispatch(setPlaceClicked(place))}
+                        />
+                        {placeClicked === place && (
+                            <InfoWindow position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}>
+                                <PlaceCard place={place} />
+                            </InfoWindow>
+                        )}
                     </Box>
-                ))}
-        </GoogleMap>
+                ))
+            }
+        </GoogleMap >
     ) : <Loading />
 };
 

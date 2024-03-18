@@ -8,6 +8,10 @@ const styles = {
 		width: { xs: 320, sm: 400 },
 		objectFit: 'fill',
 	},
+	cardActions: {
+		display: 'flex',
+		justifyContent: 'center',
+	},
 	chip: {
 		ml: 0,
 		mr: '5px',

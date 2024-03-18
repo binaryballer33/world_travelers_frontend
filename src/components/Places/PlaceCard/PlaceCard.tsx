@@ -15,19 +15,9 @@ import PhoneIcon from '@mui/icons-material/Phone'
 import styles from './styles'
 import { Place } from '../../../types/Place'
 
-type PlaceCardProps = {
-	place: Place
-	selected: boolean;
-	refProp: React.RefObject<HTMLDivElement>;
-}
+type PlaceCardProps = { place: Place }
 
-const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
-	// TODO: implement later: when user clicks on location, map will have a InfoWindow with the place details
-
-	// TODO: stop this for now to avoid scrolling and later make the scrolling work when you click on the icon on the map
-	// if (selected)
-	// 	refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+const PlaceCard = ({ place }: PlaceCardProps) => {
 	const imageUrl = place.photo?.images?.large?.url ? place.photo.images.large.url
 		: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
 
@@ -124,7 +114,7 @@ const PlaceCard = ({ place, selected, refProp }: PlaceCardProps) => {
 			</CardContent>
 
 			{/* Links To Trip Advisor And Place Website */}
-			<CardActions>
+			<CardActions sx={styles.cardActions}>
 				<Button
 					size="small"
 					color="primary"

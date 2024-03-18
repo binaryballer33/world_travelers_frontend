@@ -14,15 +14,13 @@ import _ from 'lodash'
 const NavBar = () => {
 	const dispatch = useDispatch()
 	const { isLoaded, coords, bounds } = useSelector((state: RootState) => state.maps)
-	const [getCurrentWeather] = useLazyGetCurrentWeatherQuery()  // get the current weather
 	const { weather } = useSelector((state: RootState) => state.weather)
+	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null) // state to hold the Autocomplete object
+	const [getCurrentWeather] = useLazyGetCurrentWeatherQuery()  // get the current weather
 
 	useEffect(() => {
 		if (!_.isEqual(bounds, defaultBounds)) getCurrentWeather(coords)
 	}, [bounds, getCurrentWeather]);
-
-	// state to hold the Autocomplete object
-	const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
 
 	// When the Autocomplete component is loaded, set the autocomplete object
 	const onLoad = (autoC: google.maps.places.Autocomplete) => setAutocomplete(autoC)
