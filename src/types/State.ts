@@ -20,6 +20,7 @@ export type TravelAdvisorApiState = {
 	filteredPlaces: Place[]
 	typeOfPlace: string
 	placeClicked: number | null
+	isFetchingPlaces: boolean
 }
 
 export type GoogleMapsApiState = {

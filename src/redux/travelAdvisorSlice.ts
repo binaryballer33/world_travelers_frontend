@@ -9,6 +9,7 @@ const initialState: TravelAdvisorApiState = {
 	filteredPlaces: [], // store the filtered places, based on the rating and coords/bounds of the map
 	typeOfPlace: 'restaurants', // used to filter places by type of place, restaurants is the default
 	placeClicked: null, // used to see which place was clicked
+	isFetchingPlaces: false, // used to see if the api is fetching data
 }
 
 const travelAdvisorSlice = createSlice({
@@ -24,6 +25,9 @@ const travelAdvisorSlice = createSlice({
 		setTypeOfPlace: (state, action: PayloadAction<string>) => {
 			state.typeOfPlace = action.payload
 		},
+		setIsFetchingPlaces: (state, action: PayloadAction<boolean>) => {
+			state.isFetchingPlaces = action.payload
+		},
 	},
 	extraReducers(builder) {
 		builder.addMatcher(
@@ -38,6 +42,10 @@ const travelAdvisorSlice = createSlice({
 	},
 })
 
-export const { setRating, setFilteredPlaces, setTypeOfPlace } =
-	travelAdvisorSlice.actions
+export const {
+	setRating,
+	setFilteredPlaces,
+	setTypeOfPlace,
+	setIsFetchingPlaces,
+} = travelAdvisorSlice.actions
 export default travelAdvisorSlice.reducer

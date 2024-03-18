@@ -12,9 +12,9 @@ import { setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 import Loading from '../StateIndicators/Loading'
 import _ from 'lodash'
 
-const TravelAdvisorPlaces = ({ isFetchingPlaces }) => {
+const TravelAdvisorPlaces = () => {
 	const dispatch = useDispatch()
-	const { rating, places, filteredPlaces } = useSelector((state: RootState) => state.travelAdvisor)
+	const { rating, places, filteredPlaces, isFetchingPlaces } = useSelector((state: RootState) => state.travelAdvisor)
 	const placesToRender = filteredPlaces.length ? filteredPlaces : places
 
 	// filter places by rating

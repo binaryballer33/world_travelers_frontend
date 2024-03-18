@@ -36,6 +36,7 @@ const Home = () => {
 			{/* Render The Place Search Options */}
 			<TravelAdvisorSearchOptions />
 			{/* Render The Places As Cards Below The Map */}
+			<TravelAdvisorPlaces />
 		</Stack>
 	)
 }

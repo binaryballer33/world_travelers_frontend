@@ -13,21 +13,22 @@ import {
 import styles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../types/State';
-import { setFilteredPlaces, setRating, setTypeOfPlace } from '../../../redux/travelAdvisorSlice';
+import { setFilteredPlaces, setIsFetchingPlaces, setRating, setTypeOfPlace } from '../../../redux/travelAdvisorSlice';
 import { defaultBounds } from '../../../utils/constants';
 import { useLazyGetPlacesByMapBoundsQuery } from '../../../api/thirdPartyApis/travelAdvisorApi';
 import _ from 'lodash';
-import TravelAdvisorPlaces from '../TravelAdvisorPlaces';
 
 const TravelAdvisorSearchOptions = () => {
     const dispatch = useDispatch()
-    const { typeOfPlace, rating } = useSelector((state: RootState) => state.travelAdvisor)
+    const { typeOfPlace, rating, isFetchingPlaces } = useSelector((state: RootState) => state.travelAdvisor)
     const { bounds } = useSelector((state: RootState) => state.maps)
     const [getPlacesByMapBounds, { isFetching }] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
 
     const handleSearchForPlaces = async () => {
         if (!_.isEqual(bounds, defaultBounds)) {
+            dispatch(setIsFetchingPlaces(true))
             await getPlacesByMapBounds({ typeOfPlace, bounds }) // extra reducer in travelAdvisorSlice will update the places state
+            dispatch(setIsFetchingPlaces(false))
             dispatch(setFilteredPlaces([])) // reset the filtered places
             dispatch(setRating('')) // get all the new places, so reset the rating
         }
@@ -78,11 +79,8 @@ const TravelAdvisorSearchOptions = () => {
                 </Grid>
             </Grid>
 
-            {/* Render The Places */}
             <Stack>
-                {/* Places Section Header */}
                 <Typography variant="h4" sx={styles.textCenter}>What Are You Looking For</Typography>
-                <TravelAdvisorPlaces isFetchingPlaces={isFetching} />
             </Stack>
         </Box>
     )
