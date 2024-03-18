@@ -9,7 +9,7 @@ import { debounce } from 'lodash';
 import { setBounds, setCoords, setPlaceClicked } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
 import Loading from '../StateIndicators/Loading';
-import PlaceCard from '../Places/PlaceCard/PlaceCard';
+import TravelAdvisorCard from '../Places/TravelAdvisorCard/TravelAdvisorCard';
 
 type MapProps = {};
 
@@ -25,7 +25,7 @@ const Map = ({ }: MapProps) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const isTablet = useMediaQuery(theme.breakpoints.down('md'))
     const isDesktop = useMediaQuery(theme.breakpoints.down('lg'))
-    let mapHeight = isMobile ? '400px' : isTablet ? '500px' : isDesktop ? '600px' : '700px'
+    const mapHeight = isMobile ? '400px' : isTablet ? '450px' : isDesktop ? '500px' : '550px'
 
     /* When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
      * create event listener when someone changes the maps center either by dragging
@@ -93,16 +93,20 @@ const Map = ({ }: MapProps) => {
         >
             {/* Put Places On The Map */}
             {places.length &&
-                places.map((place: Place, index: number) => (
+                places.map((place, index: number) => (
                     // put a marker on the map for each place
                     <Box key={index} >
                         <Marker
                             position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}
                             onClick={() => dispatch(setPlaceClicked(place))}
+                            icon={{
+                                url: "http://maps.google.com/mapfiles/ms/icons/blue-pushpin.png",
+                                scaledSize: new google.maps.Size(24, 24),
+                            }}
                         />
                         {placeClicked === place && (
                             <InfoWindow position={{ lat: Number(place.latitude), lng: Number(place.longitude) }}>
-                                <PlaceCard place={place} />
+                                <TravelAdvisorCard place={place} />
                             </InfoWindow>
                         )}
                     </Box>

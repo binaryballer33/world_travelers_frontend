@@ -17,9 +17,9 @@ import { setFilteredPlaces, setRating, setTypeOfPlace } from '../../../redux/tra
 import { defaultBounds } from '../../../utils/constants';
 import { useLazyGetPlacesByMapBoundsQuery } from '../../../api/thirdPartyApis/travelAdvisorApi';
 import _ from 'lodash';
-import Places from '../Places';
+import TravelAdvisorPlaces from '../TravelAdvisorPlaces';
 
-const PlaceSearchOptions = () => {
+const TravelAdvisorSearchOptions = () => {
     const dispatch = useDispatch()
     const { typeOfPlace, rating } = useSelector((state: RootState) => state.travelAdvisor)
     const { bounds } = useSelector((state: RootState) => state.maps)
@@ -82,10 +82,10 @@ const PlaceSearchOptions = () => {
             <Stack>
                 {/* Places Section Header */}
                 <Typography variant="h4" sx={styles.textCenter}>What Are You Looking For</Typography>
-                <Places isFetchingPlaces={isFetching} />
+                <TravelAdvisorPlaces isFetchingPlaces={isFetching} />
             </Stack>
         </Box>
     )
 };
 
-export default PlaceSearchOptions;
+export default TravelAdvisorSearchOptions;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Places from '../Places/Places'
+import TravelAdvisorPlaces from '../Places/TravelAdvisorPlaces'
 import { Stack } from '@mui/material'
 import styles from './styles'
 import Map from '../Map/Map'
@@ -9,7 +9,7 @@ import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
 import { libraries } from '../../utils/constants'
 import { setLoadError, setIsLoaded } from '../../redux/googleMapsSlice'
 import _ from 'lodash'
-import PlaceSearchOptions from '../Places/PlaceSearchOptions/PlaceSearchOptions'
+import TravelAdvisorSearchOptions from '../Places/TravelAdvisorSearchOptions/TravelAdvisorSearchOptions'
 
 const Home = () => {
 	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook and trip advisor state
@@ -34,9 +34,8 @@ const Home = () => {
 			{/* Render The Map */}
 			<Map />
 			{/* Render The Place Search Options */}
-			<PlaceSearchOptions />
+			<TravelAdvisorSearchOptions />
 			{/* Render The Places As Cards Below The Map */}
-			{/* <Places /> */}
 		</Stack>
 	)
 }

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import {
 	Grid,
-	Box,
 	Stack,
 } from '@mui/material'
-import PlaceCard from './PlaceCard/PlaceCard'
+import TravelAdvisorCard from './TravelAdvisorCard/TravelAdvisorCard'
 import { Place } from '../../types/Place'
 import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,7 +12,7 @@ import { setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 import Loading from '../StateIndicators/Loading'
 import _ from 'lodash'
 
-const Places = ({ isFetchingPlaces }) => {
+const TravelAdvisorPlaces = ({ isFetchingPlaces }) => {
 	const dispatch = useDispatch()
 	const { rating, places, filteredPlaces } = useSelector((state: RootState) => state.travelAdvisor)
 	const placesToRender = filteredPlaces.length ? filteredPlaces : places
@@ -34,7 +33,7 @@ const Places = ({ isFetchingPlaces }) => {
 				<Grid container spacing={3} sx={styles.list}>
 					{placesToRender?.map((place: Place, index: number) => (
 						<Grid item key={index}>
-							<PlaceCard place={place} />
+							<TravelAdvisorCard place={place} />
 						</Grid>
 					))}
 				</Grid>
@@ -43,4 +42,4 @@ const Places = ({ isFetchingPlaces }) => {
 	)
 }
 
-export default Places
+export default TravelAdvisorPlaces

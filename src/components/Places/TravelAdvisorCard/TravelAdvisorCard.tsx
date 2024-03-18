@@ -15,9 +15,9 @@ import PhoneIcon from '@mui/icons-material/Phone'
 import styles from './styles'
 import { Place } from '../../../types/Place'
 
-type PlaceCardProps = { place: Place }
+type TravelAdvisorCardProps = { place: Place }
 
-const PlaceCard = ({ place }: PlaceCardProps) => {
+const TravelAdvisorCard = ({ place }: TravelAdvisorCardProps) => {
 	const imageUrl = place.photo?.images?.large?.url ? place.photo.images.large.url
 		: 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'
 
@@ -134,4 +134,4 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
 	)
 }
 
-export default PlaceCard
+export default TravelAdvisorCard
