@@ -15,16 +15,12 @@ import { useLazyGetAirbnbsQuery } from '../../../api/thirdPartyApis/airbnbApi';
 import { setAdults, setChildren, setCurrency, setFilteredAirbnbs, setInfants, setIsFetchingAirbnbs, setPets, setReviewCount } from '../../../redux/airbnbSlice';
 import AirbnbGuestDropDownMenu from '../../UI/Input/AirbnbGuestDropDownMenu';
 import CurrencyDropdownMenu from '../../UI/Input/CurrencyDropdownMenu';
-import PriceRange from '../../UI/Input/PriceRange';
 import StayDurationDate from '../../UI/Input/StayDurationDate';
 
 const AirbnbSearchOptions = () => {
-    const airbnbState = useSelector((state: RootState) => state.airbnb)
-    console.log({ airbnbState });
-
     const dispatch = useDispatch()
-    const { checkin, checkout, adults, children, infants, pets, minPrice, maxPrice, currency } = useSelector((state: RootState) => state.airbnb)
     const { bounds } = useSelector((state: RootState) => state.maps)
+    const { checkin, checkout, adults, children, infants, pets, currency } = useSelector((state: RootState) => state.airbnb)
     const airbnbConfig = { bounds, checkin, checkout, adults, children, infants, pets, currency }
     const [getAirbnbs] = useLazyGetAirbnbsQuery() // query used to get places by map bounds
 
