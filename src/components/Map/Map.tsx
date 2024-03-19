@@ -21,7 +21,7 @@ const Map = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const isTablet = useMediaQuery(theme.breakpoints.down('md'))
     const isDesktop = useMediaQuery(theme.breakpoints.down('lg'))
-    const mapHeight = isMobile ? '400px' : isTablet ? '450px' : isDesktop ? '500px' : '550px'
+    const mapHeight = isMobile ? '500px' : isTablet ? '550px' : isDesktop ? '600px' : '650px'
 
     /* When the map is loaded, set the mapRef to the map, it gets the map object <GoogleMap onLoad={onLoad}/> component
      * create event listener when someone changes the maps center either by dragging

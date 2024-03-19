@@ -2,6 +2,9 @@ import { Libraries } from '@react-google-maps/api'
 
 export const libraries: Libraries = ['places'] // have to keep this outside of component to avoid re-renders
 export const defaultBounds = { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } }
+export const planeLogoImageUrl =
+	'https://media.istockphoto.com/id/1414160809/vector/airplane-icon-plane-flight-pictogram-transport-symbol-travel.jpg?s=612x612&w=0&k=20&c=BtgJVW1RQ9a4i8sTMm-Uk-HAFI2sNbDFQVvHbPKbQA4='
+export const USER = 'user' // session storage key
 
 export const BACKEND_BASE_URL = 'http://localhost:3000'
 export const PRICE_LINE_BASE_URL =
@@ -17,6 +20,11 @@ export const AIRBNB_HOST_DOMAIN = 'airbnb13.p.rapidapi.com'
 /* ROUTES */
 
 /* THIRD PARTY API ROUTES */
+
+/* PRICE LINE API ROUTES */
+export function getRoundTripsFlightsPricelineRoute(typeOfPlace: string) {
+	return `/v2/flight/roundTrip`
+}
 
 /* TRIP ADVISOR API ROUTES */
 export function getPlacesByMapBoundsRoute(typeOfPlace: string) {

@@ -24,11 +24,8 @@ const WeatherThreeDayForecast = () => {
 		async function getForecast() {
 			if (!_.isEqual(bounds, defaultBounds)) {
 				setIsFetchingForecast(true)
-				const response = await getThreeDayForecast(coords)
-				console.log({ response });
-
+				await getThreeDayForecast(coords)
 				setIsFetchingForecast(true)
-				console.log({ threeDayWeatherForecast });
 			}
 		}
 		getForecast()

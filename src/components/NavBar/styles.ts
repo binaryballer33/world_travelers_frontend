@@ -14,8 +14,6 @@ const styles = {
 			backgroundColor: (theme: Theme) =>
 				alpha(theme.palette.common.white, 0.25),
 		},
-		marginRight: 2,
-		marginLeft: { xs: 0, sm: 3 },
 		width: { xs: '100%', sm: 'auto' },
 	},
 	searchIcon: {
@@ -43,6 +41,12 @@ const styles = {
 		display: 'flex',
 		justifyContent: 'space-between',
 	},
+	navBarStacks: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	planeLogo: { height: 25, width: 25, marginRight: 8, borderRadius: '50%' },
 }
 
 export default styles
