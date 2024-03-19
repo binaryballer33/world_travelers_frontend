@@ -5,8 +5,7 @@ const styles = {
 		alignItems: 'center',
 	},
 	list: {
-		height: '75vh',
-		overflow: 'auto',
+		height: '100vh',
 		justifyContent: 'center',
 	},
 }

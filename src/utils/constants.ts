@@ -8,6 +8,8 @@ export const TRIP_ADVISOR_BASE_URL = 'https://travel-advisor.p.rapidapi.com' // 
 export const TRIP_ADVISOR_HOST_DOMAIN = 'travel-advisor.p.rapidapi.com'
 export const WEATHER_BASE_URL = 'https://weatherapi-com.p.rapidapi.com' // https://rapidapi.com/weatherapi/api/weatherapi-com
 export const WEATHER_API_HOST_DOMAIN = 'weatherapi-com.p.rapidapi.com'
+export const AIRBNB_BASE_URL = 'https://airbnb13.p.rapidapi.com' // https://rapidapi.com/3b-data-3b-data-default/api/airbnb13
+export const AIRBNB_HOST_DOMAIN = 'airbnb13.p.rapidapi.com'
 
 /* ROUTES */
 
@@ -25,6 +27,11 @@ export function threeDayWeatherForecastRoute() {
 
 export function getCurrentWeatherRoute() {
 	return '/current.json'
+}
+
+/* AIRBNB API ROUTES */
+export function getAirbnbsRoute() {
+	return '/search-geo'
 }
 
 /* TRIPS ROUTES */

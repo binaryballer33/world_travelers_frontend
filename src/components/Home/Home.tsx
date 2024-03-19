@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import TravelAdvisorPlaces from '../Places/TravelAdvisorPlaces'
+import TravelAdvisorPlaces from '../TravelAdvisor/TravelAdvisorPlaces'
 import { Stack } from '@mui/material'
 import styles from './styles'
 import Map from '../Map/Map'
@@ -9,7 +9,9 @@ import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
 import { libraries } from '../../utils/constants'
 import { setLoadError, setIsLoaded } from '../../redux/googleMapsSlice'
 import _ from 'lodash'
-import TravelAdvisorSearchOptions from '../Places/TravelAdvisorSearchOptions/TravelAdvisorSearchOptions'
+import TravelAdvisorSearchOptions from '../TravelAdvisor/TravelAdvisorSearchOptions/TravelAdvisorSearchOptions'
+import AirbnbSearchOptions from '../Airbnb/AirbnbSearchOptions/AirbnbSearchOptions'
+import Airbnbs from '../Airbnb/Airbnbs'
 
 const Home = () => {
 	// update the mapsSlice state with the isLoaded and loadError values from the useJsApiLoader hook and trip advisor state
@@ -33,6 +35,12 @@ const Home = () => {
 		<Stack sx={styles.homeContainer}>
 			{/* Render The Map */}
 			<Map />
+
+			{/* Render The Airbnb Search Options */}
+			<AirbnbSearchOptions />
+			{/* Render The Airbnbs As Cards Below The Map */}
+			<Airbnbs />
+
 			{/* Render The Place Search Options */}
 			<TravelAdvisorSearchOptions />
 			{/* Render The Places As Cards Below The Map */}

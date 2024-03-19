@@ -1,19 +1,15 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { GoogleMap, InfoWindow, Marker } from '@react-google-maps/api';
-import { Place } from '../../types/Place';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import styles from './styles'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
 import { setBounds, setCoords, setPlaceClicked } from "../../redux/googleMapsSlice"
 import { RootState } from '../../types/State';
 import Loading from '../StateIndicators/Loading';
-import TravelAdvisorCard from '../Places/TravelAdvisorCard/TravelAdvisorCard';
+import TravelAdvisorCard from '../TravelAdvisor/TravelAdvisorCard/TravelAdvisorCard';
 
-type MapProps = {};
-
-const Map = ({ }: MapProps) => {
+const Map = () => {
     const dispatch = useDispatch(); // update the redux store for the map bounds
     // isLoaded and loadError from redux store for google maps api, maps needs to load before we can use it
     const { isLoaded, loadError, coords, placeClicked } = useSelector((state: RootState) => state.maps)

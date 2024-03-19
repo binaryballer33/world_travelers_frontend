@@ -20,9 +20,9 @@ import _ from 'lodash';
 
 const TravelAdvisorSearchOptions = () => {
     const dispatch = useDispatch()
-    const { typeOfPlace, rating, isFetchingPlaces } = useSelector((state: RootState) => state.travelAdvisor)
+    const { typeOfPlace, rating } = useSelector((state: RootState) => state.travelAdvisor)
     const { bounds } = useSelector((state: RootState) => state.maps)
-    const [getPlacesByMapBounds, { isFetching }] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
+    const [getPlacesByMapBounds] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
 
     const handleSearchForPlaces = async () => {
         if (!_.isEqual(bounds, defaultBounds)) {
