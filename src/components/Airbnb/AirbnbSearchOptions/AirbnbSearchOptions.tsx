@@ -27,9 +27,7 @@ const AirbnbSearchOptions = () => {
     const handleSearchForPlaces = async () => {
         if (!_.isEqual(bounds, defaultBounds)) {
             dispatch(setIsFetchingAirbnbs(true))
-            const response = await getAirbnbs(airbnbConfig) // extra reducer in travelAdvisorSlice will update the places state
-            console.log({ response });
-
+            await getAirbnbs(airbnbConfig) // extra reducer in travelAdvisorSlice will update the places state
             dispatch(setIsFetchingAirbnbs(false))
             dispatch(setFilteredAirbnbs([])) // reset the filtered airbnbs
             dispatch(setReviewCount(0)) // get all the new airbnbs, so reset the rating

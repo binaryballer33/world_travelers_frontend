@@ -70,13 +70,6 @@ const airbnbSlice = createSlice({
 			airbnbApi.endpoints.getAirbnbs.matchFulfilled,
 			(state, action: PayloadAction<AirbnbResults>) => {
 				state.airbnbs = action.payload.results
-
-				// state.airbnbs = action.payload.results .filter(
-				// 	(airbnb) =>
-				// 		airbnb.price.rate >= state.minPrice &&
-				// 		airbnb.price.rate <= state.maxPrice
-				// )
-				console.log(state.airbnbs)
 			}
 		)
 	},

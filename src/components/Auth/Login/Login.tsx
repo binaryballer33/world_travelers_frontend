@@ -51,13 +51,8 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
     const handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
         const authData = await login(formData)
-        console.log(formData);
-
-        console.log({ authData });
-
         handleClearForm() // clear the form after submitting
     }
-    console.log({ formData });
 
     // enhanced onChangeHandler to check if the confirm password matches the password
     const onChangeHandler = (event, textfield: string) => {
