@@ -15,16 +15,25 @@ import {
 import ClearIcon from '@mui/icons-material/Clear'
 import { useLoginMutation } from '../../../api/backendApis/userApi'
 import { Error, Loading } from '../../StateIndicators'
-import { createInitialFormState, transformTextField } from '../../../utils/helperFunctions/stringTransformations'
+import { transformTextField } from '../../../utils/helperFunctions/stringTransformations'
 
 type LoginProps = BoxProps & {
     clearFormButton?: boolean
 }
 
+type FormData = {
+    email: string
+    password: string
+}
+
+const initialFormState = {
+    email: '',
+    password: '',
+}
+
 const Login = ({ width, height, clearFormButton }: LoginProps) => {
-    const textFields = ["Email", "Password"]
-    const initialFormState = createInitialFormState(textFields)
-    const [formData, setFormData] = useState(initialFormState) // create state to hold the form data
+    const textFields = Object.keys(initialFormState) // get the text fields from the initial form state
+    const [formData, setFormData] = useState<FormData>(initialFormState) // create state to hold the form data
 
     /* create a state to hold the focused text field
     * focusedField is used to determine if the clear icon should be shown
@@ -48,13 +57,14 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
 
         handleClearForm() // clear the form after submitting
     }
+    console.log({ formData });
 
     // enhanced onChangeHandler to check if the confirm password matches the password
     const onChangeHandler = (event, textfield: string) => {
         const value = event.target.value
         setFormData({
             ...formData,
-            [transformTextField(textfield)]: value,
+            [textfield]: value,
         })
     }
 
@@ -81,13 +91,8 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: 2,
-                        width: width
-                            ? width
-                            : { xs: 250, sm: 500, md: 800 },
-                        height:
-                            height && textFields.length < 5
-                                ? height
-                                : 'auto',
+                        width: width ? width : { xs: 250, sm: 500, md: 800 },
+                        height: height && textFields.length < 5 ? height : 'auto',
                         justifyContent: 'center',
                     }}
                 >
@@ -104,23 +109,19 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
                             <TextField
                                 key={textfield}
                                 id={transformedTextField}
-                                label={textfield}
+                                label={transformedTextField}
+                                placeholder={`Type Your ${transformedTextField} Here`}
+                                value={formData[textfield]}
                                 required
-                                value={formData[transformedTextField]}
-                                placeholder={`Type Your ${textfield} Here`}
-                                type={transformedTextField === 'password' ? 'password' : 'text'}
-                                onChange={(event) =>
-                                    onChangeHandler(event, transformedTextField)
-                                }
-                                onFocus={() =>
-                                    setFocusedField(transformedTextField)
-                                }
+                                type={textfield === 'password' ? 'password' : 'text'}
+                                onChange={(event) => onChangeHandler(event, textfield)}
+                                onFocus={() => setFocusedField(textfield)}
                                 // adds the clear icon to the textfield
                                 InputProps={{
                                     endAdornment:
                                         // only show the clear icon if the textfield is focused and the textfield is not empty
-                                        focusedField === transformedTextField &&
-                                        formData[transformedTextField] !==
+                                        focusedField === textfield &&
+                                        formData[textfield] !==
                                         '' && (
                                             <InputAdornment position="end">
                                                 <Tooltip
@@ -130,7 +131,7 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
                                                         onClick={() =>
                                                             setFormData({
                                                                 ...formData,
-                                                                [transformedTextField]:
+                                                                [textfield]:
                                                                     '',
                                                             })
                                                         }

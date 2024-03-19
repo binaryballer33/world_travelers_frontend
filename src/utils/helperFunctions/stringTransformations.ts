@@ -18,9 +18,3 @@ export const transformTextField = (textfield: string) => {
 	}
 	return textfield
 }
-
-export const createInitialFormState = (arrayOfTextFields: string[]) =>
-	arrayOfTextFields.reduce((acc, textField) => {
-		acc[transformTextField(textField)] = ''
-		return acc
-	}, {})

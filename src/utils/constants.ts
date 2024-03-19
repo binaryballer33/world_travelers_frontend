@@ -6,7 +6,6 @@ export const planeLogoImageUrl =
 	'https://media.istockphoto.com/id/1414160809/vector/airplane-icon-plane-flight-pictogram-transport-symbol-travel.jpg?s=612x612&w=0&k=20&c=BtgJVW1RQ9a4i8sTMm-Uk-HAFI2sNbDFQVvHbPKbQA4='
 export const USER = 'user' // session storage key
 
-export const BACKEND_BASE_URL = 'http://localhost:3000'
 export const PRICE_LINE_BASE_URL =
 	'https://priceline-com-provider.p.rapidapi.com' // https://rapidapi.com/tipsters/api/priceline-com-provider
 export const PRICE_LINE_HOST_DOMAIN = 'priceline-com-provider.p.rapidapi.com'

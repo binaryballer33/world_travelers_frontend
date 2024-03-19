@@ -15,7 +15,7 @@ const App = () => {
 			<NavBar />
 			<Routes>
 				<Route index element={<Home />} />
-				<Route path="/register" element={<Register />} />
+				<Route path="/register" element={<Register clearFormButton />} />
 				<Route path="/login" element={<Login clearFormButton />} />
 				<Route path="/cart" element={<Cart />} />
 				<Route path="/populartrips" element={<PopularTrips />} />

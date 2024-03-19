@@ -54,9 +54,6 @@ const Register = ({ width, height, clearFormButton }: RegisterProps) => {
 
     const handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
-
-        console.log({ formData });
-
         const authData = await register(formData)
 
         // Check if error exists
@@ -150,13 +147,13 @@ const Register = ({ width, height, clearFormButton }: RegisterProps) => {
                                 required
                                 type={textfield === 'password' || textfield === 'confirmPassword' ? 'password' : 'text'}
                                 onChange={(event) => onChangeHandler(event, textfield)}
-                                onFocus={() => setFocusedField(transformedTextField)}
+                                onFocus={() => setFocusedField(textfield)}
                                 // adds the clear icon to the textfield
                                 InputProps={{
                                     endAdornment:
                                         // only show the clear icon if the textfield is focused and the textfield is not empty
-                                        focusedField === transformedTextField &&
-                                        formData[transformedTextField] !==
+                                        focusedField === textfield &&
+                                        formData[textfield] !==
                                         '' && (
                                             <InputAdornment position="end">
                                                 <Tooltip
@@ -166,7 +163,7 @@ const Register = ({ width, height, clearFormButton }: RegisterProps) => {
                                                         onClick={() =>
                                                             setFormData({
                                                                 ...formData,
-                                                                [transformedTextField]:
+                                                                [textfield]:
                                                                     '',
                                                             })
                                                         }
