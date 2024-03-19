@@ -4,6 +4,9 @@ export const libraries: Libraries = ['places'] // have to keep this outside of c
 export const defaultBounds = { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } }
 
 export const BACKEND_BASE_URL = 'http://localhost:3000'
+export const PRICE_LINE_BASE_URL =
+	'https://priceline-com-provider.p.rapidapi.com' // https://rapidapi.com/tipsters/api/priceline-com-provider
+export const PRICE_LINE_HOST_DOMAIN = 'priceline-com-provider.p.rapidapi.com'
 export const TRIP_ADVISOR_BASE_URL = 'https://travel-advisor.p.rapidapi.com' // https://rapidapi.com/apidojo/api/travel-advisor
 export const TRIP_ADVISOR_HOST_DOMAIN = 'travel-advisor.p.rapidapi.com'
 export const WEATHER_BASE_URL = 'https://weatherapi-com.p.rapidapi.com' // https://rapidapi.com/weatherapi/api/weatherapi-com
