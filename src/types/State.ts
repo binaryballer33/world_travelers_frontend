@@ -1,7 +1,7 @@
 import { Airbnb } from './Airbnb'
 import { Bounds } from './LatLng'
 import { Place } from './Place'
-import { Weather, WeatherForecast } from './Weather'
+import { ForecastDay, Weather, WeatherForecast } from './Weather'
 
 export type RootState = {
 	maps: GoogleMapsApiState
@@ -13,7 +13,8 @@ export type RootState = {
 
 export type WeatherApiState = {
 	weather: Weather | null
-	threeDayWeatherForecast: WeatherForecast | null
+	threeDayWeatherForecast: ForecastDay[]
+	isFetchingForecast: boolean
 }
 
 export type TravelAdvisorApiState = {

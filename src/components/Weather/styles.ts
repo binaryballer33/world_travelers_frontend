@@ -1,13 +1,12 @@
 const styles = {
-	homeContainer: {
+	container: {
+		p: 3,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	searchDirectoryContainer: {
-		flexDirection: 'row',
+	weatherForecast: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		mb: 5,
 	},
 }
 

@@ -9,6 +9,7 @@ import {
 	CardActions,
 	Chip,
 	Rating,
+	Stack,
 } from '@mui/material'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import PhoneIcon from '@mui/icons-material/Phone'
@@ -30,7 +31,7 @@ const TravelAdvisorCard = ({ place }: TravelAdvisorCardProps) => {
 			/>
 			<CardContent>
 				{/* place name */}
-				<Typography gutterBottom variant="h5">
+				<Typography gutterBottom variant="h5" textAlign="center">
 					{place.name}
 				</Typography>
 
@@ -90,15 +91,21 @@ const TravelAdvisorCard = ({ place }: TravelAdvisorCardProps) => {
 
 				{/* place address */}
 				{place.address && (
-					<Typography
-						gutterBottom
-						variant="body2"
-						color="textSecondary"
-						sx={styles.subtitle}
-					>
-						<LocationOnIcon />
-						{place.address}
-					</Typography>
+					<Box>
+						<Stack flexDirection="row" justifyContent="space-between" mt={1}>
+							<LocationOnIcon />
+							<Typography variant="body2" color="primary">{place.distance_string} away</Typography>
+						</Stack>
+						<Typography
+							gutterBottom
+							variant="body2"
+							color="textSecondary"
+							sx={styles.subtitle}
+						>
+							{place.address}
+						</Typography>
+
+					</Box>
 				)}
 
 				{/* place phone */}

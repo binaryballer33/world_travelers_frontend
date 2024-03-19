@@ -4,13 +4,18 @@ import weatherApi from '../api/thirdPartyApis/weatherApi'
 
 const initialState: WeatherApiState = {
 	weather: null,
-	threeDayWeatherForecast: null,
+	threeDayWeatherForecast: [],
+	isFetchingForecast: false,
 }
 
 const weatherApiSlice = createSlice({
 	name: 'weather',
 	initialState: initialState,
-	reducers: {},
+	reducers: {
+		setIsFetchingForecast: (state, action) => {
+			state.isFetchingForecast = action.payload
+		},
+	},
 	extraReducers(builder) {
 		builder.addMatcher(
 			weatherApi.endpoints.getCurrentWeather.matchFulfilled,
@@ -21,10 +26,12 @@ const weatherApiSlice = createSlice({
 		builder.addMatcher(
 			weatherApi.endpoints.threeDayWeatherForecast.matchFulfilled,
 			(state, action) => {
-				state.threeDayWeatherForecast = action.payload
+				state.threeDayWeatherForecast =
+					action.payload.forecast.forecastday
 			}
 		)
 	},
 })
 
+export const { setIsFetchingForecast } = weatherApiSlice.actions
 export default weatherApiSlice.reducer

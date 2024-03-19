@@ -3,27 +3,66 @@ import AirbnbSearchOptions from "../Airbnb/AirbnbSearchOptions/AirbnbSearchOptio
 import Airbnbs from "../Airbnb/Airbnbs";
 import TravelAdvisorSearchOptions from "../TravelAdvisor/TravelAdvisorSearchOptions/TravelAdvisorSearchOptions";
 import TravelAdvisorPlaces from "../TravelAdvisor/TravelAdvisorPlaces";
-import { Stack, Button } from "@mui/material";
+import { Stack, Button, Grid } from "@mui/material";
+import styles from "./styles";
+import WeatherThreeDayForecast from "../Weather/WeatherThreeDayForecast";
 
 enum SEATCH_OPTIONS {
-    TRAVELADVISOR = "TRAVEL ADVISOR",
+    TRAVELADVISOR = "TRIP ADVISOR",
     AIRBNBS = "AIRBNBS",
     WEATHERFORECAST = "WEATHER FORECAST",
     FLIGHTS = "FLIGHTS"
 }
 
+const RenderSearchOption = ({ searchOptionToRender }) => {
+    switch (searchOptionToRender) {
+        case SEATCH_OPTIONS.TRAVELADVISOR:
+            return (
+                <>
+                    {/* Render The Travel Advisor Search Options */}
+                    <TravelAdvisorSearchOptions />
+                    {/* Render The Travel Advisor Places As Cards Below The Map */}
+                    <TravelAdvisorPlaces />
+                </>
+            );
+        case SEATCH_OPTIONS.AIRBNBS:
+            return (
+                <>
+                    {/* Render The Airbnb Search Options */}
+                    <AirbnbSearchOptions />
+                    {/* Render The Airbnbs As Cards Below The Map */}
+                    <Airbnbs />
+                </>
+            );
+        case SEATCH_OPTIONS.WEATHERFORECAST:
+            return (
+                <>
+                    {/* Render The Weather Forecast */}
+                    <WeatherThreeDayForecast />
+                </>
+            )
+        case SEATCH_OPTIONS.FLIGHTS:
+            {/* Render The Flights */ }
+            {/* {componentToRender === "flights" && <Link to="/flights">Flights</Link>} */ }
+            return <div>FLIGHTS</div>;
+        default:
+            return null;
+    }
+};
+
 const AllSearchOptions = () => {
-    const [componentToRender, setComponentToRender] = useState("traveladvisor");
+    const [searchOptionToRender, setSearchOptionToRender] = useState(SEATCH_OPTIONS.TRAVELADVISOR);
 
     const handleClick = (e: SyntheticEvent) => {
         const target = e.currentTarget as HTMLElement; // Type assertion here
-        const buttonText = target.textContent
-        setComponentToRender(buttonText!);
+        const buttonText = target.textContent as SEATCH_OPTIONS
+        setSearchOptionToRender(buttonText!);
     }
 
     return (
         <Stack>
-            <Stack flexDirection="row" justifyContent="center" mb={5}>
+            {/* Render The Directory Of Search Options */}
+            <Grid container sx={styles.searchDirectoryContainer}>
                 <Button variant="text" color="primary" size="large" sx={{ p: 2 }} onClick={(e) => handleClick(e)}>
                     {SEATCH_OPTIONS.FLIGHTS}
                 </Button>
@@ -36,26 +75,8 @@ const AllSearchOptions = () => {
                 <Button variant="text" color="primary" size="large" sx={{ p: 2 }} onClick={(e) => handleClick(e)}>
                     {SEATCH_OPTIONS.WEATHERFORECAST}
                 </Button>
-            </Stack>
-
-            <Stack>
-                {/* Render The Travel Advisor Search Options */}
-                {componentToRender === SEATCH_OPTIONS.TRAVELADVISOR && <TravelAdvisorSearchOptions />}
-                {/* Render The Travel Advisor Places As Cards Below The Map */}
-                {componentToRender === SEATCH_OPTIONS.TRAVELADVISOR && <TravelAdvisorPlaces />}
-
-                {/* Render The Airbnb Search Options */}
-                {componentToRender === SEATCH_OPTIONS.AIRBNBS && <AirbnbSearchOptions />}
-                {/* Render The Airbnbs As Cards Below The Map */}
-                {componentToRender === SEATCH_OPTIONS.AIRBNBS && <Airbnbs />}
-
-                {/* Render The Weather Forecast */}
-                {/* {componentToRender === "weatherforecast" && <Link to="/weatherforecast">Weather Forecast</Link>} */}
-
-                {/* Render The Flights */}
-                {/* {componentToRender === "flights" && <Link to="/flights">Flights</Link>} */}
-            </Stack>
-
+            </Grid>
+            <RenderSearchOption searchOptionToRender={searchOptionToRender} />
         </Stack>
     )
 };

@@ -1,10 +1,9 @@
 const styles = {
 	cardContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
 		width: { xs: 320, sm: 400 },
-		height: 800,
+		height: 'auto',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	cardMedia: {
 		height: 350,
@@ -14,11 +13,6 @@ const styles = {
 	cardActions: {
 		display: 'flex',
 		justifyContent: 'center',
-	},
-	chip: {
-		ml: 0,
-		mr: '5px',
-		my: '5px',
 	},
 	subtitle: {
 		display: 'flex',
@@ -34,6 +28,11 @@ const styles = {
 	cardContent: {
 		display: 'flex',
 		justifyContent: 'space-between',
+	},
+	hourlyDate: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		overflow: 'scroll',
 	},
 }
 

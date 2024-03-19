@@ -7,7 +7,6 @@ import { useJsApiLoader } from '@react-google-maps/api'
 import { GOOGLE_MAPS_API_KEY, GOOGLE_MAP_ID } from "../../utils/secrets"
 import { libraries } from '../../utils/constants'
 import { setLoadError, setIsLoaded } from '../../redux/googleMapsSlice'
-import _ from 'lodash'
 import AllSearchOptions from './AllSearchOptions'
 
 const Home = () => {

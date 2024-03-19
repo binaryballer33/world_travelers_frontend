@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../types/State'
 import { setFilteredPlaces } from '../../redux/travelAdvisorSlice'
 import Loading from '../StateIndicators/Loading'
-import _ from 'lodash'
 
 const TravelAdvisorPlaces = () => {
 	const dispatch = useDispatch()
