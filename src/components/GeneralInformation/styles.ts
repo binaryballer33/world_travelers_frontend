@@ -37,7 +37,7 @@ const styles = {
 	cardContainer: {
 		minWidth: 300,
 		display: 'flex',
-		flexDirection: { xs: 'column', sm: 'row' },
+		flexDirection: { xs: 'column', md: 'row' },
 		mb: 2,
 	},
 	cardMedia: {
@@ -52,6 +52,7 @@ const styles = {
 	header: {
 		textAlign: 'center',
 		color: 'primary.main',
+		mb: 2,
 	},
 }
 

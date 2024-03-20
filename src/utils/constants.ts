@@ -15,12 +15,22 @@ export const WEATHER_API_HOST_DOMAIN = 'weatherapi-com.p.rapidapi.com'
 export const AIRBNB_BASE_URL = 'https://airbnb13.p.rapidapi.com' // https://rapidapi.com/3b-data-3b-data-default/api/airbnb13
 export const AIRBNB_HOST_DOMAIN = 'airbnb13.p.rapidapi.com'
 
+/* DATES  */
+const tomorrowDate = new Date()
+tomorrowDate.setDate(tomorrowDate.getDate() + 1)
+
+const dayAfterTomorrowDate = new Date(tomorrowDate)
+dayAfterTomorrowDate.setDate(tomorrowDate.getDate() + 1)
+
+export const tomorrow = tomorrowDate.toISOString().split('T')[0] // just get the date information, not the time
+export const dayAfterTomorrow = dayAfterTomorrowDate.toISOString().split('T')[0] // just get the date information, not the time
+
 /* ROUTES */
 
 /* THIRD PARTY API ROUTES */
 
 /* PRICE LINE API ROUTES */
-export function getRoundTripsFlightsPricelineRoute(typeOfPlace: string) {
+export function getRoundTripFlightsPricelineRoute() {
 	return `/v2/flight/roundTrip`
 }
 

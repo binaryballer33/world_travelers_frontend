@@ -2,19 +2,15 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { AirbnbApiState } from '../types/State'
 import { Airbnb, AirbnbResults } from '../types/Airbnb'
 import airbnbApi from '../api/thirdPartyApis/airbnbApi'
-
-const tomorrow = new Date()
-tomorrow.setDate(tomorrow.getDate() + 1)
-const dayAfterTomorrow = new Date(tomorrow)
-dayAfterTomorrow.setDate(tomorrow.getDate() + 1)
+import { dayAfterTomorrow, tomorrow } from '../utils/constants'
 
 const initialState: AirbnbApiState = {
 	airbnbs: [],
 	filteredAirbnbs: [],
 	isFetchingAirbnbs: false,
 	reviewsCount: 0,
-	checkin: tomorrow.toISOString().split('T')[0], // just get the date information, not the time
-	checkout: dayAfterTomorrow.toISOString().split('T')[0], // just get the date information, not the time
+	checkin: tomorrow,
+	checkout: dayAfterTomorrow,
 	adults: 1,
 	children: 0,
 	infants: 0,

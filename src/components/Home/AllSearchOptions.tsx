@@ -47,7 +47,6 @@ const RenderSearchOption = ({ searchOptionToRender }) => {
             )
         case SEATCH_OPTIONS.FLIGHTS:
             {/* Render The Flights */ }
-            {/* {componentToRender === "flights" && <Link to="/flights">Flights</Link>} */ }
             return <div>FLIGHTS</div>;
         default:
             return null;
