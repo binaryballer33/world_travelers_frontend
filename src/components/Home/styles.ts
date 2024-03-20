@@ -9,6 +9,7 @@ const styles = {
 		alignItems: 'center',
 		mb: 5,
 	},
+	buttonDirectory: { p: 2, color: 'primary' },
 }
 
 export default styles

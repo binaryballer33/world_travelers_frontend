@@ -6,16 +6,20 @@ import TravelAdvisorPlaces from "../TravelAdvisor/TravelAdvisorPlaces";
 import { Stack, Button, Grid } from "@mui/material";
 import styles from "./styles";
 import WeatherThreeDayForecast from "../Weather/WeatherThreeDayForecast";
+import GeneralInformation from "../GeneralInformation/GeneralInformation";
 
 enum SEATCH_OPTIONS {
     TRAVELADVISOR = "TRIP ADVISOR",
     AIRBNBS = "AIRBNBS",
     WEATHERFORECAST = "WEATHER FORECAST",
-    FLIGHTS = "FLIGHTS"
+    FLIGHTS = "FLIGHTS",
+    GENERAL_INFORMATION = "GENERAL INFORMATION",
 }
 
 const RenderSearchOption = ({ searchOptionToRender }) => {
     switch (searchOptionToRender) {
+        case SEATCH_OPTIONS.GENERAL_INFORMATION:
+            return <GeneralInformation />
         case SEATCH_OPTIONS.TRAVELADVISOR:
             return (
                 <>
@@ -51,7 +55,7 @@ const RenderSearchOption = ({ searchOptionToRender }) => {
 };
 
 const AllSearchOptions = () => {
-    const [searchOptionToRender, setSearchOptionToRender] = useState(SEATCH_OPTIONS.TRAVELADVISOR);
+    const [searchOptionToRender, setSearchOptionToRender] = useState(SEATCH_OPTIONS.GENERAL_INFORMATION);
 
     const handleClick = (e: SyntheticEvent) => {
         const target = e.currentTarget as HTMLElement; // Type assertion here
@@ -63,16 +67,19 @@ const AllSearchOptions = () => {
         <Stack>
             {/* Render The Directory Of Search Options */}
             <Grid container sx={styles.searchDirectoryContainer}>
-                <Button variant="text" color="primary" size="large" sx={{ p: 2 }} onClick={(e) => handleClick(e)}>
+                <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
+                    {SEATCH_OPTIONS.GENERAL_INFORMATION}
+                </Button>
+                <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
                     {SEATCH_OPTIONS.FLIGHTS}
                 </Button>
-                <Button variant="text" color="primary" size="large" sx={{ p: 2 }} onClick={(e) => handleClick(e)}>
+                <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
                     {SEATCH_OPTIONS.TRAVELADVISOR}
                 </Button>
-                <Button variant="text" color="primary" size="large" sx={{ p: 2 }} onClick={(e) => handleClick(e)}>
+                <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
                     {SEATCH_OPTIONS.AIRBNBS}
                 </Button>
-                <Button variant="text" color="primary" size="large" sx={{ p: 2 }} onClick={(e) => handleClick(e)}>
+                <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
                     {SEATCH_OPTIONS.WEATHERFORECAST}
                 </Button>
             </Grid>
