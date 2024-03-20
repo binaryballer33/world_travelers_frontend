@@ -8,8 +8,8 @@ export const formContainerStyles = (
 	flexDirection: 'column',
 	gap: 2,
 	justifyContent: 'center',
-	width: width || { xs: 250, sm: 500, md: 800 },
-	height: height || 400,
+	width: width || { xs: 300, sm: 550, md: 800 },
+	height: height || 600,
 })
 
 const styles = {

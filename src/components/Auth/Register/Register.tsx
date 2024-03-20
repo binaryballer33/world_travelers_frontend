@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import React, { SyntheticEvent, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Box,
     Paper,
@@ -17,80 +16,47 @@ import { useRegisterMutation } from '../../../api/backendApis/userApi'
 import { Error, Loading } from '../../StateIndicators'
 import { transformTextField } from '../../../utils/helperFunctions/stringTransformations'
 import { useRegistrationConfirmationEmailMutation } from '../../../api/backendApis/emailApi'
+import { TRegisterSchema, initialRegisterFormState } from '../../../types/Auth'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { RegisterSchema } from '../../../types/Auth'
+import styles, { formContainerStyles } from './styles'
+import { useNavigate } from 'react-router-dom'
 
-type RegisterProps = BoxProps & {
-    clearFormButton?: boolean
-}
-
-type FormState = {
-    firstName: string
-    lastName: string
-    email: string
-    password: string
-    confirmPassword: string
-}
-
-const initialFormState: FormState = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-}
-
-const Register = ({ width, height, clearFormButton }: RegisterProps) => {
-    const textFields = Object.keys(initialFormState)
-    const [formData, setFormData] = useState<FormState>(initialFormState) // create state to hold the form data
-    const [register, { isError, error, isLoading }] = useRegisterMutation()
+const Register = ({ width, height }: BoxProps) => {
+    const textFields = Object.keys(initialRegisterFormState) // get the text fields from the initial form state
+    const [focusedField, setFocusedField] = useState('') // used to determine if the clear icon should be shown
+    const [registerUser, { isError, error, isLoading }] = useRegisterMutation()
     const [registrationConfirmationEmail] = useRegistrationConfirmationEmailMutation() // mutation to send purchase confirmation email
-    /* create a state to hold the focused text field
-    * focusedField is used to determine if the clear icon should be shown
-    */
-    const [focusedField, setFocusedField] = useState('')
+    const navigate = useNavigate()
 
-    const handleClearForm = () => {
-        setFormData(initialFormState) // clear the form when the clear button is clicked
-    }
+    const { // destructuring the useForm hook to get the register, watch, setValue, reset, handleSubmit, and formState properties
+        register,
+        watch,
+        setValue,
+        reset,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<TRegisterSchema>({
+        resolver: zodResolver(RegisterSchema),
+    });
 
-    const handleSubmit = async (event: SyntheticEvent) => {
-        event.preventDefault()
-        const authData = await register(formData)
+    const onSubmit = async (data: TRegisterSchema) => {
+        try {
+            const response = await registerUser(data)
 
-        // Check if error exists
-        if ('error' in authData) {
-            // Handle error here
-            console.error(authData.error)
-        } else {
-            // only sending welcome email if registration is successful
-            if (authData.data?.user) {
+            if ('data' in response && 'user' in response.data) {
                 const email = {
                     from: 'shaqmandy@resend.dev',
-                    to: formData.email,
-                    subject: 'Welcome to the M.A.S Fruit Market',
-                    html: `<p>Thank you for registering with us, ${formData.firstName} ${formData.lastName}! We hope you enjoy your shopping experience with us.</p>`,
+                    to: data.email,
+                    subject: 'Welcome Fellow World Traveler!',
+                    html: `<p>Thank You For Registering With Us ${data.firstName} ${data.lastName}! We Strive To Make Your Traveling Experience Alot Smoother and Cheaper.</p>`,
                 }
-
-                // send registration confirmation email
-                await registrationConfirmationEmail(email)
+                await registrationConfirmationEmail(email) // send registration confirmation email
+                navigate('/') // go to the home page
             }
-            handleClearForm() // clear the form after submitting
-        }
-    }
-
-    const [passwordsMatch, setPasswordsMatch] = useState(true)
-    // enhanced onChangeHandler to check if the confirm password matches the password
-    const onChangeHandler = (event, textfield: string) => {
-        const value = event.target.value
-        setFormData({
-            ...formData,
-            [textfield]: value,
-        })
-
-        // check if the confirm password matches the password for the register form
-        if (textfield === 'confirmPassword' && value !== formData.password) {
-            setPasswordsMatch(false)
-        } else {
-            setPasswordsMatch(true)
+        } catch (error) {
+            console.error(error)
         }
     }
 
@@ -98,40 +64,16 @@ const Register = ({ width, height, clearFormButton }: RegisterProps) => {
         return <Loading />
     } else {
         return (
-            // Stack that centers the form in the middle of the page
-            <Stack
-                sx={{
-                    width: '100%',
-                    height: '100vh',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
+            <Stack sx={styles.stackContainer} >
                 {/* Paper container for the entire form. Height and width can be modified through props  */}
                 <Paper
                     elevation={3}
                     component="form"
-                    onSubmit={handleSubmit}
-                    sx={{
-                        p: 2,
-                        mt: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        width: width
-                            ? width
-                            : { xs: 250, sm: 500, md: 800 },
-                        height:
-                            height && textFields.length < 5
-                                ? height
-                                : 'auto',
-                        justifyContent: 'center',
-                    }}
+                    onSubmit={handleSubmit(onSubmit)}
+                    sx={formContainerStyles(width as number | string, height as number | string)}
                 >
                     {/* Header For The Form */}
-                    <Typography textAlign="center" variant="h4" color="primary">
-                        Create An Account
-                    </Typography>
+                    <Typography variant="h4" sx={styles.formHeader}>Create An Account</Typography>
 
                     {/* Text Fields For The Form */}
                     {textFields.map((textfield) => {
@@ -139,34 +81,25 @@ const Register = ({ width, height, clearFormButton }: RegisterProps) => {
                             transformTextField(textfield)
                         return (
                             <TextField
+                                {...register(textfield as keyof TRegisterSchema)}
                                 key={textfield}
                                 id={transformedTextField}
                                 label={transformedTextField}
                                 placeholder={`Type Your ${transformedTextField} Here`}
-                                value={formData[textfield]}
                                 required
                                 type={textfield === 'password' || textfield === 'confirmPassword' ? 'password' : 'text'}
-                                onChange={(event) => onChangeHandler(event, textfield)}
                                 onFocus={() => setFocusedField(textfield)}
-                                // adds the clear icon to the textfield
-                                InputProps={{
+                                error={!!errors[textfield]} // add error state to the textfield
+                                helperText={errors[textfield]?.message} // add error message to the textfield
+
+                                InputProps={{ // adds clear icon to the textfield
                                     endAdornment:
-                                        // only show the clear icon if the textfield is focused and the textfield is not empty
-                                        focusedField === textfield &&
-                                        formData[textfield] !==
-                                        '' && (
+                                        // only show clear icon if textfield is focused and textfield is not empty
+                                        focusedField === textfield && watch(textfield as keyof TRegisterSchema) !== '' && (
                                             <InputAdornment position="end">
-                                                <Tooltip
-                                                    title={`Clear ${textfield}`}
-                                                >
+                                                <Tooltip title={`Clear ${textfield}`}>
                                                     <IconButton
-                                                        onClick={() =>
-                                                            setFormData({
-                                                                ...formData,
-                                                                [textfield]:
-                                                                    '',
-                                                            })
-                                                        }
+                                                        onClick={() => setValue(textfield as keyof TRegisterSchema, '')}
                                                     >
                                                         <ClearIcon color="primary" />
                                                     </IconButton>
@@ -174,70 +107,36 @@ const Register = ({ width, height, clearFormButton }: RegisterProps) => {
                                             </InputAdornment>
                                         ),
                                 }}
-                                sx={{
-                                    width: '90%',
-                                    ml: 'auto',
-                                    mr: 'auto',
-                                }}
+                                sx={styles.textfield}
                             />
                         )
                     })}
 
-                    {/* Passwords Do Not Match Error Message */}
-                    {!passwordsMatch && formData?.confirmPassword && (
-                        <Typography
-                            color="error"
-                            variant="body2"
-                            textAlign="center"
+                    {/* Form Buttons Container */}
+                    <Box gap={1} sx={styles.buttonContainer}>
+                        {/* Form Buttons */}
+                        <Button
+                            variant="contained"
+                            onClick={() => reset()}
+                            disabled={isSubmitting}
+                            sx={styles.formButtons}
                         >
-                            Passwords Do Not Match
-                        </Typography>
-                    )}
-
-                    {/* Submit and Clear Buttons Render Conditionally Based On Props */}
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: { xs: 'column', md: 'row' },
-                            placeItems: { xs: 'center', md: 'normal' },
-                            justifyContent: { md: 'center' },
-                        }}
-                        gap={1}
-                    >
-                        {/* Optional Button to Add To The Form */}
-                        {clearFormButton && (
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{
-                                    mb: { xs: 0, md: 2 },
-                                    width: { xs: '90%', md: '45%' },
-                                    ':hover': { bgcolor: 'primary.dark' },
-                                }}
-                                onClick={handleClearForm}
-                            >
-                                Clear Form
-                            </Button>
-                        )}
+                            Clear Form
+                        </Button>
 
                         <Button
                             variant="contained"
                             type="submit"
-                            color="primary"
-                            sx={{
-                                mb: { xs: 0, md: 2 },
-                                width: { xs: '90%', md: '45%' },
-                                ':hover': { bgcolor: 'primary.dark' },
-                            }}
+                            disabled={isSubmitting}
+                            sx={styles.formButtons}
                         >
                             Submit
                         </Button>
-
                     </Box>
 
-                    {/* Error Message Renders If An Error Is Returned From The Backend */}
-                    {isError && <Error error={error} height="auto" />}
                 </Paper>
+                {/* Error Message Renders If An Error Is Returned From The Backend */}
+                {isError && <Error error={error} height="auto" />}
             </Stack>
         )
     }

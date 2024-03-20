@@ -7,6 +7,9 @@ import Login from './components/Auth/Login/Login'
 import Register from './components/Auth/Register/Register'
 import Cart from './components/Cart/Cart'
 import PopularTrips from './components/PopularTrips/PopularTrips'
+import Logout from './components/Auth/Logout/Logout'
+import Trips from './components/Trips/Trips'
+import Profile from './components/Auth/Profile/Profile'
 
 const App = () => {
 	return (
@@ -15,9 +18,12 @@ const App = () => {
 			<NavBar />
 			<Routes>
 				<Route index element={<Home />} />
-				<Route path="/register" element={<Register clearFormButton />} />
-				<Route path="/login" element={<Login clearFormButton />} />
+				<Route path="/profile" element={<Profile />} />
+				<Route path="/register" element={<Register />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/logout" element={<Logout />} />
 				<Route path="/cart" element={<Cart />} />
+				<Route path="/trips" element={<Trips />} />
 				<Route path="/populartrips" element={<PopularTrips />} />
 			</Routes>
 		</Router>

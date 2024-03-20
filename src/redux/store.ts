@@ -3,10 +3,12 @@ import api from '../api/api'
 import travelAdvisorApi from '../api/thirdPartyApis/travelAdvisorApi'
 import weatherApi from '../api/thirdPartyApis/weatherApi'
 import airbnbApi from '../api/thirdPartyApis/airbnbApi'
+import userApi from '../api/backendApis/userApi.ts'
 import googleMapsReducer from './googleMapsSlice'
 import travelAdvisorReducer from './travelAdvisorSlice'
 import weatherReducer from './weatherSlice'
 import airbnbReducer from './airbnbSlice.ts'
+import userReducer from './userSlice.ts'
 
 export const store = configureStore({
 	reducer: {
@@ -18,6 +20,7 @@ export const store = configureStore({
 		travelAdvisor: travelAdvisorReducer,
 		weather: weatherReducer,
 		airbnb: airbnbReducer,
+		user: userReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware().concat([

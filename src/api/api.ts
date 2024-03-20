@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { User } from '../types/State'
+import { UserApiState } from '../types/State'
 import { BACKEND_BASE_URL } from '../utils/secrets'
 
-// Define an API using createApi
 const api = createApi({
 	reducerPath: 'api',
 	baseQuery: fetchBaseQuery({
 		baseUrl: BACKEND_BASE_URL,
 		// Define headers to be added to every request
 		prepareHeaders: (headers: Headers, { getState }) => {
-			const token = (getState() as User).token
+			const token = (getState() as UserApiState).token
 			headers.set('Content-Type', 'application/json')
 			if (token) headers.set('authorization', `Bearer ${token}`)
 			return headers

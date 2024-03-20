@@ -2,19 +2,15 @@ import React from 'react'
 import {
 	Box,
 	Typography,
-	Button,
 	Card,
 	CardMedia,
 	CardContent,
-	CardActions,
-	Tooltip,
 	Stack,
 } from '@mui/material'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
 import styles from './styles'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../types/State'
-import { ForecastDay, Weather } from '../../../types/Weather'
+import { ForecastDay } from '../../../types/Weather'
 
 type WeatherCardProps = { forecastDay: ForecastDay }
 

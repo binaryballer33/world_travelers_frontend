@@ -12,8 +12,8 @@ const Error = ({ error, width, height }: ErrorProps) => {
 		<Stack
 			alignItems="center"
 			justifyContent="center"
-			width={width || '100%'}
-			height={height || '80vh'}
+			width={width || '50%'}
+			height={height || 'auto'}
 			textAlign="center"
 			mt={2}
 		>

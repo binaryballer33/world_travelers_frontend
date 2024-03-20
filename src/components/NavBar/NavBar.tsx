@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, Box, Stack, useMediaQuery, useTheme, MenuItem, Menu, IconButton, Button, Divider, Tooltip, Avatar } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import PersonIcon from '@mui/icons-material/Person'
@@ -231,7 +231,7 @@ const NavBar = () => {
 									color="primary.main"
 									textAlign="center"
 								>
-									Hi {user.firstname}
+									Hi {user.firstName}
 								</Typography>
 								<Divider
 									sx={{

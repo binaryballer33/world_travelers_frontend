@@ -5,6 +5,11 @@ export const LoginSchema = z.object({
 	password: z.string().min(8, 'Password must be at least 8 characters'),
 })
 
+export const initialLoginFormState: TLoginSchema = {
+	email: '',
+	password: '',
+}
+
 export const RegisterSchema = z
 	.object({
 		firstName: z
@@ -18,9 +23,17 @@ export const RegisterSchema = z
 			.min(8, 'Password must be at least 8 characters'),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
-		message: 'Passwords must match',
+		message: "Your passwords don't match",
 		path: ['confirmPassword'],
 	})
+
+export const initialRegisterFormState: TRegisterSchema = {
+	firstName: '',
+	lastName: '',
+	email: '',
+	password: '',
+	confirmPassword: '',
+}
 
 export type TLoginSchema = z.infer<typeof LoginSchema>
 export type TRegisterSchema = z.infer<typeof RegisterSchema>

@@ -1,6 +1,7 @@
 import { Airbnb } from './Airbnb'
 import { Bounds } from './LatLng'
 import { Place } from './Place'
+import { UserInfo } from './User'
 import { ForecastDay, Weather, WeatherForecast } from './Weather'
 
 export type RootState = {
@@ -8,7 +9,7 @@ export type RootState = {
 	travelAdvisor: TravelAdvisorApiState
 	weather: WeatherApiState
 	airbnb: AirbnbApiState
-	user: User
+	user: UserApiState
 }
 
 export type WeatherApiState = {
@@ -51,6 +52,7 @@ export type AirbnbApiState = {
 	currency: string
 }
 
-export type User = {
+export type UserApiState = {
 	token: string
+	user: UserInfo | null
 }

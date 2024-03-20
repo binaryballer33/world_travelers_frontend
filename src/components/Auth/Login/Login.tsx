@@ -17,10 +17,17 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation } from '../../../api/backendApis/userApi'
 import { Error, Loading } from '../../StateIndicators'
 import { transformTextField } from '../../../utils/helperFunctions/stringTransformations'
-import { LoginSchema, TLoginSchema } from '../../../types/Auth';
+import { LoginSchema, TLoginSchema, initialLoginFormState } from '../../../types/Auth';
 import styles, { formContainerStyles } from './styles'
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ width, height }: BoxProps) => {
+    const textFields = Object.keys(initialLoginFormState) // get the text fields from the initial form state
+    const [focusedField, setFocusedField] = useState('') // used to determine if the clear icon should be shown
+    const [login, { isError, error, isLoading }] = useLoginMutation() // rtk mutation used to login a user
+    const navigate = useNavigate()
+
+    // destructuring the useForm hook to get the register, watch, setValue, reset, handleSubmit, and formState properties
     const {
         register,
         watch,
@@ -31,27 +38,24 @@ const Login = ({ width, height }: BoxProps) => {
     } = useForm<TLoginSchema>({
         resolver: zodResolver(LoginSchema),
     });
-    const initialFormState: TLoginSchema = { email: '', password: '' }
-    const textFields = Object.keys(initialFormState) // get the text fields from the initial form state
-    const [focusedField, setFocusedField] = useState('') // used to determine if the clear icon should be shown
-    const [login, { isError, error, isLoading }] = useLoginMutation() // rtk mutation used to login a user
 
     const onSubmit = async (data: TLoginSchema) => {
-        await login(data)
+        try {
+            const response = await login(data)
+
+            if ('data' in response) {
+                navigate('/') // go to the home page
+            }
+        } catch (error) {
+            console.error('Error Logging In: ', error)
+        }
     }
 
     return (
         isLoading ? (
             <Loading />
         ) : (
-            <Stack
-                sx={{
-                    width: '100%',
-                    height: '100vh',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
+            <Stack sx={styles.stackContainer} >
                 {/* Paper container for the entire form. Height and width can be modified through props  */}
                 <Paper
                     elevation={3}
