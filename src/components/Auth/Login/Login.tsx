@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import React, { SyntheticEvent, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Box,
     Paper,
@@ -13,54 +12,32 @@ import {
     BoxProps,
 } from '@mui/material'
 import ClearIcon from '@mui/icons-material/Clear'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useLoginMutation } from '../../../api/backendApis/userApi'
 import { Error, Loading } from '../../StateIndicators'
 import { transformTextField } from '../../../utils/helperFunctions/stringTransformations'
+import { LoginSchema, TLoginSchema } from '../../../types/Auth';
+import styles, { formContainerStyles } from './styles'
 
-type LoginProps = BoxProps & {
-    clearFormButton?: boolean
-}
-
-type FormData = {
-    email: string
-    password: string
-}
-
-const initialFormState = {
-    email: '',
-    password: '',
-}
-
-const Login = ({ width, height, clearFormButton }: LoginProps) => {
+const Login = ({ width, height }: BoxProps) => {
+    const {
+        register,
+        watch,
+        setValue,
+        reset,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<TLoginSchema>({
+        resolver: zodResolver(LoginSchema),
+    });
+    const initialFormState: TLoginSchema = { email: '', password: '' }
     const textFields = Object.keys(initialFormState) // get the text fields from the initial form state
-    const [formData, setFormData] = useState<FormData>(initialFormState) // create state to hold the form data
+    const [focusedField, setFocusedField] = useState('') // used to determine if the clear icon should be shown
+    const [login, { isError, error, isLoading }] = useLoginMutation() // rtk mutation used to login a user
 
-    /* create a state to hold the focused text field
-    * focusedField is used to determine if the clear icon should be shown
-    */
-    const [focusedField, setFocusedField] = useState('')
-
-    // get the mutation functions and the state of the mutation functions
-    const [login, { isError, error, isLoading }] = useLoginMutation()
-
-    // clear the form when the clear button is clicked
-    const handleClearForm = () => {
-        setFormData(initialFormState)
-    }
-
-    const handleSubmit = async (event: SyntheticEvent) => {
-        event.preventDefault()
-        const authData = await login(formData)
-        handleClearForm() // clear the form after submitting
-    }
-
-    // enhanced onChangeHandler to check if the confirm password matches the password
-    const onChangeHandler = (event, textfield: string) => {
-        const value = event.target.value
-        setFormData({
-            ...formData,
-            [textfield]: value,
-        })
+    const onSubmit = async (data: TLoginSchema) => {
+        await login(data)
     }
 
     return (
@@ -79,22 +56,11 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
                 <Paper
                     elevation={3}
                     component="form"
-                    onSubmit={handleSubmit}
-                    sx={{
-                        p: 2,
-                        mt: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        width: width ? width : { xs: 250, sm: 500, md: 800 },
-                        height: height && textFields.length < 5 ? height : 'auto',
-                        justifyContent: 'center',
-                    }}
+                    onSubmit={handleSubmit(onSubmit)}
+                    sx={formContainerStyles(width as number | string, height as number | string)}
                 >
                     {/* Header For The Form */}
-                    <Typography textAlign="center" variant="h4" color="primary">
-                        Sign In
-                    </Typography>
+                    <Typography variant="h4" sx={styles.formHeader}>Sign In</Typography>
 
                     {/* Text Fields For The Form */}
                     {textFields.map((textfield) => {
@@ -102,34 +68,25 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
                             transformTextField(textfield)
                         return (
                             <TextField
+                                {...register(textfield as keyof TLoginSchema)}
                                 key={textfield}
                                 id={transformedTextField}
                                 label={transformedTextField}
                                 placeholder={`Type Your ${transformedTextField} Here`}
-                                value={formData[textfield]}
                                 required
                                 type={textfield === 'password' ? 'password' : 'text'}
-                                onChange={(event) => onChangeHandler(event, textfield)}
                                 onFocus={() => setFocusedField(textfield)}
-                                // adds the clear icon to the textfield
-                                InputProps={{
+                                error={!!errors[textfield]} // add error state to the textfield
+                                helperText={errors[textfield]?.message} // add error message to the textfield
+
+                                InputProps={{ // adds clear icon to the textfield
                                     endAdornment:
-                                        // only show the clear icon if the textfield is focused and the textfield is not empty
-                                        focusedField === textfield &&
-                                        formData[textfield] !==
-                                        '' && (
+                                        // only show clear icon if textfield is focused and textfield is not empty
+                                        focusedField === textfield && watch(textfield as keyof TLoginSchema) !== '' && (
                                             <InputAdornment position="end">
-                                                <Tooltip
-                                                    title={`Clear ${textfield}`}
-                                                >
+                                                <Tooltip title={`Clear ${textfield}`}>
                                                     <IconButton
-                                                        onClick={() =>
-                                                            setFormData({
-                                                                ...formData,
-                                                                [textfield]:
-                                                                    '',
-                                                            })
-                                                        }
+                                                        onClick={() => setValue(textfield as keyof TLoginSchema, '')}
                                                     >
                                                         <ClearIcon color="primary" />
                                                     </IconButton>
@@ -137,57 +94,35 @@ const Login = ({ width, height, clearFormButton }: LoginProps) => {
                                             </InputAdornment>
                                         ),
                                 }}
-                                sx={{
-                                    width: '90%',
-                                    ml: 'auto',
-                                    mr: 'auto',
-                                }}
+                                sx={styles.textfield}
                             />
                         )
                     })}
 
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: { xs: 'column', md: 'row' },
-                            placeItems: { xs: 'center', md: 'normal' },
-                            justifyContent: { md: 'center' },
-                        }}
-                        gap={1}
-                    >
-                        {/* Clear Button Render Conditionally Based On Props */}
-                        {clearFormButton && (
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{
-                                    mb: { xs: 0, md: 2 },
-                                    width: { xs: '90%', md: '45%' },
-                                    ':hover': { bgcolor: 'primary.dark' },
-                                }}
-                                onClick={handleClearForm}
-                            >
-                                Clear Form
-                            </Button>
-                        )}
+                    {/* Form Buttons Container */}
+                    <Box gap={1} sx={styles.buttonContainer}>
+                        {/* Form Buttons */}
+                        <Button
+                            variant="contained"
+                            onClick={() => reset()}
+                            disabled={isSubmitting}
+                            sx={styles.formButtons}
+                        >
+                            Clear Form
+                        </Button>
 
                         <Button
                             variant="contained"
                             type="submit"
-                            color="primary"
-                            sx={{
-                                mb: { xs: 0, md: 2 },
-                                width: { xs: '90%', md: '45%' },
-                                ':hover': { bgcolor: 'primary.dark' },
-                            }}
+                            disabled={isSubmitting}
+                            sx={styles.formButtons}
                         >
                             Submit
                         </Button>
                     </Box>
-
-                    {/* Error Message Renders If An Error Is Returned From The Backend */}
-                    {isError && <Error error={error} height="auto" />}
                 </Paper>
+                {/* Error Message Renders If An Error Is Returned From The Backend */}
+                {isError && <Error error={error} height="auto" />}
             </Stack>
         )
     )
