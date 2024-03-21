@@ -38,7 +38,7 @@ const styles = {
 	},
 	formHeader: {
 		textAlign: 'center',
-		color: 'primary',
+		color: 'primary.main',
 	},
 }
 
