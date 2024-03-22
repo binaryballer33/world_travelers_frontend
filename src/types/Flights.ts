@@ -28,34 +28,39 @@ export type SearchData = {
 export type ItineraryData = {
 	price_details: PriceDetails
 	slice_data: {
-		info: {
-			duration: string // example flight duration format "DD:HH:MM" example from tpa to mia 00:01:10
-			connection_count: number // example 0
-		}
-		airline: {
-			code: string // format "AA"
-			name: string // example "American Airlines"
-			logo: string // image url to the logo
-		}
-		departure: {
-			airport: Airport
-			datetime: DateTime
-		}
-		arrival: {
-			airport: Airport
-			datetime: DateTime
-		}
-		flight_data: {
-			flight_0: {
-				info: FlightInfo
-				departure: {
-					airport: Airport
-					datetime: DateTime
-				}
-				arrival: {
-					airport: Airport
-					datetime: DateTime
-				}
+		slice_0: SliceData
+		slice_1: SliceData
+	}
+}
+
+export type SliceData = {
+	info: {
+		duration: string // example flight duration format "DD:HH:MM" example from tpa to mia 00:01:10
+		connection_count: number // example 0
+	}
+	airline: {
+		code: string // format "AA"
+		name: string // example "American Airlines"
+		logo: string // image url to the logo
+	}
+	departure: {
+		airport: Airport
+		datetime: DateTime
+	}
+	arrival: {
+		airport: Airport
+		datetime: DateTime
+	}
+	flight_data: {
+		flight_0: {
+			info: FlightInfo
+			departure: {
+				airport: Airport
+				datetime: DateTime
+			}
+			arrival: {
+				airport: Airport
+				datetime: DateTime
 			}
 		}
 	}
