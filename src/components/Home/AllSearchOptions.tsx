@@ -7,12 +7,14 @@ import { Stack, Button, Grid } from "@mui/material";
 import styles from "./styles";
 import WeatherThreeDayForecast from "../Weather/WeatherThreeDayForecast";
 import GeneralInformation from "../GeneralInformation/GeneralInformation";
+import PricelineSearchOptions from "../Priceline/PricelineSearchOptions/PricelineSearchOptions";
+import Priceline from "../Priceline/Priceline";
 
 enum SEATCH_OPTIONS {
     TRAVELADVISOR = "TRIP ADVISOR",
     AIRBNBS = "AIRBNBS",
     WEATHERFORECAST = "WEATHER FORECAST",
-    FLIGHTS = "FLIGHTS",
+    PRICELINE = "PRICELINE",
     GENERAL_INFORMATION = "GENERAL INFORMATION",
 }
 
@@ -39,15 +41,18 @@ const RenderSearchOption = ({ searchOptionToRender }) => {
                 </>
             );
         case SEATCH_OPTIONS.WEATHERFORECAST:
+            {/* Render The Weather Forecast */ }
+            return <WeatherThreeDayForecast />
+
+        case SEATCH_OPTIONS.PRICELINE:
             return (
                 <>
-                    {/* Render The Weather Forecast */}
-                    <WeatherThreeDayForecast />
+                    {/* Render The Price Line Search Options */}
+                    <PricelineSearchOptions />
+                    {/* Render The Priceline Data Returned From The Query */}
+                    <Priceline />
                 </>
             )
-        case SEATCH_OPTIONS.FLIGHTS:
-            {/* Render The Flights */ }
-            return <div>FLIGHTS</div>;
         default:
             return null;
     }
@@ -70,7 +75,7 @@ const AllSearchOptions = () => {
                     {SEATCH_OPTIONS.GENERAL_INFORMATION}
                 </Button>
                 <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
-                    {SEATCH_OPTIONS.FLIGHTS}
+                    {SEATCH_OPTIONS.PRICELINE}
                 </Button>
                 <Button variant="text" size="large" sx={styles.buttonDirectory} onClick={handleClick}>
                     {SEATCH_OPTIONS.TRAVELADVISOR}

@@ -10,7 +10,7 @@ const TripCard = () => {
             textAlign="center"
         >
             <Typography variant="h4" color="primary" mb={2} textAlign="center">
-                TripCard
+                Trip Card
             </Typography>
         </Stack>
     )

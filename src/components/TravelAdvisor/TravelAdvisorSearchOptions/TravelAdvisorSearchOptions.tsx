@@ -4,8 +4,6 @@ import {
     MenuItem,
     FormControl,
     Select,
-    Stack,
-    Button,
     Typography,
     Box,
     Grid
@@ -17,18 +15,17 @@ import { setFilteredPlaces, setIsFetchingPlaces, setRating, setTypeOfPlace } fro
 import { defaultBounds } from '../../../utils/constants';
 import { useLazyGetPlacesByMapBoundsQuery } from '../../../api/thirdPartyApis/travelAdvisorApi';
 import _ from 'lodash';
+import QueryButton from '../../UI/Buttons/QueryButton';
 
 const TravelAdvisorSearchOptions = () => {
     const dispatch = useDispatch()
-    const { typeOfPlace, rating } = useSelector((state: RootState) => state.travelAdvisor)
+    const { typeOfPlace, rating, isFetchingPlaces } = useSelector((state: RootState) => state.travelAdvisor)
     const { bounds } = useSelector((state: RootState) => state.maps)
     const [getPlacesByMapBounds] = useLazyGetPlacesByMapBoundsQuery() // query used to get places by map bounds
 
     const handleSearchForPlaces = async () => {
         if (!_.isEqual(bounds, defaultBounds)) {
-            dispatch(setIsFetchingPlaces(true))
             await getPlacesByMapBounds({ typeOfPlace, bounds }) // extra reducer in travelAdvisorSlice will update the places state
-            dispatch(setIsFetchingPlaces(false))
             dispatch(setFilteredPlaces([])) // reset the filtered places
             dispatch(setRating('')) // get all the new places, so reset the rating
         }
@@ -36,6 +33,9 @@ const TravelAdvisorSearchOptions = () => {
 
     return (
         <Box>
+            {/* Search Configuration Header */}
+            <Typography variant="h4" sx={styles.searchOptionHeader}>What Are You Looking For</Typography>
+
             {/* Buttons Used To Configure A Search */}
             <Grid container sx={styles.gridContainer}>
                 {/* Type Of Places To Return  */}
@@ -70,18 +70,8 @@ const TravelAdvisorSearchOptions = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-
-                <Grid item>
-                    {/* Execute The Search Query Button */}
-                    <Button variant="contained" onClick={handleSearchForPlaces} sx={styles.searchButton}>
-                        Search For Places
-                    </Button>
-                </Grid>
+                <QueryButton text="Search For Places" isFetching={isFetchingPlaces} executeQueryHandler={handleSearchForPlaces} />
             </Grid>
-
-            <Stack>
-                <Typography variant="h4" sx={styles.textCenter}>What Are You Looking For</Typography>
-            </Stack>
         </Box>
     )
 };

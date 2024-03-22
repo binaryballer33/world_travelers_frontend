@@ -63,9 +63,25 @@ const airbnbSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder.addMatcher(
+			airbnbApi.endpoints.getAirbnbs.matchPending,
+			(state) => {
+				state.isFetchingAirbnbs = true
+			}
+		)
+
+		builder.addMatcher(
 			airbnbApi.endpoints.getAirbnbs.matchFulfilled,
 			(state, action: PayloadAction<AirbnbResults>) => {
+				state.isFetchingAirbnbs = false
 				state.airbnbs = action.payload.results
+			}
+		)
+
+		builder.addMatcher(
+			airbnbApi.endpoints.getAirbnbs.matchRejected,
+			(state) => {
+				state.isFetchingAirbnbs = true
+				state.airbnbs = []
 			}
 		)
 	},

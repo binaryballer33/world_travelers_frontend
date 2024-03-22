@@ -1,10 +1,18 @@
-import { FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { BoxProps, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import styles from "./styles";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-const AirbnbGuestDropDownMenu = ({ inputName, value, setValue }) => {
+type GuestDropDownMenuProps = BoxProps & {
+    value: number;
+    setValue: ActionCreatorWithPayload<number, string>
+    inputName: string
+}
+
+const GuestDropDownMenu = ({ inputName, value, setValue }: GuestDropDownMenuProps) => {
     const dispatch = useDispatch()
+
     return (
         <Grid item>
             <Typography variant="body2" color="primary" textAlign="center">{inputName}</Typography>
@@ -32,4 +40,4 @@ const AirbnbGuestDropDownMenu = ({ inputName, value, setValue }) => {
     )
 };
 
-export default AirbnbGuestDropDownMenu;
+export default GuestDropDownMenu;

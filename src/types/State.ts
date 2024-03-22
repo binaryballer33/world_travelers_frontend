@@ -1,4 +1,5 @@
 import { Airbnb } from './Airbnb'
+import { FlightInfo, FlightResponse, ItineraryData } from './Flights'
 import { Bounds } from './LatLng'
 import { Place } from './Place'
 import { UserInfo } from './User'
@@ -7,6 +8,7 @@ import { ForecastDay, Weather, WeatherForecast } from './Weather'
 export type RootState = {
 	maps: GoogleMapsApiState
 	travelAdvisor: TravelAdvisorApiState
+	priceline: PricelineApiState
 	weather: WeatherApiState
 	airbnb: AirbnbApiState
 	user: UserApiState
@@ -25,6 +27,21 @@ export type TravelAdvisorApiState = {
 	typeOfPlace: string
 	placeClicked: number | null
 	isFetchingPlaces: boolean
+}
+
+export type PricelineApiState = {
+	rating: string
+	data: ItineraryData[]
+	filteredData: ItineraryData[]
+	typeOfData: string
+	dataClicked: ItineraryData | null
+	isFetching: boolean
+	adults: number
+	departureDate: string
+	returnDate: string
+	originAirportCode: string
+	destinationAirportCode: string
+	currency: string
 }
 
 export type GoogleMapsApiState = {

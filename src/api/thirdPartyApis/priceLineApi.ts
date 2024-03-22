@@ -1,22 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RAPID_API_KEY } from '../../utils/secrets'
-import { Bounds } from '../../types/LatLng'
 import {
 	PRICE_LINE_BASE_URL,
 	PRICE_LINE_HOST_DOMAIN,
+	tomorrow,
 	dayAfterTomorrow,
 	getRoundTripFlightsPricelineRoute,
-	tomorrow,
 } from '../../utils/constants'
-import { Place } from '../../types/Place'
+import { FlightResponse } from '../../types/Flights'
 
-type FlightInfo = {
+type FlightQueryObject = {
 	adults: number
-	sid: string
-	departure_date: string // format "YYYY-MM-DD"
-	return_date: string // format "YYYY-MM-DD"
-	origin_airport_code: string // format "TPA,MIA"
-	destination_airport_code: string // format "MIA,TPA"
+	departureDate: string // format "YYYY-MM-DD"
+	returnDate: string // format "YYYY-MM-DD"
+	originAirportCode: string // format "TPA,MIA"
+	destinationAirportCode: string // format "MIA,TPA"
 	currency: string
 }
 
@@ -26,7 +24,15 @@ const priceLineApi = createApi({
 		baseUrl: PRICE_LINE_BASE_URL,
 	}),
 	endpoints: (builder) => ({
-		getRoundTripFlightsPriceline: builder.query<Place[], FlightInfo>({
+		getRoundTripFlightsPriceline: builder.query<
+			FlightResponse,
+			FlightQueryObject
+		>({
+			// data arrived in THIS FORMAT
+			// data:
+			//   getAirFlightRoundTrip:
+			//     results:
+			//       result
 			query: (flightInfo) => ({
 				url: getRoundTripFlightsPricelineRoute(),
 				params: {
@@ -34,11 +40,10 @@ const priceLineApi = createApi({
 					sid: 'iSiX639',
 					// format "YYYY-MM-DD,YYYY-MM-DD"
 					departure_date:
-						`${flightInfo.departure_date},${flightInfo.return_date}` ||
+						`${flightInfo.departureDate},${flightInfo.returnDate}` ||
 						`${tomorrow},${dayAfterTomorrow}`,
-					origin_airport_code: flightInfo.origin_airport_code,
-					destination_airport_code:
-						flightInfo.destination_airport_code,
+					origin_airport_code: `${flightInfo.originAirportCode},${flightInfo.destinationAirportCode}`,
+					destination_airport_code: `${flightInfo.destinationAirportCode},${flightInfo.originAirportCode}`,
 					currency: flightInfo.currency || 'USD',
 				},
 				headers: {

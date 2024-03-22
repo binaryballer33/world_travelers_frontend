@@ -1,58 +1,60 @@
 export type FlightResponse = {
-	results: {
-		status: string
-		status_code: number
-		result: {
-			sid: string
-			page_number: string
-			itinerary_count: string
-			search_type: string
-			search_data: {
-				code: string // example 'TPA'
-				search_0: {
-					origin: AirportLocation
-					destination: AirportLocation
-					departure_date: string
+	getAirFlightRoundTrip: {
+		results: {
+			status: string
+			status_code: number
+			result: {
+				sid: string
+				page_number: string
+				itinerary_count: string
+				search_type: string
+				search_data: {
+					code: string // example 'TPA'
+					search_0: SearchData
+					search_01: SearchData
 				}
-				search_01: {
-					origin: AirportLocation
-					destination: AirportLocation
-					departure_date: string
-				}
+				itinerary_data: ItineraryData[]
 			}
-			itinerary_data: {
-				price_details: PriceDetails
-				slice_data: {
-					info: {
-						duration: string // example flight duration format "DD:HH:MM" example from tpa to mia 00:01:10
-						connection_count: number // example 0
-					}
-					airline: {
-						code: string // format "AA"
-						name: string // example "American Airlines"
-						logo: string // image url to the logo
-					}
-					departure: {
-						airport: Airport
-						datetime: DateTime
-					}
-					arrival: {
-						airport: Airport
-						datetime: DateTime
-					}
-					flight_data: {
-						flight_0: {
-							info: FlightInfo
-							departure: {
-								airport: Airport
-								datetime: DateTime
-							}
-							arrival: {
-								airport: Airport
-								datetime: DateTime
-							}
-						}
-					}
+		}
+	}
+}
+
+export type SearchData = {
+	origin: AirportLocation
+	destination: AirportLocation
+	departure_date: string
+}
+
+export type ItineraryData = {
+	price_details: PriceDetails
+	slice_data: {
+		info: {
+			duration: string // example flight duration format "DD:HH:MM" example from tpa to mia 00:01:10
+			connection_count: number // example 0
+		}
+		airline: {
+			code: string // format "AA"
+			name: string // example "American Airlines"
+			logo: string // image url to the logo
+		}
+		departure: {
+			airport: Airport
+			datetime: DateTime
+		}
+		arrival: {
+			airport: Airport
+			datetime: DateTime
+		}
+		flight_data: {
+			flight_0: {
+				info: FlightInfo
+				departure: {
+					airport: Airport
+					datetime: DateTime
+				}
+				arrival: {
+					airport: Airport
+					datetime: DateTime
 				}
 			}
 		}

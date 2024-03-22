@@ -4,8 +4,9 @@ const styles = {
 		alignItems: 'center',
 		mt: 1,
 	},
-	textCenter: {
+	searchOptionHeader: {
 		textAlign: 'center',
+		mb: 2,
 	},
 	searchButton: {
 		mx: 1,

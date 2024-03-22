@@ -31,12 +31,27 @@ const travelAdvisorSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder.addMatcher(
+			travelAdvisorApi.endpoints.getPlacesByMapBounds.matchPending,
+			(state) => {
+				state.isFetchingPlaces = true
+			}
+		)
+
+		builder.addMatcher(
 			travelAdvisorApi.endpoints.getPlacesByMapBounds.matchFulfilled,
 			(state, action) => {
 				state.places = action.payload.filter(
 					// only set the places that have a name and number of reviews > 0, to get rid of garbage data
 					(place) => place.name && place.num_reviews > 0
 				)
+			}
+		)
+
+		builder.addMatcher(
+			travelAdvisorApi.endpoints.getPlacesByMapBounds.matchRejected,
+			(state) => {
+				state.isFetchingPlaces = false
+				state.places = []
 			}
 		)
 	},

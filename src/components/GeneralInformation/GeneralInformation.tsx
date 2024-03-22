@@ -14,12 +14,6 @@ const GeneralInformation = () => {
     const foodOpenNear = `https://www.google.com/maps/search/food+open+near+me/@${coords.lat},${coords.lng}`
     const hotels = `https://www.google.com/maps/search/hotels/@${coords.lat},${coords.lng}`
 
-    useEffect(() => {
-        console.log(coords);
-        console.log(atms);
-
-    }, [coords])
-
     return (
         <Stack sx={styles.generalInformationContainer} gap={2} mb={5}>
 
