@@ -27,7 +27,7 @@ const weatherApi = createApi({
 				},
 			}),
 		}),
-		threeDayWeatherForecast: builder.query<
+		getThreeDayWeatherForecast: builder.query<
 			WeatherForecast,
 			google.maps.LatLngLiteral
 		>({
@@ -43,8 +43,8 @@ const weatherApi = createApi({
 })
 
 export const {
-	useThreeDayWeatherForecastQuery,
-	useLazyThreeDayWeatherForecastQuery,
+	useGetThreeDayWeatherForecastQuery,
+	useLazyGetThreeDayWeatherForecastQuery,
 	useGetCurrentWeatherQuery,
 	useLazyGetCurrentWeatherQuery,
 } = weatherApi

@@ -42,7 +42,7 @@ const PricelineSearchOptions = () => {
                 <DateInputField date={returnDate} setDate={setReturnDate} inputName='Return' />
                 <AirportCodeInputField airportCode={originAirportCode} setAirportCode={setOriginAirportCode} inputName='Origin Airport' />
                 <AirportCodeInputField airportCode={destinationAirportCode} setAirportCode={setDestinationAirportCode} inputName='Destination Airpot' />
-                <QueryButton text="Search Priceline" isFetching={isFetching} executeQueryHandler={handleSearchForData} />
+                <QueryButton text="Search Flights" isFetching={isFetching} executeQueryHandler={handleSearchForData} />
             </Grid>
         </Box >
     )

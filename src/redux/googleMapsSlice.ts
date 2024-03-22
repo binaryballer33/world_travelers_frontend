@@ -2,12 +2,13 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { GoogleMapsApiState } from '../types/State'
 import { Bounds } from '../types/LatLng'
 import { Place } from '../types/Place'
+import { defaultBounds } from '../utils/constants'
 
 const initialState: GoogleMapsApiState = {
 	isLoaded: false,
 	loadError: null,
-	coords: { lat: 0, lng: 0 },
-	bounds: { ne: { lat: 0, lng: 0 }, sw: { lat: 0, lng: 0 } }, // middle of the atlantic ocean,
+	coords: { lat: 0, lng: 0 }, // controls where the map is centered
+	bounds: defaultBounds, // middle of the atlantic ocean,
 	placeClicked: null,
 	mapRef: null,
 }

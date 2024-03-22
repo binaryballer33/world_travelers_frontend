@@ -66,8 +66,12 @@ const pricelineSlice = createSlice({
 			priceLineApi.endpoints.getRoundTripFlightsPriceline.matchFulfilled,
 			(state, action) => {
 				state.isFetching = false
-				state.data =
-					action.payload?.getAirFlightRoundTrip.results?.result?.itinerary_data
+
+				// data arrives in a very unhelpful specific way, so we need to convert it to an array of itineraries
+				state.data = Object.values(
+					action.payload?.getAirFlightRoundTrip.results?.result
+						?.itinerary_data
+				)
 			}
 		)
 

@@ -1,16 +1,8 @@
 const styles = {
 	cardContainer: {
 		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		width: { xs: 320, sm: 400 },
-		height: 800,
 	},
-	cardMedia: {
-		height: 350,
-		width: { xs: 320, sm: 400 },
-		objectFit: 'fill',
-	},
+	cardMedia: {},
 	cardActions: {
 		display: 'flex',
 		justifyContent: 'center',

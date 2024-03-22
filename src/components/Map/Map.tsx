@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { GoogleMap, InfoWindow, Marker } from '@react-google-maps/api';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
@@ -42,7 +42,7 @@ const Map = () => {
                     dispatch(setBounds(boundsFormat))
                 }
             }
-        }, 1000);
+        }, 2000);
 
         /*
         * when the map instance is created, add a event listener to the map
@@ -76,7 +76,7 @@ const Map = () => {
 
     // show error message if the map cannot be loaded
     if (loadError) {
-        return <div>Map cannot be loaded right now.</div>
+        return <Typography variant="h5">Map cannot be loaded right now.</Typography>
     }
 
     return isLoaded ? (

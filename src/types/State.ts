@@ -16,8 +16,8 @@ export type RootState = {
 
 export type WeatherApiState = {
 	weather: Weather | null
-	threeDayWeatherForecast: ForecastDay[]
-	isFetchingForecast: boolean
+	threeDayWeatherForecast: WeatherForecast | null
+	isFetching: boolean
 }
 
 export type TravelAdvisorApiState = {
